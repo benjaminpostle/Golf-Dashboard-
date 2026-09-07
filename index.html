@@ -741,13 +741,15 @@ function nineSplit(){
     <text class="axlbl" x="205" y="145" text-anchor="middle">BACK p36</text>`;
 }
 function puttDist(){
-  const rounds=filt();const W=300,H=160,pL=22,pB=24;
-  const vals=rounds.map(r=>r.putts);const mn=Math.min(...vals)-1,mx=Math.max(...vals)+1;
-  const xS=(W-pL-8)/(rounds.length-1);const yO=v=>14+(H-14-pB)-((v-mn)/(mx-mn))*(H-14-pB);
+  const allr=filt();const W=300,H=160,pL=22,pB=24;
+  const rounds=allr.map((r,i)=>({r,i})).filter(o=>o.r.putts!=null);
+  if(rounds.length<2){document.getElementById('sv-putt').innerHTML=`<text class="axlbl" x="${W/2}" y="${H/2}" text-anchor="middle">no putts data</text>`;return;}
+  const vals=rounds.map(o=>o.r.putts);const mn=Math.min(...vals)-1,mx=Math.max(...vals)+1;
+  const xS=(W-pL-8)/(allr.length-1);const yO=v=>14+(H-14-pB)-((v-mn)/(mx-mn))*(H-14-pB);
   let h='';for(let g=Math.ceil(mn);g<=mx;g+=3){h+=`<line class="axis" x1="${pL}" y1="${yO(g)}" x2="${W-8}" y2="${yO(g)}"/><text class="axlbl" x="${pL-3}" y="${yO(g)+3}" text-anchor="end">${g}</text>`;}
   h+=`<line x1="${pL}" y1="${yO(32)}" x2="${W-8}" y2="${yO(32)}" stroke="#2fd47e" stroke-dasharray="3,3" stroke-opacity="0.5"/>`;
-  h+=`<polyline points="${rounds.map((r,i)=>`${pL+i*xS},${yO(r.putts)}`).join(' ')}" fill="none" stroke="#f0b53e" stroke-width="2"/>`;
-  rounds.forEach((r,i)=>{h+=`<circle cx="${pL+i*xS}" cy="${yO(r.putts)}" r="3" fill="${r.putts<=33?'#2fd47e':r.putts>=38?'#ff5d52':'#f0b53e'}"/>`;});
+  h+=`<polyline points="${rounds.map(o=>`${pL+o.i*xS},${yO(o.r.putts)}`).join(' ')}" fill="none" stroke="#f0b53e" stroke-width="2"/>`;
+  rounds.forEach(o=>{h+=`<circle cx="${pL+o.i*xS}" cy="${yO(o.r.putts)}" r="3" fill="${o.r.putts<=33?'#2fd47e':o.r.putts>=38?'#ff5d52':'#f0b53e'}"/>`;});
   document.getElementById('sv-putt').innerHTML=h;
 }
 
@@ -759,7 +761,8 @@ function detailPanel(){
 }
 function drawDetail(){
   const key=document.getElementById('detail-round').value;const r=R.find(x=>x.key===key)||R[R.length-1];
-  const rows=[['Pts',r.stableford??'&mdash;'],['Gross','+'+(r.gross-PAR_TOTAL)],['Putts',r.putts],['Chips',r.chips==null?'&mdash;':r.chips],['3-putt',r.threeputt],['GIR',r.gir+'%'],['FW',r.fw+'%'],['U&D',r.ud+'%'],['Pen',r.pen],['Blow',r.blow]];
+  const nz=(v,suf='')=>v==null?'&mdash;':v+suf;
+  const rows=[['Pts',r.stableford??'&mdash;'],['Gross','+'+(r.gross-PAR_TOTAL)],['Putts',nz(r.putts)],['Chips',r.chips==null?'&mdash;':r.chips],['3-putt',nz(r.threeputt)],['GIR',nz(r.gir,'%')],['FW',nz(r.fw,'%')],['U&D',nz(r.ud,'%')],['Pen',nz(r.pen)],['Blow',r.blow]];
   document.getElementById('detail-mount').innerHTML=`<div class="statrow">${rows.map(([k,v])=>`<div class="sb"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('')}</div>${r.note?`<div style="margin-top:10px;padding:9px 11px;background:var(--panel);border-radius:8px;border-left:3px solid var(--amber);font-size:11px;color:var(--ink2);font-family:'JetBrains Mono',monospace;line-height:1.5">${r.note}</div>`:''}`;
 }
 function socialPanel(){
