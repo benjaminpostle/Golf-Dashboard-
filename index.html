@@ -154,7 +154,8 @@
     <div class="panel c2 kpi"><div class="k">Volatility &sigma;</div><div class="v" id="k-sd">&mdash;</div><div class="d flat" id="k-sd-d"></div><svg id="sp-sd" viewBox="0 0 100 20" style="visibility:hidden"></svg></div>
 
     <div class="panel c12" id="lesson-panel" style="border-color:rgba(240,181,62,0.35);box-shadow:0 0 24px rgba(240,181,62,0.05) inset;">
-      <div class="ph"><h2 style="color:var(--amber)">📋 Lesson Prep · 1 hour</h2><div class="sub">prioritised — you can't cover it all</div></div>
+      <div class="ph" id="lesson-toggle" style="cursor:pointer;margin-bottom:0;"><h2 style="color:var(--amber)">📋 Lesson Prep · 1 hour <span id="lesson-date" style="color:var(--ink3);font-weight:400;font-size:9px;">— updated 08 Sep</span></h2><div class="sub" id="lesson-caret">tap to expand ▾</div></div>
+      <div id="lesson-body" style="display:none;margin-top:11px;">
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;">
 
         <div style="background:var(--panel2);border-radius:9px;padding:12px 13px;border-left:3px solid var(--green);">
@@ -214,6 +215,7 @@
           </div>
         </div>
 
+      </div>
       </div>
     </div>
 
@@ -947,6 +949,8 @@ document.addEventListener('keydown',e=>{
   if(map[e.key])setTee(map[e.key]);
 });
 document.getElementById('trend-metric').onchange=metricChart;
+// Lesson panel collapse toggle
+(function(){const t=document.getElementById('lesson-toggle'),b=document.getElementById('lesson-body'),c=document.getElementById('lesson-caret');if(t&&b){t.onclick=()=>{const open=b.style.display!=='none';b.style.display=open?'none':'block';c.textContent=open?'tap to expand ▾':'tap to collapse ▴';};}})();
 document.getElementById('sl-putts').oninput=engineRender;
 document.getElementById('sl-gir').oninput=engineRender;
 document.querySelectorAll('#round-table th').forEach(th=>{th.onclick=()=>{if(sortKey===th.dataset.k)sortDir*=-1;else{sortKey=th.dataset.k;sortDir=th.dataset.k==='label'?1:-1;}roundTable();};});
