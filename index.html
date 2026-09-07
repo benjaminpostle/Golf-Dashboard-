@@ -319,7 +319,7 @@
       <svg id="sv-nine" viewBox="0 0 300 160"></svg>
     </div>
     <div class="panel c4">
-      <div class="ph"><h2>Putting / round</h2><div class="sub">target 32</div></div>
+      <div class="ph"><h2>Putting / round</h2><div class="legend"><span class="lg"><span class="ln" style="background:var(--amber)"></span>putts</span><span class="lg"><span class="ln" style="background:var(--blue)"></span>GIR%</span></div></div>
       <svg id="sv-putt" viewBox="0 0 300 160"></svg>
     </div>
 
@@ -805,13 +805,24 @@ function nineSplit(){
     <text class="axlbl" x="205" y="145" text-anchor="middle">BACK p36</text>`;
 }
 function puttDist(){
-  const allr=filt();const W=300,H=160,pL=22,pB=24;
+  const allr=filt();const W=300,H=160,pL=22,pR=22,pB=24;
   const rounds=allr.map((r,i)=>({r,i})).filter(o=>o.r.putts!=null);
   if(rounds.length<2){document.getElementById('sv-putt').innerHTML=`<text class="axlbl" x="${W/2}" y="${H/2}" text-anchor="middle">no putts data</text>`;return;}
   const vals=rounds.map(o=>o.r.putts);const mn=Math.min(...vals)-1,mx=Math.max(...vals)+1;
-  const xS=(W-pL-8)/(allr.length-1);const yO=v=>14+(H-14-pB)-((v-mn)/(mx-mn))*(H-14-pB);
-  let h='';for(let g=Math.ceil(mn);g<=mx;g+=3){h+=`<line class="axis" x1="${pL}" y1="${yO(g)}" x2="${W-8}" y2="${yO(g)}"/><text class="axlbl" x="${pL-3}" y="${yO(g)+3}" text-anchor="end">${g}</text>`;}
-  h+=`<line x1="${pL}" y1="${yO(32)}" x2="${W-8}" y2="${yO(32)}" stroke="#2fd47e" stroke-dasharray="3,3" stroke-opacity="0.5"/>`;
+  const xS=(W-pL-pR)/(allr.length-1);const yO=v=>14+(H-14-pB)-((v-mn)/(mx-mn))*(H-14-pB);
+  // GIR right axis: fixed 0-60%
+  const gMin=0,gMax=60;const yG=v=>14+(H-14-pB)-((v-gMin)/(gMax-gMin))*(H-14-pB);
+  let h='';for(let g=Math.ceil(mn);g<=mx;g+=3){h+=`<line class="axis" x1="${pL}" y1="${yO(g)}" x2="${W-pR}" y2="${yO(g)}"/><text class="axlbl" x="${pL-3}" y="${yO(g)+3}" text-anchor="end">${g}</text>`;}
+  // right axis labels (GIR%)
+  for(let g=0;g<=60;g+=20){h+=`<text class="axlbl" x="${W-pR+3}" y="${yG(g)+3}" fill="#54a8f0" opacity="0.6">${g}</text>`;}
+  h+=`<line x1="${pL}" y1="${yO(32)}" x2="${W-pR}" y2="${yO(32)}" stroke="#2fd47e" stroke-dasharray="3,3" stroke-opacity="0.5"/>`;
+  // GIR line (blue, right axis) — skip null-GIR rounds
+  const gRounds=rounds.filter(o=>o.r.gir!=null);
+  if(gRounds.length>=2){
+    h+=`<polyline points="${gRounds.map(o=>`${pL+o.i*xS},${yG(o.r.gir)}`).join(' ')}" fill="none" stroke="#54a8f0" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.7"/>`;
+    gRounds.forEach(o=>{h+=`<circle cx="${pL+o.i*xS}" cy="${yG(o.r.gir)}" r="2.5" fill="#54a8f0" opacity="0.8"/>`;});
+  }
+  // putts line (amber, left axis) — drawn on top
   h+=`<polyline points="${rounds.map(o=>`${pL+o.i*xS},${yO(o.r.putts)}`).join(' ')}" fill="none" stroke="#f0b53e" stroke-width="2"/>`;
   rounds.forEach(o=>{h+=`<circle cx="${pL+o.i*xS}" cy="${yO(o.r.putts)}" r="3" fill="${o.r.putts<=33?'#2fd47e':o.r.putts>=38?'#ff5d52':'#f0b53e'}"/>`;});
   document.getElementById('sv-putt').innerHTML=h;
