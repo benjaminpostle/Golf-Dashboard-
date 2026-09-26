@@ -96,6 +96,14 @@
   .focusbox p b{color:var(--ink);}
   .leaklist{display:flex;flex-direction:column;gap:9px;}
   .leak{display:flex;align-items:center;gap:11px;background:var(--panel2);border-radius:10px;padding:10px 12px;}
+  .sgrow{display:grid;grid-template-columns:120px 1fr 64px;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .sgrow:last-child{border-bottom:none;}
+  .sgrow .lbl2{font-size:12.5px;font-weight:600;color:var(--ink);}
+  .sgrow .lbl2 .sub2{display:block;font-size:9.5px;font-weight:400;color:var(--ink3);font-family:'JetBrains Mono',monospace;margin-top:1px;}
+  .sgtrack{position:relative;height:22px;background:var(--panel2);border-radius:6px;overflow:visible;}
+  .sgtrack .mid{position:absolute;left:50%;top:-4px;bottom:-4px;width:1px;background:var(--line);}
+  .sgtrack .bar2{position:absolute;top:2px;bottom:2px;border-radius:4px;}
+  .sgval{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;text-align:right;}
   .leak .rank{font-family:'Fraunces',serif;font-weight:700;font-size:20px;width:20px;text-align:center;}
   .leak .body{flex:1;min-width:0;}
   .leak .t{font-size:12.5px;font-weight:600;}
@@ -191,6 +199,15 @@
       <div class="leaklist" id="ov-leaks"></div>
     </div>
 
+    <div class="sectlabel">Strokes gained · approximate, vs your handicap level</div>
+    <div class="grid">
+      <div class="card c12" id="sg-panel">
+        <div class="ch"><h3>Where the shots actually go</h3><div class="sub" id="sg-approx-sub"></div></div>
+        <div id="sg-approx-bars"></div>
+        <div class="note" style="margin-top:12px" id="sg-approx-note"></div>
+      </div>
+    </div>
+
     <div class="sectlabel">Form &amp; trajectory</div>
     <div class="grid">
       <div class="card c8">
@@ -217,6 +234,7 @@
         </tr></thead><tbody id="sc-tbody"></tbody></table></div>
       </div>
       <div class="card c6"><div class="ch"><h3>Scoring mix</h3><div class="sub" id="sc-mix-n"></div></div><svg id="sc-mix" viewBox="0 0 320 60"></svg><div class="tiles" id="sc-mix-tiles" style="margin-top:12px;grid-template-columns:repeat(4,1fr)"></div></div>
+      <div class="card c6"><div class="ch"><h3>Doubles+ per round</h3><div class="sub" id="sc-dbl-sub"></div></div><svg id="sc-dbl" viewBox="0 0 420 190"></svg><div class="note" style="margin-top:8px" id="sc-dbl-note"></div></div>
       <div class="card c6"><div class="ch"><h3>Birdie collection</h3><div class="sub" id="sc-bird-sub"></div></div><div class="heat" id="sc-bird-f"></div><div style="height:4px"></div><div class="heat" id="sc-bird-b"></div><div class="note" style="margin-top:10px" id="sc-bird-note"></div></div>
       <div class="card c12"><div class="ch"><h3>Scorecard matrix</h3><div class="sub">grn birdie · amber bogey · red dbl+</div></div><div style="overflow-x:auto"><table id="sc-matrix"></table></div></div>
     </div>
@@ -305,7 +323,8 @@ const R=[
  {key:'r23_22aug',label:'22 Aug',tee:'blue',stableford:36,putts:33,gir:22.2,fw:64.3,ud:21.4,pen:1,threeputt:1,strokes:[7,4,3,5,4,5,4,7,6,5,5,3,5,4,5,7,5,5],ph:[2,1,2,2,1,2,2,2,2,2,2,1,2,2,2,2,3,1],mizuno:true},
  {key:'r24_26aug',label:'26 Aug',tee:'blue',stableford:29,putts:39,gir:22.2,fw:64.3,ud:14.3,pen:3,threeputt:4,strokes:[8,4,4,7,5,5,3,5,7,5,5,5,6,6,6,4,5,6],mizuno:true},
  {key:'r25_29aug',label:'29 Aug',tee:'blue',stableford:35,putts:35,gir:33.3,fw:69.2,ud:16.7,pen:1,threeputt:3,strokes:[5,6,5,5,6,5,5,6,5,6,5,4,4,5,5,5,3,5],ph:[2,3,3,3,2,2,2,2,1,1,2,2,2,1,2,2,1,2],mizuno:true,note:'Putting round, not ball-striking. Missed FIVE 3ft putts. Damage almost entirely inside 10ft: H2 chipped to 2m then 4 shots from 6m; H3 & H4 3-putted (H4 was a GIR from 10m); H5 mud lie gobbled a 40m shot. Driving good (69% FW), got to the greens fine — leaked every point on/around them. Fastest fix = lag distance + short-putt routine.'},
- {key:'r26_07sep',label:'07 Sep',tee:'white',stableford:30,putts:null,gir:null,fw:null,ud:null,pen:null,threeputt:null,strokes:[7,5,5,5,6,4,4,6,7,5,7,5,3,4,5,5,2,6],mizuno:true,note:'WHITE TEES (scratch 71, slope 128 — differs from blue 73/129). Birdie H17 (par-3, made 2). 3 pickups (H1,H3,H11) scored net-double. No detailed stats captured. Diff ≈17.7 on white rating.'}
+ {key:'r26_07sep',label:'07 Sep',tee:'white',stableford:30,putts:null,gir:null,fw:null,ud:null,pen:null,threeputt:null,strokes:[7,5,5,5,6,4,4,6,7,5,7,5,3,4,5,5,2,6],mizuno:true,note:'WHITE TEES (scratch 71, slope 128 — differs from blue 73/129). Birdie H17 (par-3, made 2). 3 pickups (H1,H3,H11) scored net-double. No detailed stats captured. Diff ≈17.7 on white rating.'},
+ {key:'r27_26sep',label:'26 Sep',tee:'blue',stableford:37,putts:34,gir:16.7,fw:61.5,ud:33.3,pen:0,threeputt:3,strokes:[6,5,4,7,5,5,4,4,7,4,5,4,4,5,4,4,4,6],mizuno:true,note:"Only hit driver twice, 2-iron off most tees. GIR just 16.7% (3/18, 10% on par4s) but scored 37 on fairways (61.5%), up&down 33%, and tidy putting (34 putts, 3 three-putt, back nine only 14 putts). Missed 4th/5th spot in comp by a bee's dick. Proof short game + fairways > GIR for this scoring level."}
 ];
 const TEECLUB={
  'r20_06aug':[['Hybrid','fairway'],['Driver','fairway'],['8 Iron','miss'],['Hybrid','fairway'],['3 Wood','fairway'],['Hybrid','miss'],['6 Iron','miss'],['Driver','fairway'],['Driver','miss'],['3 Wood','miss'],['Driver','miss'],['3 Wood','fairway'],['48°','GIR'],['Driver','miss'],['3 Wood','fairway'],['4 Iron','fairway'],['6 Iron','miss'],['Driver','fairway']],
@@ -336,8 +355,8 @@ const SOCIAL=[
  {label:'16 Jul',tee:'blue',holes:15,gross9:'—',putts:null,gir:null,girOf:null,mizuno:true,comp:true,pts:28,note:'COMP (left after 15). 28 pts / 15 holes = 33.6-pt 18-hole pace. Two net birdies (H11, H15). Bag: 2i + 3w in (not 5w/hybrid). Elite driving: 83% fairways off par4/5 (10/12), 3w 4/4, 2i 2/2. Damage from H7 hazard + H3 short. Ball-striking there, scoring lagged it.'},
  {label:'7 Sep',tee:'white',holes:9,nine:'front',gross9:42,putts:19,gir:null,girOf:null,mizuno:true,pts:18,note:'Social front 9. 18 pts / 9 holes = 36-pt 18-hole pace — strong. 19 putts (a touch high), no pickups. White tees.'}
 ];
-const HCP_HISTORY=[{before:true,hcp:18},{after:'25 Jun',hcp:17},{after:'29 Aug',hcp:14.9}];
-const HCP_CURRENT=14.9;
+const HCP_HISTORY=[{before:true,hcp:18},{after:'25 Jun',hcp:17},{after:'29 Aug',hcp:14.9},{after:'26 Sep',hcp:13.9}];
+const HCP_CURRENT=13.9;
 const PAR_TOTAL=72, CR=73, SLOPE=129;
 const TEE_COL={blue:'#5aa0e8',white:'#9fb0c0',yellow:'#f0b53e'};
 
@@ -398,6 +417,65 @@ function ovTiles(){
   document.getElementById('ov-tiles').innerHTML=tiles.map(t=>`<div class="tile"><div class="k">${t.k}</div><div class="v">${t.v}</div><div class="d ${t.cls}">${t.d}</div></div>`).join('');
 }
 
+/* ===== APPROXIMATE STROKES GAINED (category-level, vs handicap benchmark) ===== */
+// Benchmark tables (Golfity / Shot Scope published data), by handicap: FW%, GIR%, U&D%, Putts/rd, and vs-scratch SG per category
+const SG_BENCH=[
+  {hcp:0,  fw:50, gir:61, ud:47, putts:29.4, sg:{tee:-0.8, app:-1.5, sg_:-0.5, putt:-0.4}},
+  {hcp:5,  fw:48, gir:44, ud:41, putts:30.2, sg:{tee:-1.4, app:-3.0, sg_:-1.0, putt:-0.8}},
+  {hcp:10, fw:49, gir:36, ud:31, putts:31.2, sg:{tee:-2.0, app:-4.5, sg_:-1.5, putt:-1.2}},
+  {hcp:15, fw:48, gir:24, ud:21, putts:33.1, sg:{tee:-2.7, app:-6.0, sg_:-2.0, putt:-1.5}},
+  {hcp:20, fw:46, gir:17, ud:20, putts:33.1, sg:{tee:-3.4, app:-7.5, sg_:-2.5, putt:-1.8}},
+  {hcp:25, fw:46, gir:10, ud:18, putts:33.8, sg:{tee:-4.2, app:-9.0, sg_:-3.0, putt:-2.2}},
+];
+function benchAt(hcp){ // linear interpolate
+  const pts=SG_BENCH;
+  if(hcp<=pts[0].hcp)return pts[0];
+  if(hcp>=pts[pts.length-1].hcp)return pts[pts.length-1];
+  for(let i=0;i<pts.length-1;i++){
+    if(hcp>=pts[i].hcp&&hcp<=pts[i+1].hcp){
+      const t=(hcp-pts[i].hcp)/(pts[i+1].hcp-pts[i].hcp);
+      const lerp=(a,b)=>a+(b-a)*t;
+      return {fw:lerp(pts[i].fw,pts[i+1].fw),gir:lerp(pts[i].gir,pts[i+1].gir),ud:lerp(pts[i].ud,pts[i+1].ud),putts:lerp(pts[i].putts,pts[i+1].putts),
+        sg:{tee:lerp(pts[i].sg.tee,pts[i+1].sg.tee),app:lerp(pts[i].sg.app,pts[i+1].sg.app),sg_:lerp(pts[i].sg.sg_,pts[i+1].sg.sg_),putt:lerp(pts[i].sg.putt,pts[i+1].sg.putt)}};
+    }
+  }
+  return pts[0];
+}
+function ovStrokesGained(){
+  const f=filt().filter(r=>r.fw!=null||r.gir!=null||r.putts!=null||r.ud!=null);
+  const bench=benchAt(HCP_CURRENT);
+  const myFw=avg(f.map(r=>r.fw)), myGir=avg(f.map(r=>r.gir)), myUd=avg(f.map(r=>r.ud)), myPutts=avg(f.map(r=>r.putts));
+  // Scale actual-vs-benchmark % difference onto the SG stroke value for that category at this handicap,
+  // using the ratio of your gap to the gap between adjacent benchmark tiers as a rough per-category adjustment.
+  const scratch=SG_BENCH[0];
+  const teeGain = bench.sg.tee * (myFw>0 ? (myFw/bench.fw) : 1);
+  const appGain = bench.sg.app * (myGir>0 ? (myGir/bench.gir) : 1);
+  const sgGain  = bench.sg.sg_ * (myUd>0 ? (myUd/bench.ud) : 1);
+  const puttGain= bench.sg.putt * (myPutts>0 ? (bench.putts/myPutts) : 1); // fewer putts = better = less negative
+  const cats=[
+    {k:'Off the tee',v:teeGain,d:`${myFw.toFixed(0)}% fairways vs ${bench.fw.toFixed(0)}% expected`},
+    {k:'Approach',v:appGain,d:`${myGir.toFixed(0)}% GIR vs ${bench.gir.toFixed(0)}% expected`},
+    {k:'Short game',v:sgGain,d:`${myUd.toFixed(0)}% up&down vs ${bench.ud.toFixed(0)}% expected`},
+    {k:'Putting',v:puttGain,d:`${myPutts.toFixed(1)} putts vs ${bench.putts.toFixed(1)} expected`},
+  ];
+  const maxAbs=Math.max(...cats.map(c=>Math.abs(c.v)),3);
+  const el=document.getElementById('sg-approx-bars');
+  el.innerHTML=cats.map(c=>{
+    const pct=Math.min(Math.abs(c.v)/maxAbs*50,50);
+    const isNeg=c.v<0;
+    const col=c.v<-0.3?'var(--red)':c.v<0?'var(--amber)':'var(--green)';
+    const left=isNeg?(50-pct):50;
+    return `<div class="sgrow">
+      <div class="lbl2">${c.k}<span class="sub2">${c.d}</span></div>
+      <div class="sgtrack"><div class="mid"></div><div class="bar2" style="left:${left}%;width:${pct}%;background:${col}"></div></div>
+      <div class="sgval" style="color:${col}">${c.v>=0?'+':''}${c.v.toFixed(1)}</div>
+    </div>`;
+  }).join('');
+  const total=cats.reduce((a,c)=>a+c.v,0);
+  const worst=cats.reduce((a,c)=>c.v<a.v?c:a,cats[0]);
+  document.getElementById('sg-approx-sub').textContent=`vs ${HCP_CURRENT.toFixed(1)}-handicap benchmark · est. total ${total>=0?'+':''}${total.toFixed(1)}/rd`;
+  document.getElementById('sg-approx-note').innerHTML=`<b>Approximate</b> — built from your round-level stats (fairways, GIR, up&down, putts) compared to published benchmarks for your handicap, not true shot-by-shot strokes gained. Biggest leak: <b style="color:var(--red)">${worst.k}</b>. Real strokes gained needs shot-level start/finish distance data — worth adding once you've got GPS shot tracking (e.g. Garmin) capturing full rounds.`;
+}
 function ovFocus(){
   document.getElementById('focus-title').textContent='Short game inside 10 feet';
   document.getElementById('focus-body').innerHTML=`Your up-and-down rate sits around <b>17%</b> against ~50% for a 5-handicap, and three-putts are your biggest single leak. You reach the green area fine — the strokes vanish converting from there. This is the cheapest golf to fix: reps and setup, no swing rebuild. Fix it and single figures is realistic.`;
@@ -484,6 +562,18 @@ function scMix(){
   document.getElementById('sc-mix').innerHTML=h;
   document.getElementById('sc-mix-tiles').innerHTML=data.map(([nm,v,c])=>`<div class="tile" style="padding:9px 10px"><div class="k">${nm}</div><div class="v" style="font-size:20px;color:${c}">${v}</div><div class="d flat">${(v/tot*100).toFixed(1)}%</div></div>`).join('');
   document.getElementById('sc-mix-n').textContent=tot+' holes';
+}
+function scDoubles(){
+  const rounds=filt().filter(r=>r.strokes);
+  const withDbl=rounds.map(r=>({...r,dbl:r.strokes.filter((s,i)=>s-PAR[i]>=2).length}));
+  lineChart('sc-dbl',withDbl,'dbl','#ff5f56',{min:0});
+  const vals=withDbl.map(r=>r.dbl);
+  const recent=vals.slice(-5),early=vals.slice(0,5);
+  document.getElementById('sc-dbl-sub').textContent=`avg ${avg(vals).toFixed(1)}/rd · last 5: ${avg(recent).toFixed(1)}`;
+  const trend=avg(early)-avg(recent);
+  document.getElementById('sc-dbl-note').innerHTML=trend>0
+    ? `Trending down — early rounds averaged <b>${avg(early).toFixed(1)}</b> doubles+, last 5 average <b>${avg(recent).toFixed(1)}</b>. Fewer blow-up holes as the swing/course-management work lands.`
+    : `Avg <b>${avg(vals).toFixed(1)}</b> doubles+ per round. Each one avoided is a direct point or two on the card.`;
 }
 function scBirdie(){
   const rounds=filt();
@@ -633,8 +723,8 @@ async function coachAsk(){
 /* ===== WIRING ===== */
 function renderAll(){
   document.getElementById('top-meta').textContent=`Pacific GC · ${R.length} rounds · LH`;
-  hero();ovTiles();ovFocus();ovTimeline();ovProjection();
-  scTiles();scTable();scMix();scBirdie();scMatrix();
+  hero();ovTiles();ovFocus();ovStrokesGained();ovTimeline();ovProjection();
+  scTiles();scTable();scMix();scDoubles();scBirdie();scMatrix();
   sgTiles();sgPutts();sgPuttHole();lineChart('sg-ud',filt(),'ud','#a78bfa',{target:50,min:0,max:60});sgBlow();
   bsTiles();bsHeat();bsFw();bsRange();
 }
