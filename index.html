@@ -76,6 +76,27 @@
   .hero .journey{font-size:13px;color:var(--ink2);margin-top:8px;max-width:60ch;line-height:1.55;}
   .hero .journey b{color:var(--ink);}
   .hero svg{margin-top:6px;}
+  .hx-grid{display:grid;grid-template-columns:minmax(230px,300px) 1fr;gap:16px;margin-top:16px;position:relative;z-index:1;}
+  @media(max-width:760px){.hx-grid{grid-template-columns:1fr;}}
+  .hx-next{background:rgba(0,0,0,0.22);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:13px 14px;}
+  .hx-next .t{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);}
+  .hx-next .big2{font-family:'Fraunces',serif;font-weight:700;font-size:30px;line-height:1.05;margin-top:4px;}
+  .hx-next .big2 small{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink3);font-weight:400;margin-left:4px;}
+  .hx-next .why{font-size:11.5px;color:var(--ink2);margin-top:3px;line-height:1.45;}
+  .hx-scn{width:100%;border-collapse:collapse;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;}
+  .hx-scn td{padding:5px 4px;border-top:1px solid rgba(255,255,255,0.05);text-align:right;}
+  .hx-scn td:first-child{text-align:left;color:var(--ink2);}
+  .hx-scn th{font-size:9px;color:var(--ink3);font-weight:500;text-align:right;padding:0 4px 4px;letter-spacing:0.05em;}
+  .hx-scn th:first-child{text-align:left;}
+  .hx-diffs{min-width:0;}
+  .hx-lbl{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);}
+  .hx-key{display:flex;align-items:center;gap:5px;text-transform:none;letter-spacing:0;}
+  .hx-key i{width:9px;height:9px;border-radius:2px;display:inline-block;margin-left:6px;}
+  .hx-foot{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);align-items:center;}
+  .hx-chip{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:7px;padding:3px 7px;}
+  .hx-chip b{color:var(--ink);}
+  .hx-calc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);padding-bottom:10px;}
+  .hx-calc b{color:var(--green);}
 
   /* ===== stat tiles ===== */
   .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
@@ -207,6 +228,10 @@
   .ar-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
   .ar-chip{background:var(--panel2);border:1px solid var(--line);color:var(--ink2);font-size:11.5px;padding:6px 10px;border-radius:999px;cursor:pointer;font-family:'Inter',sans-serif;}
   .ar-chip.sel{background:var(--gold);color:#1a1205;border-color:var(--gold);font-weight:600;}
+  .ar-extra{margin-top:13px;padding-top:11px;border-top:1px dashed rgba(255,255,255,0.07);}
+  .ar-mini{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;}
+  .ar-opt{flex-wrap:nowrap;}
+  .ar-opt .ar-chip{flex:1;min-width:0;padding:9px 4px;font-size:12.5px;white-space:nowrap;}
   .ar-sub{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink3);margin-top:9px;}
   .ar-foot{position:sticky;bottom:0;display:flex;gap:9px;padding:12px 0 14px;background:linear-gradient(to bottom,rgba(12,17,25,0),rgba(12,17,25,0.97) 35%);}
   #ar-step-basics,#ar-step-totals,#ar-step-review{padding-bottom:16px;}
@@ -243,6 +268,10 @@
   .rs-go-sub{font-size:11.5px;font-weight:600;opacity:0.7;}
   .rs-alt{display:block;width:100%;margin-top:10px;background:none;border:1px dashed var(--line);border-radius:12px;padding:11px;color:var(--ink3);font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;}
   .rs-alt b{color:var(--ink2);}
+  .rs-discard{display:block;width:100%;margin-top:10px;background:rgba(255,95,86,0.07);border:1px solid rgba(255,95,86,0.35);border-radius:12px;padding:11px;color:var(--red);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;}
+  .rs-detchip{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--ink2);font-family:'JetBrains Mono',monospace;font-size:10.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+  .rs-detchip i{width:7px;height:7px;border-radius:50%;display:inline-block;}
+  .rs-detchip b{color:var(--gold);font-weight:600;}
   /* v4 additions */
   .ar-strip{display:grid;grid-template-columns:repeat(18,1fr);gap:3px;margin-bottom:12px;}
   .ar-strip b{height:6px;border-radius:3px;background:rgba(255,255,255,0.08);cursor:pointer;transition:all .15s;}
@@ -311,8 +340,15 @@
         <div class="big" id="hero-hcp">—</div>
         <div class="delta" id="hero-delta"><span class="from"></span></div>
       </div>
+      <div class="hx-grid">
+        <div class="hx-next" id="hx-next"></div>
+        <div class="hx-diffs">
+          <div class="hx-lbl"><span>Last 20 differentials</span><span class="hx-key"><i style="background:var(--gold)"></i>counting 8 <i style="background:#2a3442"></i>others <i style="border:1.5px solid var(--red)"></i>rolls off next</span></div>
+          <svg id="hero-spark" viewBox="0 0 800 150"></svg>
+          <div class="hx-foot" id="hx-foot"></div>
+        </div>
+      </div>
       <div class="journey" id="hero-journey"></div>
-      <svg id="hero-spark" viewBox="0 0 800 90"></svg>
     </div>
 
     <div class="tiles" style="margin-top:14px" id="ov-tiles"></div>
@@ -438,6 +474,7 @@
 
       <button class="askbtn rs-go" id="ar-start-holes"><span>Start round</span><span class="rs-go-sub">hole by hole ▸</span></button>
       <button class="rs-alt" id="ar-skip-holes">Just have the totals? <b>Enter totals only</b></button>
+      <button class="rs-discard" id="rs-discard" style="display:none">🗑 Discard this round &amp; start again</button>
     </div>
 
     <!-- hole screen -->
@@ -449,6 +486,7 @@
         <button class="ar-icon" id="ar-next-top">→</button>
       </div>
       <div class="ar-holemeta" id="ar-holemeta"></div>
+      <div style="text-align:center;margin:-4px 0 12px"><button class="rs-detchip" data-details>—</button></div>
 
 
       <div class="ar-card">
@@ -480,10 +518,12 @@
             <button class="pill2" id="ar-chip-pill">Chip in</button>
             <span class="ar-tag">GIR: <b id="ar-gir-auto">–</b></span>
           </div>
+          <div class="ar-extra" id="ar-fp-sec"><div class="ar-mini">First putt length</div><div class="ar-chips ar-opt" data-field="fp"><button class="ar-chip" data-opt="fp:lt1">&lt;1m</button><button class="ar-chip" data-opt="fp:1-2">1–2m</button><button class="ar-chip" data-opt="fp:2-4">2–4m</button><button class="ar-chip" data-opt="fp:4-8">4–8m</button><button class="ar-chip" data-opt="fp:8+">8m+</button></div></div>
         </div>
 
         <div class="ar-sec"><div class="ar-lbl">Chips &amp; pitches <span class="ar-hint">around the green</span></div>
-          <div class="ar-stepper"><button class="circ dim" data-dec="chips">−</button><div class="ar-num small" data-val="chips">0</div><button class="circ" data-inc="chips">+</button></div></div>
+          <div class="ar-stepper"><button class="circ dim" data-dec="chips">−</button><div class="ar-num small" data-val="chips">0</div><button class="circ" data-inc="chips">+</button></div>
+          <div class="ar-extra" id="ar-sg-sec"><div class="ar-mini">First short-game shot from</div><div class="ar-chips ar-opt" data-field="sgLie"><button class="ar-chip" data-opt="sgLie:fringe">Fringe</button><button class="ar-chip" data-opt="sgLie:rough">Rough</button><button class="ar-chip" data-opt="sgLie:sand">Sand</button></div><div style="height:7px"></div><div class="ar-chips ar-opt" data-field="sgDist"><button class="ar-chip" data-opt="sgDist:lt10">&lt;10m</button><button class="ar-chip" data-opt="sgDist:10-30">10–30m</button><button class="ar-chip" data-opt="sgDist:30-60">30–60m</button></div></div></div>
 
         <div class="ar-sec">
           <div class="ar-lbl">Club off the tee</div>
@@ -502,6 +542,7 @@
 
         <div class="ar-sec">
           <div class="ar-lbl">Approach shot</div>
+          <div class="ar-mini" style="margin-top:-4px">Distance in (m)</div><div class="ar-chips ar-opt" data-field="apDist"><button class="ar-chip" data-opt="apDist:lt100">&lt;100</button><button class="ar-chip" data-opt="apDist:100-130">100–130</button><button class="ar-chip" data-opt="apDist:130-160">130–160</button><button class="ar-chip" data-opt="apDist:160+">160+</button></div><div style="height:12px"></div>
           <div class="ar-grid9" id="ar-appr"></div>
           <div class="ar-pills">
             <button class="pill2" id="ar-ud-pill">Up &amp; Down</button>
@@ -514,7 +555,8 @@
         <div class="ar-sec"><div class="ar-lbl">Wasted shots</div>
           <div class="ar-stepper"><button class="circ dim" data-dec="wasted">−</button><div class="ar-num small" data-val="wasted">0</div><button class="circ" data-inc="wasted">+</button></div></div>
         <div class="ar-sec"><div class="ar-lbl">Penalty shots</div>
-          <div class="ar-stepper"><button class="circ dim" data-dec="pen">−</button><div class="ar-num small" data-val="pen">0</div><button class="circ" data-inc="pen">+</button></div></div>
+          <div class="ar-stepper"><button class="circ dim" data-dec="pen">−</button><div class="ar-num small" data-val="pen">0</div><button class="circ" data-inc="pen">+</button></div>
+          <div class="ar-extra" id="ar-ps-sec"><div class="ar-mini">Where did it come from?</div><div class="ar-chips ar-opt" data-field="penSrc"><button class="ar-chip" data-opt="penSrc:tee">Tee shot</button><button class="ar-chip" data-opt="penSrc:appr">Approach</button><button class="ar-chip" data-opt="penSrc:green">Around green</button></div></div></div>
       </div>
 
       <div class="ar-foot">
@@ -539,6 +581,7 @@
 
     <!-- totals-only -->
     <div id="ar-step-totals" style="display:none">
+      <div style="text-align:center;margin:0 0 12px"><button class="rs-detchip" data-details>—</button></div>
       <div class="ar-card">
         <div class="fgrid">
           <div class="field"><label>Stableford pts</label><input type="number" id="af-pts"></div>
@@ -725,25 +768,71 @@ function ewma(ys,alpha=0.35){const out=[];let e=ys[0];ys.forEach(y=>{e=alpha*y+(
 function diffOf(r){return (113/SLOPE)*(r.gross-CR);}
 
 /* ===== HERO / OVERVIEW ===== */
+/* ---- WHS index engine (from logged gross; cap = par+3 per hole ≈ net double at daily HC ~17–22, no SI on file) ---- */
+const TEE_RATING={blue:{cr:73,sl:129},white:{cr:71,sl:128}};
+function whsRounds(){
+  return R.filter(r=>TEE_RATING[r.tee]).map(r=>{const t=TEE_RATING[r.tee];const ags=r.strokes.reduce((a,s,i)=>a+Math.min(s,PAR[i]+3),0);return{r,ags,diff:Math.round(1130/t.sl*(ags-t.cr))/10};});
+}
+function whsIndex(diffs){const b=diffs.slice().sort((a,b)=>a-b).slice(0,8);return b.length?Math.floor(b.reduce((a,x)=>a+x,0)/b.length*10+1e-9)/10:null;}
 function hero(){
+  const all=whsRounds(),win=all.slice(-20),diffs=win.map(x=>x.diff);
+  const calc=whsIndex(diffs);
+  const sorted=diffs.slice().sort((a,b)=>a-b),cut=sorted[7];
+  // counting set (ties resolved oldest-last)
+  const idxs=win.map((x,i)=>i).sort((a,b)=>win[a].diff-win[b].diff||b-a).slice(0,8);const counting=new Set(idxs);
   document.getElementById('hero-hcp').textContent=HCP_CURRENT.toFixed(1);
   const start=HCP_HISTORY.find(e=>e.before).hcp;
   const drop=(start-HCP_CURRENT).toFixed(1);
-  document.getElementById('hero-delta').innerHTML=`&#9662; ${drop}<span class="from">from ${start} · started Apr</span>`;
+  const match=Math.abs(calc-HCP_CURRENT)<0.05;
+  document.getElementById('hero-delta').innerHTML=`&#9662; ${drop}<span class="from">from ${start} · started Apr</span><span class="hx-calc">logged calc <b style="color:${match?'var(--green)':'var(--amber)'}">${calc.toFixed(1)}</b> ${match?'✓ matches GA':'vs GA '+HCP_CURRENT}</span>`;
+
+  // ---- next round: blue tees, what gross moves the index ----
+  const t=TEE_RATING.blue,dh=Math.round(HCP_CURRENT*t.sl/113+(t.cr-PAR_TOTAL));
+  const rest=diffs.slice(1); // oldest rolls off
+  const dOf=g=>Math.round(1130/t.sl*(g-t.cr))/10;
+  const idxIf=g=>whsIndex(rest.concat(dOf(g)));
+  const base=whsIndex(rest.concat(99)); // index if next round doesn't count
+  let countG=null;for(let g=110;g>=65;g--){if(dOf(g)<Math.max(...rest.slice().sort((a,b)=>a-b).slice(0,8))){countG=g;break;}}
+  const needFor=target=>{for(let g=110;g>=65;g--)if(idxIf(g)<=target+1e-9)return g;return null;};
+  const ptsOf=g=>36+(PAR_TOTAL+dh-g);
+  const rowsT=[];const seen=new Set();
+  const add=(g,l)=>{if(g==null||seen.has(g))return;seen.add(g);rowsT.push([l,g]);};
+  add(countG,'Counts');
+  [0.5,1.0,1.5].forEach(st=>{const tg=Math.round((base-st)*10)/10;add(needFor(tg),`→ ${tg.toFixed(1)}`);});
+  const drift=base-calc;
+  document.getElementById('hx-next').innerHTML=`<div class="t">Next round · blue · DH ${dh}</div>`+
+    (countG!=null?`<div class="big2">${countG} <small>gross or better</small></div><div class="why">to count in your best 8 (beat the ${cut.toFixed(1)} cut) · ≈${ptsOf(countG)}+ pts</div>`:'')+
+    `<table class="hx-scn"><thead><tr><th>Goal</th><th>Gross</th><th>≈Pts</th><th>Index</th></tr></thead><tbody>`+
+    rowsT.map(([l,g])=>{const ni=idxIf(g);return `<tr><td>${l}</td><td>≤${g}</td><td>${ptsOf(g)}+</td><td style="color:${ni<calc?'var(--green)':'var(--ink2)'}">${ni.toFixed(1)}</td></tr>`;}).join('')+
+    `</tbody></table><div class="why" style="margin-top:8px;font-size:10.5px;color:var(--ink3)">Bad day = ${drift>0.05?`index drifts to <b style="color:var(--amber)">${base.toFixed(1)}</b>`:`<b style="color:var(--green)">no damage</b> — ${win[0].r.label} (${win[0].diff}) rolls off and ${counting.has(0)?'it counted':'it wasn’t counting'}`}.</div>`;
+
+  // ---- differential bars ----
+  const el=document.getElementById('hero-spark');
+  const narrow=(el.parentElement.clientWidth||800)<520;
+  const W=narrow?400:800,H=narrow?210:150,pL=22,pR=4,pT=12,pB=22;el.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const mx=Math.ceil((Math.max(...diffs)+2)/5)*5,mn=Math.max(0,Math.floor((Math.min(...diffs)-2)/5)*5);
+  const yO=v=>pT+(v-mn)/(mx-mn)*(H-pT-pB); // lower diff = shorter bar from top? draw from baseline
+  const base0=H-pB;const hOf=v=>(v-mn)/(mx-mn)*(H-pT-pB);
+  const bw=(W-pL-pR)/win.length;
+  let g='';
+  for(let v=mn;v<=mx;v+=5){const y=base0-hOf(v);g+=`<line class="axis" x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}"/><text class="axlbl" x="${pL-5}" y="${y+3}" text-anchor="end">${v}</text>`;}
+  win.forEach((x,i)=>{const bh=hOf(x.diff),X=pL+i*bw+3,Y=base0-bh,c=counting.has(i);
+    g+=`<rect class="hxbar" data-i="${i}" x="${X}" y="${Y}" width="${Math.max(bw-6,3)}" height="${bh}" rx="3" fill="${c?'#f5c451':'#2a3442'}" opacity="${c?0.95:0.9}" ${i===0?'stroke="#ff5f56" stroke-width="2"':''}/>`;
+    if(c&&!narrow)g+=`<text class="axlbl" x="${X+(bw-6)/2}" y="${Y-4}" text-anchor="middle" fill="#f5c451">${x.diff.toFixed(1)}</text>`;
+    if(i%(narrow?4:2)===0||i===win.length-1)g+=`<text class="axlbl" x="${X+(bw-6)/2}" y="${H-7}" text-anchor="middle">${x.r.label}</text>`;});
+  const yi=base0-hOf(calc),yc=base0-hOf(cut);
+  g+=`<line x1="${pL}" y1="${yi}" x2="${W-pR}" y2="${yi}" stroke="#37c98a" stroke-dasharray="4,4" stroke-width="1.2"/><text class="axlbl" x="${W-pR}" y="${yi-4}" text-anchor="end" fill="#37c98a">index ${calc.toFixed(1)}</text>`;
+  g+=`<line x1="${pL}" y1="${yc}" x2="${W-pR}" y2="${yc}" stroke="#f5c451" stroke-opacity="0.45" stroke-dasharray="2,4"/><text class="axlbl" x="${W-pR}" y="${yc-4}" text-anchor="end" fill="#f5c451" opacity="0.8">cut ${cut.toFixed(1)}</text>`;
+  el.innerHTML=g;
+  el.querySelectorAll('.hxbar').forEach(b=>{const x=win[+b.dataset.i];const html=`<div class="tt">${x.r.label} · ${x.r.tee}</div><div class="tr"><span>differential</span><b>${x.diff.toFixed(1)}</b></div><div class="tr"><span>adj gross</span><b>${x.ags}${x.ags!==x.r.gross?` <span style="color:var(--ink3)">(${x.r.gross} raw)</span>`:''}</b></div><div class="tr"><span>points</span><b>${x.r.stableford??'—'}</b></div><div class="tr"><span>status</span><b>${counting.has(+b.dataset.i)?'counting':'not counting'}${+b.dataset.i===0?' · rolls off next':''}</b></div>`;b.onmouseenter=e=>showTip(html,e);b.onmousemove=moveTip;b.onmouseleave=hideTip;b.onclick=e=>showTip(html,e);});
+
+  // ---- foot: history + shelf life of the low rounds ----
+  const hist=HCP_HISTORY.map(e=>`<span class="hx-chip">${e.before?'Apr':e.after} <b>${e.hcp}</b></span>`).join('<span>→</span>');
+  const lowIdx=idxs.slice().sort((a,b)=>a-b)[0];
+  const best=idxs.reduce((a,b)=>win[a].diff<=win[b].diff?a:b);
+  document.getElementById('hx-foot').innerHTML=hist+`<span style="margin-left:auto">best ${win[best].diff.toFixed(1)} (${win[best].r.label}) in the window for ${best+1} more rds · next counting score drops out in ${lowIdx+1}</span>`;
+
   document.getElementById('hero-journey').innerHTML=`Down from <b>${start}</b> to <b>${HCP_CURRENT}</b>. Your long game already plays near <b>single figures</b> — driving accuracy and iron striking are there. The strokes between you and a 5 are almost all <b>inside 60 metres</b>: putting and up-and-downs.`;
-  // sparkline of handicap over time (step)
-  const s=stbl();const el=document.getElementById('hero-spark');
-  const W=800,H=90,pad=6;
-  const hcpAt=i=>{let v=HCP_HISTORY.find(e=>e.before).hcp;for(const e of HCP_HISTORY){if(e.before)continue;const idx=s.findIndex(r=>r.label===e.after);if(idx>=0&&i>=idx)v=e.hcp;}return v;};
-  const vals=s.map((_,i)=>hcpAt(i));
-  const mn=Math.min(...vals)-1,mx=Math.max(...vals)+1,rg=(mx-mn)||1;
-  const xS=(W-pad*2)/(s.length-1);const yO=v=>pad+(H-pad*2)-((v-mn)/rg)*(H-pad*2);
-  let d=`M${pad},${yO(vals[0])}`;
-  for(let i=1;i<vals.length;i++){d+=`L${pad+i*xS},${yO(vals[i-1])} L${pad+i*xS},${yO(vals[i])}`;}
-  el.innerHTML=`<defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8b24a" stop-opacity="0.25"/><stop offset="1" stop-color="#e8b24a" stop-opacity="0"/></linearGradient></defs>`+
-    `<path d="${d} L${pad+(vals.length-1)*xS},${H} L${pad},${H} Z" fill="url(#hg)"/>`+
-    `<path d="${d}" fill="none" stroke="#e8b24a" stroke-width="2"/>`+
-    `<circle cx="${pad+(vals.length-1)*xS}" cy="${yO(vals[vals.length-1])}" r="3.5" fill="#e8b24a"/>`;
 }
 
 function ovTiles(){
@@ -788,15 +877,20 @@ function ovStrokesGained(){
   const f=filt().filter(r=>r.fw!=null||r.gir!=null||r.putts!=null||r.ud!=null);
   const bench=benchAt(HCP_CURRENT);
   const myFw=avg(f.map(r=>r.fw)), myGir=avg(f.map(r=>r.gir)), myUd=avg(f.map(r=>r.ud)), myPutts=avg(f.map(r=>r.putts));
-  // Scale actual-vs-benchmark % difference onto the SG stroke value for that category at this handicap,
-  // using the ratio of your gap to the gap between adjacent benchmark tiers as a rough per-category adjustment.
-  const scratch=SG_BENCH[0];
-  const teeGain = bench.sg.tee * (myFw>0 ? (myFw/bench.fw) : 1);
-  const appGain = bench.sg.app * (myGir>0 ? (myGir/bench.gir) : 1);
-  const sgGain  = bench.sg.sg_ * (myUd>0 ? (myUd/bench.ud) : 1);
-  const puttGain= bench.sg.putt * (myPutts>0 ? (bench.putts/myPutts) : 1); // fewer putts = better = less negative
+  // Strokes vs a player AT your handicap (0 = playing to your level, + = gaining).
+  // gap in rate × opportunities per round × stroke value of one event.
+  // Fairway-miss cost is measured from your own per-hole data (TEECLUB: par-4/5 score, fairway vs missed).
+  let fH=[],fM=[];
+  Object.entries(TEECLUB).forEach(([k,arr])=>{const r=R.find(x=>x.key===k);if(!r)return;arr.forEach(([c,res],i)=>{if(PAR[i]===3)return;(res==='fairway'?fH:fM).push(r.strokes[i]-PAR[i]);});});
+  const missCost=(fH.length>=20&&fM.length>=20)?Math.max(0.05,avg(fM)-avg(fH)):0.25;
+  const VAL={fw:missCost,gir:0.55,ud:1.0}; // gir/ud: typical mid-handicap stroke values
+  const drives=PAR.filter(p=>p>=4).length;
+  const teeGain =(myFw-bench.fw)/100*drives*VAL.fw;
+  const appGain =(myGir-bench.gir)/100*18*VAL.gir;
+  const sgGain  =(myUd-bench.ud)/100*(18*(1-myGir/100))*VAL.ud;
+  const puttGain=bench.putts-myPutts;
   const cats=[
-    {k:'Off the tee',v:teeGain,d:`${myFw.toFixed(0)}% fairways vs ${bench.fw.toFixed(0)}% expected`},
+    {k:'Off the tee',v:teeGain,d:`${myFw.toFixed(0)}% fairways vs ${bench.fw.toFixed(0)}% · a miss costs you ${missCost.toFixed(2)}`},
     {k:'Approach',v:appGain,d:`${myGir.toFixed(0)}% GIR vs ${bench.gir.toFixed(0)}% expected`},
     {k:'Short game',v:sgGain,d:`${myUd.toFixed(0)}% up&down vs ${bench.ud.toFixed(0)}% expected`},
     {k:'Putting',v:puttGain,d:`${myPutts.toFixed(1)} putts vs ${bench.putts.toFixed(1)} expected`},
@@ -816,8 +910,8 @@ function ovStrokesGained(){
   }).join('');
   const total=cats.reduce((a,c)=>a+c.v,0);
   const worst=cats.reduce((a,c)=>c.v<a.v?c:a,cats[0]);
-  document.getElementById('sg-approx-sub').textContent=`vs ${HCP_CURRENT.toFixed(1)}-handicap benchmark · est. total ${total>=0?'+':''}${total.toFixed(1)}/rd`;
-  document.getElementById('sg-approx-note').innerHTML=`<b>Approximate</b> — built from your round-level stats (fairways, GIR, up&down, putts) compared to published benchmarks for your handicap, not true shot-by-shot strokes gained. Biggest leak: <b style="color:var(--red)">${worst.k}</b>. Real strokes gained needs shot-level start/finish distance data — worth adding once you've got GPS shot tracking (e.g. Garmin) capturing full rounds.`;
+  document.getElementById('sg-approx-sub').textContent=`vs a ${HCP_CURRENT.toFixed(1)} player · 0 = your level · net ${total>=0?'+':''}${total.toFixed(1)}/rd`;
+  document.getElementById('sg-approx-note').innerHTML=`<b>Approximate</b> — your rate vs the benchmark for a ${HCP_CURRENT.toFixed(1)} handicap × chances per round × what each event is worth (fairway miss measured from your own holes; GIR 0.55, up&down 1.0). Right of centre = better than a typical ${HCP_CURRENT.toFixed(1)}. Not true shot-by-shot strokes gained. Biggest leak: <b style="color:var(--red)">${worst.k}</b>. Real strokes gained needs shot-level start/finish distance data — worth adding once you've got GPS shot tracking (e.g. Garmin) capturing full rounds.`;
 }
 function ovFocus(){
   document.getElementById('focus-title').textContent='Short game inside 10 feet';
@@ -1163,7 +1257,7 @@ async function askClaude(messages,opts){
   const CLUBS=['Driver','3 Wood','5 Wood','Hybrid','2 Iron','3 Iron','4 Iron','5 Iron','6 Iron','7 Iron','8 Iron','9 Iron','Wedge'];
   const APPR=[['nw','↖'],['n','↑'],['ne','↗'],['w','←'],['hit','✓'],['e','→'],['sw','↙'],['s','↓'],['se','↘']];
   const APPR_NAME={nw:'long-left',n:'long',ne:'long-right',w:'left',hit:'on',e:'right',sw:'short-left',s:'short',se:'short-right'};
-  const blank=()=>({s:null,p:null,chip:false,chips:0,fw:null,club:null,appr:null,ud:false,ss:false,sand:0,wasted:0,pen:0,pickup:false});
+  const blank=()=>({s:null,p:null,chip:false,chips:0,fw:null,club:null,appr:null,ud:false,ss:false,sand:0,wasted:0,pen:0,pickup:false,fp:null,sgLie:null,sgDist:null,apDist:null,penSrc:null});
   let H=Array.from({length:18},blank), cur=0, mode='holes', started=false, ptsEdited=false, step='basics';
   const buzz=()=>{try{navigator.vibrate&&navigator.vibrate(8);}catch(e){}};
 
@@ -1188,6 +1282,19 @@ async function askClaude(messages,opts){
     ['basics','holes','card','totals','review'].forEach(k=>{$('ar-step-'+k).style.display=(k===s)?'block':'none';});
     $('ar-card-btn').style.display=(mode==='holes'&&started&&(s==='holes'||s==='review'))?'inline-block':'none';
     $('ar-modal').scrollTop=0;
+    if(s==='basics'){
+      const live=started;
+      $('ar-start-holes').innerHTML=live?`<span>Save details</span><span class="rs-go-sub">back to ${mode==='totals'?'totals':'hole '+(cur+1)} ▸</span>`:`<span>Start round</span><span class="rs-go-sub">hole by hole ▸</span>`;
+      $('ar-skip-holes').style.display=live?'none':'block';
+      $('rs-discard').style.display=live?'block':'none';
+      document.querySelector('#ar-step-basics .rs-kicker').textContent=live?'Round in progress · edit details':'Pacific Golf Club · new card';
+      if(window.rsRefresh)window.rsRefresh();
+    } else detailsChip();
+  }
+  function detailsChip(){
+    const v=$('af-date').value,d=v?new Date(v+'T00:00:00'):null,t=$('af-tee').value||'blue';
+    const ds=d?d.toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short'}):'no date';
+    document.querySelectorAll('[data-details]').forEach(b=>b.innerHTML=`<i style="background:${TEE_COL[t]}"></i>${ds} · ${t[0].toUpperCase()+t.slice(1)} · HC ${$('af-hcp').value||'—'} <b>✎ edit</b>`);
   }
   function openModal(){ov.style.display='block';loadDraft();
     if(started){ if(mode==='totals')showStep('totals'); else {render();showStep('holes');} } else showStep('basics');}
@@ -1196,7 +1303,9 @@ async function askClaude(messages,opts){
   $('ar-close').onclick=closeModal;
   ov.addEventListener('click',e=>{if(e.target===ov)closeModal();});
 
-  $('ar-start-holes').onclick=()=>{mode='holes';started=true;cur=0;render();showStep('holes');save();};
+  $('ar-start-holes').onclick=()=>{if(started){if(mode==='totals')showStep('totals');else{render();showStep('holes');}save();return;}mode='holes';started=true;cur=0;render();showStep('holes');save();};
+  document.querySelectorAll('[data-details]').forEach(b=>b.onclick=()=>showStep('basics'));
+  $('rs-discard').onclick=()=>$('af-clear').click();
   $('ar-skip-holes').onclick=()=>{mode='totals';started=true;showStep('totals');save();};
   $('ar-back-to-holes').onclick=()=>{mode='holes';cur=0;render();showStep('holes');save();};
   $('ar-totals-next').onclick=()=>review();
@@ -1240,6 +1349,14 @@ async function askClaude(messages,opts){
     if(h.sand===0)h.ss=false;
     $('ar-ss-pill').disabled=(h.sand===0);$('ar-ss-pill').classList.toggle('on',h.ss);
     ['chips','sand','wasted','pen'].forEach(k=>{document.querySelector(`[data-val="${k}"]`).textContent=h[k];});
+    // detail inputs — only when relevant; stale values cleared
+    if(!(h.p>=1)||h.chip)h.fp=null;
+    if(!(h.chips>0||h.sand>0)){h.sgLie=null;h.sgDist=null;}
+    if(!(h.pen>0))h.penSrc=null;
+    $('ar-fp-sec').style.display=(h.p>=1&&!h.chip)?'block':'none';
+    $('ar-sg-sec').style.display=(h.chips>0||h.sand>0)?'block':'none';
+    $('ar-ps-sec').style.display=h.pen>0?'block':'none';
+    document.querySelectorAll('[data-opt]').forEach(b=>{const [f,v]=b.dataset.opt.split(':');b.classList.toggle('sel',h[f]===v);});
     $('ar-prev-hole').disabled=(cur===0);
     $('ar-next-hole').textContent=cur===17?'Finish ▸ Card':'Next hole ▸';
     document.querySelectorAll('[data-jump]').forEach(b=>{const i=+b.dataset.jump;b.style.background=resCol(i);b.classList.toggle('cur',i===cur);});
@@ -1254,6 +1371,7 @@ async function askClaude(messages,opts){
   $('ar-p-plus').onclick=()=>upd(h=>{h.p=h.p==null?1:Math.min(6,h.p+1);h.chip=false;});
   $('ar-p-minus').onclick=()=>upd(h=>{h.p=h.p==null?0:Math.max(0,h.p-1);if(h.p>0)h.chip=false;});
   $('ar-chip-pill').onclick=()=>upd(h=>{h.chip=!h.chip;if(h.chip)h.p=0;});
+  document.querySelectorAll('[data-opt]').forEach(b=>b.onclick=()=>upd(h=>{const [f,v]=b.dataset.opt.split(':');h[f]=h[f]===v?null:v;}));
   document.querySelectorAll('[data-club]').forEach(b=>b.onclick=()=>upd(h=>{h.club=h.club===b.dataset.club?null:b.dataset.club;}));
   document.querySelectorAll('[data-fw]').forEach(b=>b.onclick=()=>upd(h=>{h.fw=h.fw===b.dataset.fw?null:b.dataset.fw;}));
   document.querySelectorAll('[data-appr]').forEach(b=>b.onclick=()=>upd(h=>{h.appr=h.appr===b.dataset.appr?null:b.dataset.appr;}));
@@ -1278,9 +1396,10 @@ async function askClaude(messages,opts){
   /* ---- aggregate ---- */
   function compute(){
     let putts=0,pc=0,tp=0,gH=0,gE=0,fH=0,fE=0,uH=0,uE=0,pen=0,sand=0,ss=0,wasted=0,chipIns=0,chips=0,pts=0,thru=0;
-    const strokes=[],ph=[],clubs=[],fwDir=[],appr=[],chipArr=[];
+    const strokes=[],ph=[],clubs=[],fwDir=[],appr=[],chipArr=[],fp=[],sgLie=[],sgDist=[],apDist=[],penSrc=[];
     for(let i=0;i<18;i++){
       const h=H[i];if(played(i))thru++;
+      fp.push(h.fp);sgLie.push(h.sgLie);sgDist.push(h.sgDist);apDist.push(h.apDist);penSrc.push(h.pen>0?h.penSrc:null);
       strokes.push(strokesAt(i));ph.push(h.p);clubs.push(h.club);fwDir.push(PAR[i]>=4?h.fw:null);appr.push(h.appr);chipArr.push(h.chips);
       const x=ptsAt(i);if(x!=null)pts+=x;
       if(h.p!=null){putts+=h.p;pc++;if(h.p>=3)tp++;}
@@ -1289,7 +1408,7 @@ async function askClaude(messages,opts){
       if(g===false){uE++;if(h.ud)uH++;}
       pen+=h.pen;sand+=h.sand;wasted+=h.wasted;chips+=h.chips;if(h.ss)ss++;if(h.chip)chipIns++;
     }
-    return {strokes,ph,clubs,fwDir,appr,chipArr,thru,gross:strokes.reduce((a,b)=>a+b,0),
+    return {strokes,ph,clubs,fwDir,appr,chipArr,fp,sgLie,sgDist,apDist,penSrc,thru,gross:strokes.reduce((a,b)=>a+b,0),
       putts:pc?putts:null,threeputt:pc?tp:null,gH,gE,fH,fE,uH,uE,
       gir:gE?+(gH/gE*100).toFixed(1):null,fw:fE?+(fH/fE*100).toFixed(1):null,ud:uE?+(uH/uE*100).toFixed(1):null,
       pen,sand,ss,wasted,chips,chipIns,pts:Math.round(pts),
@@ -1394,7 +1513,7 @@ async function askClaude(messages,opts){
   $('af-clear').onclick=()=>{
     if(!confirm('Clear this round and its saved draft?'))return;
     H=Array.from({length:18},blank);cur=0;mode='holes';started=false;ptsEdited=false;
-    ['af-date','af-note','ar-final-pts'].concat(TOT).forEach(id=>setVal(id,''));setVal('af-hcp','');
+    ['af-date','af-note','ar-final-pts'].concat(TOT).forEach(id=>setVal(id,''));setVal('af-hcp','');setVal('af-tee','blue');
     try{localStorage.removeItem(KEY);localStorage.removeItem(OLDKEY);}catch(e){}
     $('draft-badge').style.display='none';$('af-output').style.display='none';
     $('ar-debrief-out').textContent='An AI read on where the points went and what to practise this week.';
@@ -1416,6 +1535,7 @@ async function askClaude(messages,opts){
       parts=[`key:'${key}'`,`label:'${label}'`,`tee:'${tee}'`,`stableford:${fp??c.pts}`,`putts:${J(c.putts)}`,`gir:${J(c.gir)}`,`fw:${J(c.fw)}`,`ud:${J(c.ud)}`,
         `pen:${c.pen}`,`threeputt:${J(c.threeputt)}`,`chips:${c.chips}`,`strokes:${J(c.strokes)}`,`ph:${J(c.ph)}`,`ch:${J(c.chipArr)}`,
         `clubs:${J(c.clubs)}`,`fwDir:${J(c.fwDir)}`,`appr:${J(c.appr)}`,`sand:${c.sand}`,`sandSaves:${c.ss}`,`wasted:${c.wasted}`,`chipIns:${c.chipIns}`,`mizuno:true`];
+      [['fp',c.fp],['sgLie',c.sgLie],['sgDist',c.sgDist],['apDist',c.apDist],['penSrc',c.penSrc]].forEach(([k,a])=>{if(a.some(v=>v!=null))parts.push(`${k}:${J(a)}`);});
       const autoNote=c.pickups.length?`Pickups H${c.pickups.join(',H')} (net-double). `:'';
       if(autoNote||note)parts.push(`note:${J((autoNote+note).trim())}`);
     }else{
@@ -1476,7 +1596,7 @@ async function askClaude(messages,opts){
     if($('af-hcp').value===''){manual=false;autoHC();} else manual=(c==null||+$('af-hcp').value!==Math.round(c));
     paint();
   }
-  $('open-add-round').addEventListener('click',()=>setTimeout(onOpen,0));
+  window.rsRefresh=onOpen;
 })();
 </script>
 </body>
