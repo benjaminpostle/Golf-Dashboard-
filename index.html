@@ -210,19 +210,46 @@
   .ar-sub{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink3);margin-top:9px;}
   .ar-foot{position:sticky;bottom:0;display:flex;gap:9px;padding:12px 0 14px;background:linear-gradient(to bottom,rgba(12,17,25,0),rgba(12,17,25,0.97) 35%);}
   #ar-step-basics,#ar-step-totals,#ar-step-review{padding-bottom:16px;}
+  /* start-round screen */
+  .rs-hero{text-align:center;padding:4px 0 14px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:4px;}
+  .rs-kicker{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);}
+  .rs-datewrap{position:relative;display:inline-block;margin:6px 0 8px;}
+  .rs-date{font-family:'Fraunces',serif;font-weight:700;font-size:32px;line-height:1.1;border-bottom:1px dashed rgba(255,255,255,0.18);padding:0 4px 2px;}
+  .rs-dateinput{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;}
+  .rs-dateinput::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;cursor:pointer;}
+  .rs-quick{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;}
+  .rs-hint{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink3);margin-left:4px;}
+  .rs-sec{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .rs-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+  .rs-tees{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .rs-tee{position:relative;background:var(--panel2);border:1.5px solid var(--line);border-radius:14px;padding:11px 10px 10px;text-align:left;cursor:pointer;color:var(--ink);font-family:'Inter',sans-serif;overflow:hidden;transition:border-color .12s,transform .12s;}
+  .rs-tee::before{content:'';position:absolute;left:0;top:0;right:0;height:4px;background:var(--tc);}
+  .rs-tee .tn{font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px;}
+  .rs-tee .tn i{width:9px;height:9px;border-radius:50%;background:var(--tc);}
+  .rs-tee .tr2{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);margin-top:5px;line-height:1.45;}
+  .rs-tee .tr2 b{color:var(--ink2);font-weight:600;}
+  .rs-tee.on{border-color:var(--tc);background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));}
+  .rs-tee.on .tn::after{content:'✓';margin-left:auto;color:var(--tc);font-size:13px;}
+  .rs-tee:active{transform:scale(0.97);}
+  .rs-hcnum{background:transparent;border:none;color:var(--ink);font-family:'Fraunces',serif;font-weight:700;font-size:54px;width:96px;text-align:center;line-height:1;padding:0;-moz-appearance:textfield;}
+  .rs-hcnum::-webkit-outer-spin-button,.rs-hcnum::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .rs-hcnum:focus{outline:none;color:var(--gold);}
+  .rs-calc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);text-align:center;margin-top:9px;line-height:1.5;}
+  .rs-calc b{color:var(--ink2);}
+  .rs-reset{background:none;border:none;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:0.04em;}
+  .rs-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0;}
+  .rs-sum .mt .v{font-size:19px;}
+  .rs-go{width:100%;justify-content:space-between;padding:15px 18px;font-size:15px;border-radius:14px;}
+  .rs-go-sub{font-size:11.5px;font-weight:600;opacity:0.7;}
+  .rs-alt{display:block;width:100%;margin-top:10px;background:none;border:1px dashed var(--line);border-radius:12px;padding:11px;color:var(--ink3);font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;}
+  .rs-alt b{color:var(--ink2);}
   /* v4 additions */
   .ar-strip{display:grid;grid-template-columns:repeat(18,1fr);gap:3px;margin-bottom:12px;}
   .ar-strip b{height:6px;border-radius:3px;background:rgba(255,255,255,0.08);cursor:pointer;transition:all .15s;}
   .ar-strip b.cur{outline:2px solid var(--gold);outline-offset:1px;}
   .ar-ring{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--gold) var(--pct,0%),rgba(255,255,255,0.09) 0);transition:background .3s;}
   .ar-ring .ar-holebadge{width:54px;height:54px;font-size:25px;}
-  .ar-ai{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(167,139,250,0.12),rgba(52,224,208,0.08));border:1px solid rgba(167,139,250,0.28);border-radius:14px;padding:6px 6px 6px 12px;margin-bottom:6px;}
-  .ar-ai input{flex:1;min-width:0;background:transparent;border:none;color:var(--ink);font-family:'Inter',sans-serif;font-size:13px;padding:8px 0;outline:none;}
-  .ar-ai input::placeholder{color:var(--ink3);}
   .ar-ai-spark{color:var(--violet);font-size:14px;}
-  .ar-ai-btn{background:var(--violet);color:#120b24;border:none;font-weight:700;font-size:12px;padding:8px 14px;border-radius:10px;cursor:pointer;font-family:'Inter',sans-serif;}
-  .ar-ai-btn:disabled{opacity:0.5;}
-  .ar-ai-status{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);min-height:14px;margin:0 4px 10px;}
   .ar-hint{font-weight:400;color:var(--ink3);font-size:11px;}
   .ar-num.pop{animation:arpop .22s ease;}
   @keyframes arpop{0%{transform:scale(0.82);opacity:.5}100%{transform:scale(1);opacity:1}}
@@ -382,15 +409,35 @@
 
     <!-- basics -->
     <div id="ar-step-basics">
-      <div class="ar-card">
-        <div class="fgrid">
-          <div class="field"><label>Date</label><input type="date" id="af-date"></div>
-          <div class="field"><label>Tee</label><select id="af-tee"><option value="blue">Blue</option><option value="white">White</option><option value="yellow">Yellow</option></select></div>
-          <div class="field"><label>Daily HC</label><input type="number" id="af-hcp" value="16"></div>
+      <div class="rs-hero">
+        <div class="rs-kicker">Pacific Golf Club · new card</div>
+        <div class="rs-datewrap">
+          <div class="rs-date" id="rs-date-lbl">—</div>
+          <input type="date" id="af-date" class="rs-dateinput" aria-label="Round date">
         </div>
+        <div class="rs-quick"><button class="ar-chip" data-rsday="0">Today</button><button class="ar-chip" data-rsday="1">Yesterday</button><span class="rs-hint">tap date to change</span></div>
       </div>
-      <button class="askbtn" id="ar-start-holes" style="width:100%;justify-content:center">Start round ▸</button>
-      <div style="text-align:center;margin-top:10px"><button class="askbtn ghost" id="ar-skip-holes" style="font-size:11px;padding:6px 12px">…or enter totals only</button></div>
+
+      <div class="rs-sec">
+        <div class="rs-lbl">Tee</div>
+        <select id="af-tee" style="display:none"><option value="blue">Blue</option><option value="white">White</option><option value="yellow">Yellow</option></select>
+        <div class="rs-tees" id="rs-tees"></div>
+      </div>
+
+      <div class="rs-sec">
+        <div class="rs-lbl">Daily handicap <button class="rs-reset" id="rs-hc-reset" style="display:none">↺ recalc</button></div>
+        <div class="ar-stepper">
+          <button class="circ dim" id="rs-hc-dec" aria-label="Decrease handicap">−</button>
+          <input type="number" id="af-hcp" class="rs-hcnum" inputmode="numeric" aria-label="Daily handicap">
+          <button class="circ" id="rs-hc-inc" aria-label="Increase handicap">+</button>
+        </div>
+        <div class="rs-calc" id="rs-hc-calc"></div>
+      </div>
+
+      <div class="rs-sum" id="rs-sum"></div>
+
+      <button class="askbtn rs-go" id="ar-start-holes"><span>Start round</span><span class="rs-go-sub">hole by hole ▸</span></button>
+      <button class="rs-alt" id="ar-skip-holes">Just have the totals? <b>Enter totals only</b></button>
     </div>
 
     <!-- hole screen -->
@@ -403,12 +450,6 @@
       </div>
       <div class="ar-holemeta" id="ar-holemeta"></div>
 
-      <div class="ar-ai">
-        <span class="ar-ai-spark">✦</span>
-        <input id="ar-ai-text" placeholder="Describe the hole — “bogey, driver left, chip, 2 putts”" autocomplete="off">
-        <button id="ar-ai-go" class="ar-ai-btn">Fill</button>
-      </div>
-      <div class="ar-ai-status" id="ar-ai-status"></div>
 
       <div class="ar-card">
         <div class="ar-stepper">
@@ -620,6 +661,28 @@ const TEECLUB={
  'r5_04':[['4 Iron','miss'],['5 Wood','miss'],['8 Iron','GIR'],['Driver','fairway'],['5 Wood','miss'],['5 Wood','fairway'],['6 Iron','miss'],['Driver','miss'],['Driver','fairway'],['5 Wood','fairway'],['Driver','miss'],['3 Wood','fairway'],['Wedge','GIR'],['Driver','miss'],['4 Iron','fairway'],['4 Iron','fairway'],['5 Iron','miss'],['Driver','miss']]
 };
 const RANGE=[
+ {date:'22 Sep',ball:'ProV1x',device:'Trackman',units:'m/s',
+  // shot cols: cs,aa,bs,spin,carry,side(L−/R+),smash,height,path,f2p · null = not read
+  // partial swing: clubSpd <80% of club median (or ballSpd <60% if clubSpd unread). solid: smash ≥ smashMin.
+  smashMin:{'Driver':1.40,'5 Wood':1.30,'5 Iron':1.22,'7 Iron':1.18,'8 Iron':1.18,'PW':1.12},
+  shots:{
+ 'Driver':[[44.5,0.6,65.2,2340,220.8,5.6,1.46,25.6,0.4,1.9],[null,null,66.7,3230,223.4,-8.8,null,34.6,null,null],[45.2,1.0,66.7,2770,224.5,5.0,1.48,26.8,0.4,0.8]],
+ '5 Wood':[[45.0,-4.1,51.3,3407,156.2,-42.3,1.14,22.6,1.1,-10.1],[44.9,-1.2,46.3,4445,129.9,-25.4,1.03,17.1,2.2,-8.3],[25.6,-3.8,31.7,1401,8.9,2.0,1.24,0.1,-1.4,null],[44.0,-1.0,46.0,3105,130.0,-25.6,1.05,14.7,2.2,-8.4],[45.1,-1.4,47.8,3395,141.3,-38.8,1.06,20.0,-0.6,-9.2],[24.7,-4.4,29.2,1823,51.4,-5.3,1.18,4.0,-1.8,-3.6],[null,null,45.0,2027,111.4,-19.3,null,8.0,null,null],[37.2,-2.2,43.5,4771,120.6,26.1,1.17,18.0,2.2,7.4],[42.6,-1.6,47.6,3312,137.1,0.6,1.12,14.9,-0.4,0.3],[null,null,9.5,3901,5.4,0.1,null,0.4,null,null],[18.9,-4.9,26.7,2156,24.8,0.8,1.41,0.9,2.3,-0.2]],
+ '5 Iron':[[39.9,0.6,45.1,4640,99.5,42.0,1.13,7.3,1.6,null],[41.8,-3.0,49.4,6390,138.3,10.8,1.18,25.3,1.2,2.0],[42.4,-2.8,57.5,5320,170.7,-7.2,1.35,28.2,4.4,-3.4],[41.8,1.2,51.0,4010,151.7,3.4,1.22,19.5,1.0,0.1],[42.1,-2.6,54.2,5770,157.4,-3.5,1.29,28.2,4.4,-3.0],[41.9,-2.0,53.3,5010,157.2,4.3,1.27,23.3,3.4,-1.0],[41.7,-2.0,43.0,7060,104.6,-44.1,1.03,12.9,3.6,null],[41.6,-0.8,51.2,4970,149.9,7.4,1.23,22.8,4.2,-0.6],[42.0,-1.6,53.0,4380,156.8,4.8,1.26,19.4,1.4,0.2],[41.1,-2.4,54.1,5000,159.9,19.6,1.31,23.9,2.0,2.7],[38.6,0.8,46.9,3140,126.6,7.1,1.22,10.7,-1.6,2.6],[40.4,1.2,49.6,3720,145.7,3.8,1.23,17.2,0.2,0.7],[41.8,0.8,38.2,6730,40.8,-15.6,0.92,1.3,6.6,null]],
+ '7 Iron':[[41.7,-2.9,39.3,8097,66.0,-35.2,0.94,3.9,1.5,null],[41.6,-3.8,41.9,7791,91.2,-45.7,1.01,8.6,2.0,null],[39.8,-0.6,46.1,3746,134.1,-19.1,1.16,18.7,-2.4,-3.6],[40.2,-2.8,48.5,3113,145.9,7.1,1.21,18.6,0.2,1.6],[40.2,-0.6,39.3,5261,88.6,-42.1,0.98,9.3,3.4,null],[39.7,-2.4,48.1,3071,143.1,10.4,1.21,17.4,-1.8,3.6],[43.2,-2.8,52.7,3744,163.2,-11.0,1.22,26.4,3.2,-4.0],[41.2,-0.6,32.9,7882,60.1,-33.0,0.80,5.6,3.0,null],[38.3,-0.2,43.7,3496,123.2,-3.0,1.14,15.4,-2.0,0.3],[39.8,-1.6,40.6,4963,102.4,-34.0,1.02,13.0,4.8,null],[41.4,-0.4,46.2,3424,136.4,-4.8,1.12,19.2,2.6,-2.8],[24.9,-4.0,31.3,2007,64.9,-2.2,1.26,6.0,-3.6,1.4],[41.0,0.8,48.3,3676,144.2,-3.8,1.18,20.8,0.4,-1.1],[23.9,-2.4,29.9,1511,43.7,4.1,1.25,2.6,-4.4,9.1],[41.3,null,37.6,6164,68.8,-24.2,0.91,3.2,null,null],[22.5,-3.0,20.7,3545,22.5,-13.0,0.92,1.6,-5.6,null]],
+ '8 Iron':[[38.5,-6.5,35.1,9400,73.2,-44.4,0.91,8.3,0.3,null],[37.9,null,29.1,2840,39.7,2.5,0.77,2.0,null,null],[37.0,-3.0,35.9,6690,70.2,-33.6,0.97,5.9,0.6,null],[39.4,-3.4,46.1,7380,123.6,-13.6,1.17,25.2,2.6,-6.0],[39.9,-3.8,50.7,6690,141.1,21.0,1.27,28.9,2.0,4.0],[37.3,-2.8,47.7,5800,134.2,18.1,1.28,23.6,2.4,3.3],[38.7,-1.2,45.9,6170,126.8,6.0,1.19,23.8,0.0,1.7],[37.6,-0.6,43.7,5830,117.1,29.6,1.16,17.7,-1.2,10.5],[41.1,-6.0,39.4,8410,79.7,-39.1,0.96,6.8,5.8,null],[39.3,null,39.1,6280,99.4,-34.2,0.99,14.0,null,null],[26.3,-3.0,27.4,5960,56.0,-10.7,1.04,7.5,-1.6,-9.7],[38.5,-4.6,50.6,6300,142.5,13.6,1.31,26.8,1.0,2.7],[38.6,-2.0,46.5,6000,129.6,2.8,1.21,23.5,0.0,0.8],[39.3,-3.0,49.6,6330,139.0,2.8,1.26,27.6,2.0,-0.5],[32.6,-3.0,38.2,6290,97.0,16.4,1.17,14.8,0.6,7.1],[38.0,-6.6,36.4,7690,62.6,-32.7,0.96,4.0,2.0,null],[38.7,-2.6,43.8,7310,115.1,33.1,1.13,20.5,0.2,11.6],[37.8,-3.0,45.6,5810,126.0,12.1,1.21,20.3,-1.4,4.5],[36.7,-4.4,48.1,6300,133.9,15.1,1.31,25.4,1.0,3.5],[39.3,-3.0,48.4,6430,134.4,11.2,1.23,26.2,1.4,2.1],[40.0,-1.4,42.2,7550,108.9,-29.8,1.05,19.4,2.8,-13.6],[32.7,null,35.0,4660,78.2,8.2,1.07,7.2,null,null],[38.5,-3.2,37.6,7130,87.2,-34.4,0.98,10.8,2.8,null],[37.2,null,36.1,4270,78.6,-21.5,0.97,6.2,null,null],[39.5,-3.0,48.6,6360,135.5,9.9,1.23,26.0,1.4,1.7],[40.2,-2.4,40.3,6320,45.7,-18.3,1.00,1.3,4.0,null],[38.2,-0.6,40.8,6880,104.3,-34.2,1.07,16.5,-0.8,-13.5],[37.8,-5.2,48.1,5750,135.2,3.9,1.27,20.4,0.8,0.5],[37.1,-4.4,49.4,6130,139.1,-4.8,1.33,25.9,0.2,-1.3],[38.3,-0.6,40.8,5700,49.6,-20.3,1.06,1.7,3.0,null],[37.5,-2.2,44.2,6650,118.0,26.4,1.18,19.8,-1.6,9.8],[37.2,-2.2,44.2,5780,120.3,21.1,1.19,19.0,0.0,6.7],[37.7,-6.2,47.6,6260,132.1,-1.3,1.26,21.5,1.8,-1.5],[40.0,-2.2,49.1,6040,138.2,15.1,1.23,25.1,-0.4,4.0]],
+ 'PW':[[38.8,-1.4,42.2,5913,113.8,-7.5,1.09,24.8,-0.6,-2.3],[35.7,-1.8,40.0,5671,106.7,2.6,1.12,21.1,-2.6,2.9],[37.2,-4.0,44.4,8809,114.8,18.7,1.19,25.0,0.8,6.3],[37.7,-3.5,41.9,4735,115.5,22.1,1.11,20.5,-1.7,9.0],[36.7,-3.6,44.2,5726,121.1,13.9,1.20,27.1,0.0,4.6],[37.6,-2.2,40.1,6238,105.6,2.8,1.07,22.0,-0.6,1.6],[37.7,-4.4,43.1,8852,111.1,14.4,1.14,23.5,2.0,4.1],[35.4,-2.8,40.2,4617,109.7,23.1,1.13,19.8,3.0,6.7],[35.2,null,31.3,5579,16.7,-5.8,0.89,0.2,null,null],[36.8,-2.4,39.1,6229,101.8,-25.8,1.06,20.9,-2.2,-9.6],[37.0,-5.2,44.9,8684,117.1,14.8,1.21,24.7,2.2,3.6],[36.9,null,34.7,8484,74.8,-30.2,0.94,7.2,null,null],[36.7,-3.8,41.8,6514,110.7,12.4,1.14,24.5,2.6,2.8]]
+},
+  notes:{
+   'Driver':'n=3 only. 221–225 carry, smash 1.46–1.48 (centred). Attack +0.8° — still below the +3–5° target. Face·path tight on the 2 readable swings but sample too small to call.',
+   '5 Wood':'Zero solid strikes (smash ≤1.17 vs 1.30 bar). 4 of 6 readable swings −8 to −10° face·path → closed face, finishing 25–42m left. Strike/face session, NOT a distance update — 196m reference stands.',
+   '5 Iron':'Best club of the day. 9/13 solid, face·path 0.0 ±2.1°, working carry 157, flush 171.',
+   '7 Iron':'Solid carry 145 matches 25 Aug (146) — number confirmed. But only 4/13 full swings solid; 6 finished 24–46m left with low smash & unread face. 3 partial swings excluded.',
+   '8 Iron':'16/33 solid, working 134. 11 left mishits (smash <1.10, 18–44m L). Solid strikes lean right (+11m avg). Face·path SD 6.4° is inflated by the mishits.',
+   'PW':'Working carry 111, flush 121 — well short of the ~136 on file; use 111. Solid strikes finish right (+14m avg, face·path +2.7°).'
+  },
+  summary:'Strike, not swing shape, is the story. Path stays near neutral (≈+1°, SD ~2°) through the irons and solid-contact face·path is tight (5i 0.0 ±2.1°). But only 38/82 full swings cleared the smash bar, and the misses are one-directional: 21 iron shots finished 15–46m left with low smash, high spin and no readable face — a pattern consistent with heel/hosel contact rather than a face-angle fault. Solid carries: 5i 157 · 7i 145 (=25 Aug) · 8i 134 · PW 111 (vs ~136 on file). Attack angles shallower than 25 Aug (7i −1.5° vs −3.6°). 5W was a face/strike write-off; driver n=3.'
+ },
  {date:'25 Aug',ball:'ProV1x',device:'Trackman',
   clubs:[
    {club:'Driver',work:234,flush:245,total:249,totalFlush:264,clubSpd:null,attack:1.2,path:-0.1,pathSD:1.3,f2p:-0.9,f2pSD:3.6,note:'Two-way miss. Path elite (SD 1.3°), face-to-path a coin-flip (−7.1 to +5.0). Dispersion band 60m. Attack too shallow — hit up more. Keep to open holes (H11/H18).'},
@@ -951,17 +1014,70 @@ function bsFw(){
   const rounds=filt();lineChart('bs-fw',rounds,'fw','#5aa0e8',{target:60,min:0,max:100});
   document.getElementById('bs-fw-note').innerHTML=`<b>${avg(rounds.map(r=>r.fw)).toFixed(0)}%</b> fairways — already single-figure standard. Not a leak.`;
 }
+let RANGE_IDX=0;
+const TM_COL={'Driver':'#ff5f56','5 Wood':'#c98a55','5 Iron':'#5aa0e8','7 Iron':'#a78bfa','8 Iron':'#f5c451','PW':'#34e0d0','9 Iron':'#37c98a','60°':'#9aa8bb'};
+function tmMed(a){a=a.filter(x=>x!=null).sort((x,y)=>x-y);const n=a.length;return n?(n%2?a[(n-1)/2]:(a[n/2-1]+a[n/2])/2):null;}
+function tmClubs(s){
+  // shot-level session → derived club rows; summary-only session → passthrough
+  if(!s.shots)return s.clubs.map(c=>Object.assign({},c));
+  return Object.entries(s.shots).map(([club,sh])=>{
+    const mcs=tmMed(sh.map(x=>x[0])),mbs=tmMed(sh.map(x=>x[2]));
+    const shots=sh.map(x=>{const full=x[0]!=null?x[0]>=0.8*mcs:x[2]>=0.6*mbs;const solid=full&&x[6]!=null&&x[6]>=s.smashMin[club];return{cs:x[0],aa:x[1],bs:x[2],spin:x[3],carry:x[4],side:x[5],smash:x[6],ht:x[7],path:x[8],f2p:x[9],full,solid};});
+    const full=shots.filter(x=>x.full),solid=shots.filter(x=>x.solid);
+    const col=(a,k)=>a.map(x=>x[k]).filter(v=>v!=null);
+    const r1=v=>v==null?null:Math.round(v*10)/10;
+    return{club,shots,n:sh.length,nFull:full.length,nSolid:solid.length,
+      work:solid.length?Math.round(tmMed(col(solid,'carry'))):null,
+      flush:solid.length?Math.round(Math.max(...col(solid,'carry'))):null,
+      spin:solid.length?Math.round(tmMed(col(solid,'spin'))):null,
+      attack:col(full,'aa').length?r1(avg(col(full,'aa'))):null,
+      path:col(full,'path').length?r1(avg(col(full,'path'))):null,pathSD:col(full,'path').length>1?r1(sd(col(full,'path'))):null,
+      f2p:col(full,'f2p').length?r1(avg(col(full,'f2p'))):null,f2pSD:col(full,'f2p').length>1?r1(sd(col(full,'f2p'))):null,
+      side:solid.length?r1(avg(col(solid,'side'))):null,sideSD:solid.length>1?r1(sd(col(solid,'side'))):null,
+      note:s.notes&&s.notes[club]};
+  });
+}
 function bsRange(){
   const el=document.getElementById('bs-range');
   if(typeof RANGE==='undefined'||!RANGE.length){document.getElementById('bs-range-card').style.display='none';return;}
-  const s=RANGE[0];document.getElementById('bs-range-sub').textContent=`${s.date} · ${s.ball} · ${s.device}`;
-  const rows=s.clubs.map(c=>{
-    const work=c.work!=null?`${c.work}m`:'—';const flush=c.flush!=null?`<span style="color:var(--ink3)">${c.flush}</span>`:(c.spin!=null?`<span style="color:var(--ink3)">${(c.spinLo||c.spin)}–${(c.spinHi||c.spin)}</span>`:'—');
+  const sub=document.getElementById('bs-range-sub');
+  const s=RANGE[RANGE_IDX];
+  sub.innerHTML=(RANGE.length>1?`<select class="minisel" id="bs-range-sel">${RANGE.map((r,i)=>`<option value="${i}"${i===RANGE_IDX?' selected':''}>${r.date}</option>`).join('')}</select> `:'')+`${s.ball} · ${s.device}`;
+  const selEl=document.getElementById('bs-range-sel');if(selEl)selEl.onchange=e=>{RANGE_IDX=+e.target.value;bsRange();};
+  const clubs=tmClubs(s);
+  const dg=(v,sdv)=>v==null?'—':`${v.toFixed(1)}°${sdv!=null?` <span style="color:var(--ink3)">±${sdv}</span>`:''}`;
+  const hasTotal=clubs.some(c=>c.total!=null);
+  const rows=clubs.map(c=>{
     const f2pCol=c.f2pSD==null?'':(c.f2pSD<2?'good':c.f2pSD<=3?'mid':'bad');
-    return `<tr><td class="lbl">${c.club}</td><td>${work}</td><td>${c.total?c.total+'m':'—'}</td><td>${flush}</td><td>${c.attack!=null?c.attack.toFixed(1)+'°':'—'}</td><td>${c.path!=null?c.path.toFixed(1)+'°':'—'}</td><td class="${f2pCol}">${c.f2p!=null?c.f2p.toFixed(1)+'°':'—'}${c.f2pSD!=null?` <span style="color:var(--ink3)">±${c.f2pSD}</span>`:''}</td></tr>`;
+    const pct=c.nFull?Math.round(c.nSolid/c.nFull*100):null;
+    const stCol=pct==null?'':pct>=60?'good':pct>=40?'mid':'bad';
+    const spin=c.spinLo?`${c.spinLo}–${c.spinHi}`:c.spin;
+    const side=c.side==null?'—':`${Math.abs(c.side).toFixed(0)}${c.side<0?'L':'R'}${c.sideSD!=null?` <span style="color:var(--ink3)">±${c.sideSD.toFixed(0)}</span>`:''}`;
+    return `<tr><td class="lbl">${TM_COL[c.club]?`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${TM_COL[c.club]};margin-right:6px"></span>`:''}${c.club}</td>`+
+      `<td>${c.n!=null?`${c.nFull}<span style="color:var(--ink3)">/${c.n}</span>`:'—'}</td>`+
+      `<td class="${stCol}">${pct!=null?pct+'%':'—'}</td>`+
+      `<td>${c.work!=null?c.work+'m':'—'}</td>`+(hasTotal?`<td>${c.total?c.total+'m':'—'}</td>`:'')+
+      `<td style="color:var(--ink3)">${c.flush!=null?c.flush:'—'}</td><td>${spin??'—'}</td>`+
+      `<td>${c.attack!=null?c.attack.toFixed(1)+'°':'—'}</td><td>${dg(c.path,c.pathSD)}</td><td class="${f2pCol}">${dg(c.f2p,c.f2pSD)}</td><td>${side}</td></tr>`;
   }).join('');
-  el.innerHTML=`<div style="overflow-x:auto"><table><thead><tr><th>Club</th><th>Work</th><th>Total</th><th>Flush/Spin</th><th>Attack</th><th>Path</th><th>Face·Path</th></tr></thead><tbody>${rows}</tbody></table></div>`+
-    `<div style="margin-top:12px;padding:11px 13px;background:var(--panel2);border-radius:10px;border-left:3px solid var(--teal)" class="note">${s.summary}</div>`;
+  let scatter='';
+  if(s.shots){
+    const W=640,H=230,pL=30,pR=10,pT=10,pB=22,xMax=240,yM=50;
+    const xO=v=>pL+Math.min(v,xMax)/xMax*(W-pL-pR),yO=v=>pT+(H-pT-pB)/2-Math.max(-yM,Math.min(yM,v))/yM*(H-pT-pB)/2;
+    let g='';
+    for(let x=0;x<=xMax;x+=40)g+=`<line class="axis" x1="${xO(x)}" y1="${pT}" x2="${xO(x)}" y2="${H-pB}"/><text class="axlbl" x="${xO(x)}" y="${H-8}" text-anchor="middle">${x}</text>`;
+    [-40,-20,0,20,40].forEach(y=>{g+=`<line class="axis" x1="${pL}" y1="${yO(y)}" x2="${W-pR}" y2="${yO(y)}"${y===0?' style="stroke:rgba(255,255,255,0.16)"':''}/><text class="axlbl" x="${pL-4}" y="${yO(y)+3}" text-anchor="end">${y===0?'0':Math.abs(y)+(y<0?'L':'R')}</text>`;});
+    const pts=[];clubs.forEach(c=>c.shots.forEach(x=>{if(x.full)pts.push([c.club,x]);}));
+    g+=pts.map(([club,x],i)=>{const col=TM_COL[club]||'#9aa8bb';return `<circle class="dotpt tmpt" data-i="${i}" cx="${xO(x.carry)}" cy="${yO(x.side)}" r="${x.solid?4:3.5}" fill="${x.solid?col:'none'}" stroke="${col}" stroke-width="1.3" opacity="${x.solid?0.9:0.6}"/>`;}).join('');
+    scatter=`<div style="margin-top:12px"><div class="note" style="margin-bottom:4px">Dispersion · full swings · carry (m) × side (m) · <b>filled = solid</b>, hollow = below smash bar</div><svg id="bs-tm-sc" viewBox="0 0 ${W} ${H}">${g}</svg>`+
+      `<div style="display:flex;gap:11px;flex-wrap:wrap;margin-top:6px">${clubs.map(c=>`<span class="note" style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:${TM_COL[c.club]}"></span>${c.club}</span>`).join('')}</div></div>`;
+    setTimeout(()=>{document.querySelectorAll('#bs-tm-sc .tmpt').forEach(el=>{const [club,x]=pts[+el.dataset.i];const html=`<div class="tt">${club}${x.solid?'':' · mishit'}</div><div class="tr"><span>carry</span><b>${x.carry}m</b></div><div class="tr"><span>side</span><b>${Math.abs(x.side)}${x.side<0?'L':'R'}</b></div><div class="tr"><span>smash</span><b>${x.smash??'—'}</b></div><div class="tr"><span>spin</span><b>${x.spin}</b></div><div class="tr"><span>face·path</span><b>${x.f2p??'—'}</b></div>`;el.onmouseenter=e=>showTip(html,e);el.onmousemove=moveTip;el.onmouseleave=hideTip;el.onclick=e=>showTip(html,e);});},0);
+  }
+  const tot=s.shots?`<div class="note" style="margin-top:6px">${clubs.reduce((a,c)=>a+c.n,0)} shots · ${clubs.reduce((a,c)=>a+c.nFull,0)} full swings · ${clubs.reduce((a,c)=>a+c.nSolid,0)} solid. Work = median carry of solid strikes; flush = best solid carry; side = solid-strike mean ±SD; attack/path/face·path over full swings.</div>`:'';
+  const notes=clubs.filter(c=>c.note).map(c=>`<div class="note" style="margin-top:5px"><b style="color:${TM_COL[c.club]||'var(--ink2)'}">${c.club}:</b> ${c.note}</div>`).join('');
+  el.innerHTML=`<div style="overflow-x:auto"><table><thead><tr><th>Club</th><th>Full/n</th><th>Solid</th><th>Work</th>${hasTotal?'<th>Total</th>':''}<th>Flush</th><th>Spin</th><th>Attack</th><th>Path</th><th>Face·Path</th><th>Side</th></tr></thead><tbody>${rows}</tbody></table></div>`+tot+scatter+
+    `<div style="margin-top:12px;padding:11px 13px;background:var(--panel2);border-radius:10px;border-left:3px solid var(--teal)" class="note">${s.summary}</div>`+
+    (notes?`<div style="margin-top:8px">${notes}</div>`:'');
 }
 
 /* ===== COACH TAB ===== */
@@ -1146,8 +1262,8 @@ async function askClaude(messages,opts){
   document.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>upd(h=>{const k=b.dataset.inc;h[k]=Math.min(9,h[k]+1);}));
   document.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>upd(h=>{const k=b.dataset.dec;h[k]=Math.max(0,h[k]-1);}));
 
-  function next(){if(cur<17){cur++;render();$('ar-modal').scrollTop=0;$('ar-ai-status').textContent='';}else openCard();save();}
-  function prev(){if(cur>0){cur--;render();$('ar-modal').scrollTop=0;$('ar-ai-status').textContent='';save();}}
+  function next(){if(cur<17){cur++;render();$('ar-modal').scrollTop=0;}else openCard();save();}
+  function prev(){if(cur>0){cur--;render();$('ar-modal').scrollTop=0;save();}}
   $('ar-next-hole').onclick=next;$('ar-next-top').onclick=next;
   $('ar-prev-hole').onclick=prev;$('ar-back-btn').onclick=()=>{if(cur===0)showStep('basics');else prev();};
 
@@ -1158,86 +1274,6 @@ async function askClaude(messages,opts){
   hs.addEventListener('touchend',e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;tx=null;
     if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.6){dx<0?next():prev();}},{passive:true});
 
-  /* ---- AI / local: describe the hole ---- */
-  const NUMW={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,a:1,an:1};
-  const numOf=w=>w==null?null:(/^\d+$/.test(w)?+w:(NUMW[w]??null));
-  function parseLocal(txt,par){
-    const t=' '+txt.toLowerCase().replace(/[,.;]/g,' ')+' ';
-    const o={};
-    if(/pick(ed)?\s*up|\bnr\b|no return/.test(t)){o.pickup=true;}
-    let m=t.match(/\b(?:made|scored|shot|got|carded|wrote)\s+(?:a\s+)?(\d{1,2})\b/);
-    if(m)o.s=+m[1];
-    if(o.s==null&&!o.pickup){
-      const W=[['quadruple',4],['quad',4],['triple',3],['double',2],['bogey',1],['bogie',1],['birdie',-1],['eagle',-2],['albatross',-3]];
-      for(const [w,v] of W){if(t.includes(w)){o.s=par+v;break;}}
-      if(o.s==null&&/\bpar\b(?!\s*\d)/.test(t))o.s=par;
-    }
-    if(/chip(ped)?\s*in|holed\s*(it\s*)?(out|from)/.test(t)){o.chip=true;o.p=0;}
-    m=t.match(/\b(\d|one|two|three|four)\s*-?\s*putt/);
-    if(m)o.p=numOf(m[1]);
-    else if(/\b(one|two|three|1|2|3)\s+putts\b/.test(t))o.p=numOf(t.match(/\b(one|two|three|1|2|3)\s+putts\b/)[1]);
-    m=t.match(/\b(\d|one|two|three|four|a|an)\s+(?:chips?|pitch(?:es)?)\b/);
-    if(m)o.chips=numOf(m[1]);
-    else if(/\b(chip(?!\s*in)|chipped(?!\s*in)|pitch(ed)?|flop)/.test(t))o.chips=1;
-    m=t.match(/\b(\d|one|two|three|a)\s+(?:bunker|sand|trap)\s*(?:shots?)?/);
-    if(m)o.sand=numOf(m[1]);else if(/bunker|sand|trap/.test(t))o.sand=1;
-    if(/sand\s*save/.test(t)){o.ss=true;o.sand=o.sand||1;}
-    if(/up\s*(and|&|n)\s*down|got\s*up|scrambled|saved\s*par/.test(t))o.ud=true;
-    m=t.match(/\b(\d|one|two|a)\s+(?:penalt(?:y|ies)|pen)/);
-    if(m)o.pen=numOf(m[1]);else if(/\bob\b|out of bounds|water|lost ball|hazard|penalty|drop/.test(t))o.pen=1;
-    const wasted=(t.match(/duff|chunk|fat|thin(ned)?|shank|whiff|topped|skull/g)||[]).length;if(wasted)o.wasted=wasted;
-    const clubs=[[/driver|\bd\b/,'Driver'],[/3\s*wood|three\s*wood|3w/,'3 Wood'],[/5\s*wood|five\s*wood|5w/,'5 Wood'],[/hybrid|rescue/,'Hybrid'],[/wedge|\bpw\b/,'Wedge']];
-    for(const [re,c] of clubs){if(re.test(t)){o.club=c;break;}}
-    if(!o.club){m=t.match(/\b([2-9])\s*(?:-\s*)?(?:iron|i)\b/);if(m)o.club=`${m[1]} Iron`;}
-    if(par>=4){
-      if(/fairway|middle|\bfw\b|short grass|found it/.test(t)&&!/miss(ed)?\s*(the\s*)?fairway/.test(t))o.fw='hit';
-      const teeCtx=/(driver|drive|tee|wood|iron|hybrid|off the tee)[^.]{0,20}\b(left|right)\b|\b(left|right)\s*(rough|off the tee|of the fairway)|\b(pulled|hooked|pushed|sliced|blocked)\b/;
-      const mm=t.match(teeCtx);
-      if(mm){const s=mm[0];if(/left|pulled|hooked/.test(s))o.fw='left';else if(/right|pushed|sliced|blocked/.test(s))o.fw='right';}
-    }
-    if(/\b(gir|on in reg|hit the green|on the green in|found the green)\b/.test(t))o.appr='hit';
-    else{
-      const short=/short/.test(t),long=/\blong\b|over the green|through the green/.test(t);
-      const gL=/green[^.]{0,10}left|missed left|left of the green/.test(t),gR=/green[^.]{0,10}right|missed right|right of the green/.test(t);
-      const v=short?'s':long?'n':'',hz=gL?'w':gR?'e':'';
-      const k=v&&hz?(v+hz):(v||hz);if(k)o.appr=k;
-    }
-    return o;
-  }
-  const clean=(o,par)=>{
-    const r={};const int=(v,a,b)=>{v=Math.round(Number(v));return isNaN(v)?null:Math.max(a,Math.min(b,v));};
-    if(o.pickup===true)r.pickup=true;
-    if(o.s!=null){const v=int(o.s,1,15);if(v!=null){r.s=v;r.pickup=false;}}
-    if(o.p!=null){const v=int(o.p,0,6);if(v!=null)r.p=v;}
-    ['chips','sand','wasted','pen'].forEach(k=>{if(o[k]!=null){const v=int(o[k],0,9);if(v!=null)r[k]=v;}});
-    ['chip','ud','ss'].forEach(k=>{if(typeof o[k]==='boolean')r[k]=o[k];});
-    if(CLUBS.includes(o.club))r.club=o.club;
-    if(['left','hit','right'].includes(o.fw)&&par>=4)r.fw=o.fw;
-    if(APPR.some(a=>a[0]===o.appr))r.appr=o.appr;
-    if(r.chip)r.p=0;
-    return r;
-  };
-  async function fillFromText(){
-    const txt=$('ar-ai-text').value.trim();if(!txt)return;
-    const par=PAR[cur],btn=$('ar-ai-go'),st=$('ar-ai-status');
-    btn.disabled=true;st.textContent='✦ reading…';
-    let parsed=null,src='';
-    try{
-      const sys=`Convert a left-handed golfer's short description of ONE golf hole into JSON. Hole is par ${par}. Keys (include ONLY what the text states or clearly implies): s (total strokes, integer; derive from words like bogey/par/double using par ${par}), pickup (bool), p (putts), chip (bool, holed a chip), chips (count of chips/pitches around the green), club (one of ${CLUBS.join(', ')}; the tee club), fw ("left","hit","right" — tee shot vs fairway; par 4/5 only), appr (approach result: "hit" if on green, else one of nw,n,ne,w,e,sw,s,se where n=long, s=short, w=left, e=right), ud (bool up and down), ss (bool sand save), sand (bunker shots), wasted (duffed/chunked/thinned shots), pen (penalty strokes). Reply with the JSON object only.`;
-      const out=await askClaude([{role:'user',content:txt}],{system:sys,max_tokens:300});
-      const j=JSON.parse(out.replace(/```json|```/g,'').trim().match(/\{[\s\S]*\}/)[0]);
-      parsed=clean(j,par);src='✦ filled by Claude';
-    }catch(e){
-      parsed=clean(parseLocal(txt,par),par);src='filled locally (AI offline)';
-    }
-    const keys=Object.keys(parsed);
-    if(keys.length){Object.assign(H[cur],parsed);buzz();render();save();
-      st.textContent=`${src} · ${keys.length} field${keys.length>1?'s':''} — check & adjust`;$('ar-ai-text').value='';}
-    else st.textContent='couldn’t pick anything out — try “bogey, 2 putts, driver left”';
-    btn.disabled=false;
-  }
-  $('ar-ai-go').onclick=fillFromText;
-  $('ar-ai-text').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();fillFromText();}});
 
   /* ---- aggregate ---- */
   function compute(){
@@ -1358,7 +1394,7 @@ async function askClaude(messages,opts){
   $('af-clear').onclick=()=>{
     if(!confirm('Clear this round and its saved draft?'))return;
     H=Array.from({length:18},blank);cur=0;mode='holes';started=false;ptsEdited=false;
-    ['af-date','af-note','ar-final-pts'].concat(TOT).forEach(id=>setVal(id,''));setVal('af-hcp','16');
+    ['af-date','af-note','ar-final-pts'].concat(TOT).forEach(id=>setVal(id,''));setVal('af-hcp','');
     try{localStorage.removeItem(KEY);localStorage.removeItem(OLDKEY);}catch(e){}
     $('draft-badge').style.display='none';$('af-output').style.display='none';
     $('ar-debrief-out').textContent='An AI read on where the points went and what to practise this week.';
@@ -1399,6 +1435,49 @@ async function askClaude(messages,opts){
   };
 })();
 
+
+/* ===== START-ROUND SCREEN ===== */
+(function(){
+  const $=id=>document.getElementById(id);if(!$('rs-tees'))return;
+  const TEES=[{k:'blue',n:'Blue',cr:73,sl:129},{k:'white',n:'White',cr:71,sl:128},{k:'yellow',n:'Yellow',cr:null,sl:null}];
+  const idx=()=>typeof HCP_CURRENT!=='undefined'?HCP_CURRENT:null;
+  let manual=false;
+  const fire=el=>el.dispatchEvent(new Event('input',{bubbles:true}));
+  const teeOf=()=>TEES.find(t=>t.k===$('af-tee').value)||TEES[0];
+  const calcHC=t=>(idx()==null||t.cr==null)?null:idx()*t.sl/113+(t.cr-PAR_TOTAL);
+  const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  function paint(){
+    const t=teeOf();
+    // date
+    const v=$('af-date').value;const d=v?new Date(v+'T00:00:00'):null;
+    $('rs-date-lbl').textContent=d?d.toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short'}):'Pick a date';
+    const today=iso(new Date()),yest=iso(new Date(Date.now()-864e5));
+    document.querySelectorAll('[data-rsday]').forEach(b=>b.classList.toggle('sel',v===(b.dataset.rsday==='0'?today:yest)));
+    // tees
+    $('rs-tees').innerHTML=TEES.map(x=>`<button class="rs-tee${x.k===t.k?' on':''}" data-rstee="${x.k}" style="--tc:${TEE_COL[x.k]}"><div class="tn"><i></i>${x.n}</div><div class="tr2">${x.cr!=null?`CR <b>${x.cr}</b><br>Slope <b>${x.sl}</b>`:'no rating<br>on file'}</div></button>`).join('');
+    document.querySelectorAll('[data-rstee]').forEach(b=>b.onclick=()=>{$('af-tee').value=b.dataset.rstee;fire($('af-tee'));if(!manual)autoHC();paint();});
+    // hc calc line
+    const c=calcHC(t),hc=$('af-hcp').value;
+    $('rs-hc-calc').innerHTML=c!=null?`GA: <b>${idx()}</b> × ${t.sl}/113 ${t.cr-PAR_TOTAL>=0?'+':'−'} ${Math.abs(t.cr-PAR_TOTAL)} = <b>${c.toFixed(1)}</b> → ${Math.round(c)}${manual&&+hc!==Math.round(c)?' · <span style="color:var(--gold)">manual</span>':''}`:'no slope/rating for this tee — set it manually';
+    $('rs-hc-reset').style.display=(c!=null&&manual&&+hc!==Math.round(c))?'inline':'none';
+    // summary
+    $('rs-sum').innerHTML=[['Par',PAR_TOTAL],['Rating',t.cr??'—'],['Slope',t.sl??'—'],['Last 5',(()=>{const s=R.filter(r=>r.stableford!=null).slice(-5).map(r=>r.stableford);return s.length?(s.reduce((a,b)=>a+b,0)/s.length).toFixed(1):'—';})()]].map(([k,v])=>`<div class="mt"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+  }
+  function autoHC(){const c=calcHC(teeOf());if(c!=null){$('af-hcp').value=Math.round(c);fire($('af-hcp'));}}
+  $('af-date').addEventListener('input',paint);$('af-date').addEventListener('change',paint);
+  document.querySelectorAll('[data-rsday]').forEach(b=>b.onclick=()=>{$('af-date').value=iso(new Date(Date.now()-(+b.dataset.rsday)*864e5));fire($('af-date'));paint();});
+  const step=dv=>{const v=Math.max(0,Math.min(54,(Number($('af-hcp').value)||0)+dv));$('af-hcp').value=v;manual=true;fire($('af-hcp'));paint();};
+  $('rs-hc-dec').onclick=()=>step(-1);$('rs-hc-inc').onclick=()=>step(1);
+  $('af-hcp').addEventListener('input',e=>{if(e.isTrusted)manual=true;paint();});
+  $('rs-hc-reset').onclick=()=>{manual=false;autoHC();paint();};
+  function onOpen(){
+    if(!$('af-date').value){$('af-date').value=iso(new Date());fire($('af-date'));}
+    const c=calcHC(teeOf());
+    if($('af-hcp').value===''){manual=false;autoHC();} else manual=(c==null||+$('af-hcp').value!==Math.round(c));
+    paint();
+  }
+  $('open-add-round').addEventListener('click',()=>setTimeout(onOpen,0));
+})();
 </script>
 </body>
 </html>
