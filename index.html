@@ -160,6 +160,35 @@
   .lg{display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink2);}
   .lg .ln{width:13px;height:2px;}.lg .dot{width:7px;height:7px;border-radius:50%;}
   select,.minisel{background:var(--panel2);border:1px solid var(--line);color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 8px;border-radius:7px;cursor:pointer;}
+  .tgt-tbl td{padding:8px 7px;vertical-align:top;}
+  .tgt-why{font-size:9.5px;color:var(--ink3);font-weight:400;margin-top:2px;font-family:'Inter',sans-serif;white-space:normal;}
+  .b80card{margin-top:14px;border-color:rgba(245,196,81,0.35);background:linear-gradient(160deg,rgba(245,196,81,0.07),transparent 55%),var(--panel);}
+  .b80-top{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:flex-end;}
+  .b80-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);}
+  .b80-big{font-family:'Fraunces',serif;font-weight:700;font-size:44px;line-height:1.05;}
+  .b80-big small{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;color:var(--ink3);margin-left:6px;}
+  .b80-bar{height:6px;border-radius:3px;background:rgba(255,255,255,0.07);margin:8px 0 6px;max-width:320px;overflow:hidden;}
+  .b80-bar i{display:block;height:100%;background:var(--gold);border-radius:3px;}
+  .b80-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);}
+  .b80-form{text-align:right;max-width:240px;}
+  .b80-form .k{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);}
+  .b80-form .v{font-family:'Fraunces',serif;font-weight:700;font-size:34px;line-height:1.1;}
+  .b80-form .s{font-size:11px;color:var(--ink2);line-height:1.4;}
+  .b80-cps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+  @media(max-width:620px){.b80-cps{grid-template-columns:1fr;} .b80-form{text-align:left;max-width:none;}}
+  .b80-cp{background:var(--panel2);border:1px solid;border-left-width:3px;border-radius:10px;padding:9px 11px;}
+  .b80-cp .h{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink2);}
+  .b80-cp .t{font-size:12.5px;font-weight:600;margin-top:4px;}
+  .b80-cp .n{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;}
+  .b80-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-top:14px;}
+  @media(max-width:760px){.b80-grid{grid-template-columns:1fr;}}
+  .b80-lbl{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;}
+  .b80-lev{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+  .b80-lev .k{font-size:12.5px;font-weight:600;}
+  .b80-lev .why{font-size:10px;color:var(--ink3);margin-top:1px;}
+  .b80-lev .vv{text-align:right;font-family:'JetBrains Mono',monospace;white-space:nowrap;}
+  .b80-lev .vv b{font-size:15px;}
+  .b80-lev .vv span{display:block;font-size:9.5px;color:var(--ink3);}
   .note{font-size:11px;color:var(--ink3);font-family:'JetBrains Mono',monospace;line-height:1.55;}
   .note b{color:var(--ink2);}
   .sectlabel{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin:22px 2px 11px;}
@@ -351,6 +380,8 @@
       <div class="journey" id="hero-journey"></div>
     </div>
 
+    <div class="card b80card" id="b80"></div>
+
     <div class="tiles" style="margin-top:14px" id="ov-tiles"></div>
 
     <div class="sectlabel">Where your strokes are going</div>
@@ -429,6 +460,7 @@
     </div>
     <div class="sectlabel">Launch monitor · carry reference</div>
     <div class="grid">
+      <div class="card c12" id="tgt-card"><div class="ch"><h3>Club targets · scratch, −3° path baby draw</h3><div class="sub"><select class="minisel" id="tgt-sel" aria-label="Choose club"></select></div></div><div id="tgt-body"></div></div>
       <div class="card c12" id="bs-range-card"><div class="ch"><h3>Trackman session</h3><div class="sub" id="bs-range-sub"></div></div><div id="bs-range"></div></div>
     </div>
   </div>
@@ -705,6 +737,28 @@ const TEECLUB={
  'r5_04':[['4 Iron','miss'],['5 Wood','miss'],['8 Iron','GIR'],['Driver','fairway'],['5 Wood','miss'],['5 Wood','fairway'],['6 Iron','miss'],['Driver','miss'],['Driver','fairway'],['5 Wood','fairway'],['Driver','miss'],['3 Wood','fairway'],['Wedge','GIR'],['Driver','miss'],['4 Iron','fairway'],['4 Iron','fairway'],['5 Iron','miss'],['Driver','miss']]
 };
 const RANGE=[
+ {date:'05 Oct',ball:'ProV1x',device:'Trackman',units:'m/s',
+  // shot cols: cs,aa,bs,spin,carry,side(L−/R+),smash,height,path,f2p,dynLoft,faceAngle,total · no height; f2p = face − path (derived); total from Trackman
+  smashMin:{'PW':1.12},
+  shots:{'PW':[[38.1, -3.8, 44.5, 9100, 113.8, 24.5, 1.17, null, -0.4, 9.5, 33.4, 9.1, 116.2], [36.2, -5.6, 45.1, 8970, 116.0, 2.4, 1.24, null, -0.6, 1.3, 33.1, 0.7, 118.1], [37.1, -4.6, 45.3, 8710, 117.7, 8.0, 1.22, null, -4.4, 6.0, 31.4, 1.6, 120.3], [36.9, -2.0, 43.9, 8380, 113.4, 22.3, 1.19, null, -3.6, 10.8, 32.1, 7.2, 116.7], [38.8, -1.8, 43.8, 9090, 111.0, 9.8, 1.13, null, -1.0, 4.5, 35.5, 3.5, 112.9], [36.6, -2.6, 43.9, 9010, 111.2, 18.7, 1.2, null, -4.0, 10.2, 35.5, 6.2, 113.2], [37.2, -3.8, 42.6, 9180, 108.1, 22.7, 1.14, null, -2.8, 11.5, 33.6, 8.7, 111.5], [38.7, -4.8, 46.7, 8360, 122.3, 15.5, 1.21, null, 2.2, 3.5, 31.2, 5.7, 124.4], [37.4, -5.6, 44.7, 8970, 115.2, -1.1, 1.2, null, -2.2, 1.2, 32.9, -1.0, 117.5], [38.2, -1.0, 35.3, 2980, 53.5, -7.5, 0.92, null, 0.2, -7.0, 11.5, -6.8, 93.8], [34.2, -1.8, 40.4, 8090, 102.6, 25.3, 1.18, null, -3.2, 13.6, 32.5, 10.4, 109.0], [38.5, -4.0, 43.0, 9060, 109.7, 16.6, 1.12, null, 3.0, 4.3, 34.0, 7.3, 112.3], [37.9, -3.4, 44.6, 8930, 114.5, -1.2, 1.18, null, -2.0, 1.0, 33.9, -1.0, 116.5], [34.1, -1.6, 39.1, 7930, 98.5, 23.4, 1.15, null, -4.0, 14.1, 32.1, 10.1, 106.6], [37.9, -0.4, 40.2, 9070, 100.1, -4.3, 1.06, null, -2.2, -0.2, 37.6, -2.4, 102.7], [37.3, -4.0, 44.1, 8710, 114.0, 2.8, 1.18, null, -0.2, 1.1, 32.7, 0.9, 116.6], [32.8, -3.2, 40.0, 7830, 102.2, 14.7, 1.22, null, -2.6, 8.5, 32.9, 5.9, 108.1], [36.8, -2.8, 42.3, 8900, 107.7, 13.7, 1.15, null, -2.2, 7.3, 34.3, 5.1, 110.6], [37.7, -3.4, 45.2, 8990, 115.6, 2.5, 1.2, null, -0.2, 1.0, 34.1, 0.8, 117.4], [36.5, -1.8, 42.2, 9090, 105.9, 11.3, 1.16, null, -2.6, 6.7, 36.8, 4.1, 108.0], [34.5, -3.4, 42.4, 7590, 110.4, 17.1, 1.23, null, -5.6, 10.6, 29.6, 5.0, 117.6], [36.3, -4.4, 46.6, 7250, 125.2, 31.7, 1.28, null, -1.0, 10.5, 27.1, 9.5, 131.2], [38.1, -6.8, 46.3, 8820, 120.5, 8.1, 1.21, null, -0.2, 2.9, 31.0, 2.7, 122.9], [37.4, -3.2, 43.4, 9100, 110.6, 27.4, 1.16, null, -3.4, 13.4, 32.8, 10.0, 114.1], [33.9, -3.4, 41.0, 3738, 115.5, 11.3, 1.21, null, -3.8, 6.7, 27.6, 2.9, 129.7], [38.4, -3.2, 43.1, 9160, 109.7, 11.0, 1.12, null, -0.8, 5.0, 34.4, 4.2, 112.2], [36.6, -7.0, 45.4, 8510, 118.9, 17.9, 1.24, null, 0.6, 5.8, 29.7, 6.4, 122.6], [37.5, -2.8, 44.6, 9080, 110.5, 6.9, 1.19, null, -1.6, 3.8, 38.3, 2.2, 112.5], [37.9, -3.0, 44.0, 9100, 111.7, 15.5, 1.16, null, 0.4, 5.6, 35.1, 6.0, 113.6], [37.5, -2.0, 43.8, 9070, 110.8, 14.7, 1.17, null, -4.0, 8.7, 35.5, 4.7, 112.8], [37.8, -3.0, 43.0, 7513, 112.8, -20.2, 1.14, null, 0.2, -7.6, 29.2, -7.4, 119.6], [36.6, -5.4, 43.6, 8299, 113.1, 8.7, 1.19, null, 0.0, 3.3, 31.8, 3.3, 116.5], [33.4, -4.2, 38.6, 8230, 97.0, 12.1, 1.16, null, 0.8, 5.3, 34.0, 6.1, 103.1], [36.4, -3.8, 45.1, 7962, 118.6, 19.4, 1.24, null, -3.4, 9.0, 29.5, 5.6, 123.1], [38.0, -3.6, 44.9, 9040, 113.2, 20.2, 1.18, null, 1.2, 6.7, 36.3, 7.9, 114.5], [37.8, -4.2, 46.6, 8700, 120.9, 16.0, 1.23, null, -0.4, 5.6, 32.3, 5.2, 122.8], [38.2, -0.8, 42.1, 9100, 105.9, 10.9, 1.1, null, -2.4, 6.4, 36.1, 4.0, 108.3], [37.9, -2.4, 44.5, 8960, 110.5, 6.8, 1.17, null, -1.6, 3.8, 38.3, 2.2, 112.5], [37.5, -2.2, 45.5, 8030, 119.3, 23.8, 1.21, null, -0.4, 8.3, 31.3, 7.9, 121.9], [38.0, -4.0, 42.4, 9210, 106.9, -7.4, 1.12, null, 0.0, -3.1, 35.9, -3.1, 109.3], [37.2, -5.4, 47.1, 7890, 125.4, 26.6, 1.27, null, 0.0, 8.3, 28.5, 8.3, 128.9], [37.4, -6.2, 45.3, 7750, 120.1, 14.2, 1.21, null, -0.8, 5.3, 29.1, 4.5, 124.4], [38.2, -4.8, 46.7, 8730, 120.2, -3.7, 1.22, null, -0.6, -0.8, 33.6, -1.4, 121.6], [38.4, -4.4, 39.2, 7050, 79.0, -43.1, 1.02, null, -1.6, null, null, null, 118.7], [37.5, -3.8, 38.8, 9894, 91.5, -40.9, 1.03, null, 0.4, null, null, null, 107.3]]},
+  notes:{
+   'PW':'45 balls, grip-change session. Face angle explains where the ball finishes almost completely (face vs side r = 0.97): avg face +4.0° vs path −1.4° → face·path +5.4° (SD 4.9), only 8 of 43 within ±3°. Solid carry 113 (22 Sep 111) — PW ≈ 111–113 confirmed. Spin up to ~8,400–9,100 (22 Sep ~6,500) with dyn loft 32.5°. Left heel-type mishits down to 2 (#44–45) + 1 thin (#10).'
+  },
+  summary:'Pitching-wedge only. Path is fine (−1.4° ±1.8); the clubface is the whole story — closed to the path by ~5° on average and it decides where every ball finishes. Grip change worked for a stretch at the bay (face·path ≈1°) but didn\'t hold. Strike was much better than 22 Sep: 40 of 45 cleared the smash bar and only 2 far-left mishits.'
+ },
+ {date:'02 Oct',ball:'ProV1x',device:'Trackman',units:'m/s',
+  // shot cols: cs,aa,bs,spin,carry,side(L−/R+),smash,height,path,f2p,dynLoft · this export had no face·path, added dynamic loft
+  smashMin:{'4 Iron':1.22,'8 Iron':1.18},
+  shots:{
+ '4 Iron':[[41.5,-1.0,53.0,4120,158.0,1.8,1.28,19.4,0.6,null,16.3],[43.2,-3.2,54.5,5045,160.7,-18.7,1.26,24.7,5.4,null,18.8],[null,null,25.7,1274,7.1,0.4,null,0.1,null,null,null],[43.0,-3.0,57.0,4647,172.1,-10.4,1.33,25.1,5.2,null,17.0],[43.0,-4.4,58.0,4821,173.3,-15.3,1.35,24.4,7.2,null,16.1],[43.0,null,49.8,5130,138.1,1.2,1.16,14.6,null,null,null],[43.0,-2.2,58.2,4103,180.7,3.3,1.35,25.7,4.4,null,16.3],[null,null,19.8,1640,10.6,-0.1,null,0.3,null,null,10.1],[42.3,0.8,51.8,2148,147.2,7.5,1.23,11.9,1.4,null,14.0],[48.6,null,51.5,5730,145.5,16.4,1.06,18.6,null,null,null],[null,null,44.7,1609,111.3,-4.2,null,8.6,null,null,null],[41.7,-3.4,52.9,1602,142.5,7.3,1.27,10.0,4.8,null,12.8],[43.2,-1.8,52.4,4520,152.7,-6.6,1.21,18.3,2.6,null,16.2],[null,null,47.0,3590,123.3,10.5,null,9.7,null,null,13.7],[42.8,-4.7,48.9,1647,124.2,9.5,1.14,8.7,0.1,null,13.3],[42.8,-0.6,52.8,2061,151.1,-7.8,1.23,12.3,1.0,null,13.9]],
+ '8 Iron':[[39.9,-3.8,50.2,4834,147.1,4.1,1.26,31.7,5.8,null,26.8],[39.5,-10.7,38.2,8511,89.0,-47.4,0.97,11.7,-1.1,null,null],[38.5,-1.8,44.9,3722,131.1,2.7,1.17,20.4,0.6,null,23.6],[39.9,-2.4,48.3,4269,143.5,-1.2,1.21,26.0,2.2,null,24.6],[38.2,-1.0,46.0,3747,136.1,1.9,1.20,22.4,1.4,null,24.1],[42.5,-2.4,48.7,4084,145.8,5.6,1.14,26.1,2.8,null,24.2],[37.7,-0.6,41.7,3146,117.1,7.9,1.11,15.6,-0.4,null,22.5],[39.0,-2.0,47.0,4289,138.0,7.5,1.21,24.5,2.2,null,24.8],[37.5,-1.8,44.1,4039,127.4,6.9,1.18,21.4,3.8,null,25.2],[38.7,0.0,40.7,7149,52.2,-20.1,1.05,1.9,4.8,null,null],[39.3,null,36.9,8528,83.8,-32.9,0.94,8.7,null,null,null],[38.5,-3.8,48.5,6697,133.9,2.4,1.26,26.9,3.0,null,26.3],[41.3,null,38.9,8595,93.5,-35.9,0.94,11.3,null,null,null],[39.5,-1.8,43.5,5797,116.6,-38.5,1.10,20.6,5.0,null,null],[37.7,-2.2,46.5,4025,136.6,13.1,1.23,21.9,2.8,null,23.3],[38.5,-1.0,48.6,4137,144.7,18.7,1.26,24.8,1.0,null,23.5]]
+},
+  notes:{
+   '4 Iron':'Two different strikes. 5 pure ones carried 158–181 at 24–26m height & 4,100–5,000 spin — that is the real 4i. Three more (142–151) cleared the smash bar but launched 10–12m with 1,600–2,150 spin: thin, low on the face. Treat ~170 as the carry number, not the 159 median. Zero left mishits.',
+   '8 Iron':'Solid carry 137 (22 Sep: 134). Spin down to ~4,200 from ~6,200 with dynamic loft ~25° — delofting hard, hence the extra carry. The left-mishit pattern is still there: 5/16 finished 20–47m L with smash ≤1.10 (22 Sep: 11/33). Path +2.4° (22 Sep +1.1°).'
+  },
+  summary:'Short session, two clubs. 8-iron strike quality unchanged from 22 Sep — about a third of swings are the same low-smash, high-spin, far-left miss consistent with heel contact; solid ones carry ~137 with much less spin (dyn loft ~25°). 4-iron was the better club: no left misses at all, and the five pure strikes went 158–181. No face·path in this export, so face control can\'t be compared.'
+ },
  {date:'22 Sep',ball:'ProV1x',device:'Trackman',units:'m/s',
   // shot cols: cs,aa,bs,spin,carry,side(L−/R+),smash,height,path,f2p · null = not read
   // partial swing: clubSpd <80% of club median (or ballSpd <60% if clubSpd unread). solid: smash ≥ smashMin.
@@ -1109,54 +1163,102 @@ function bsFw(){
   const rounds=filt();lineChart('bs-fw',rounds,'fw','#5aa0e8',{target:60,min:0,max:100});
   document.getElementById('bs-fw-note').innerHTML=`<b>${avg(rounds.map(r=>r.fw)).toFixed(0)}%</b> fairways — already single-figure standard. Not a leak.`;
 }
-let RANGE_IDX=0;
-const TM_COL={'Driver':'#ff5f56','5 Wood':'#c98a55','5 Iron':'#5aa0e8','7 Iron':'#a78bfa','8 Iron':'#f5c451','PW':'#34e0d0','9 Iron':'#37c98a','60°':'#9aa8bb'};
+let RANGE_IDX=-1; // -1 = All sessions
+const TM_COL={'Driver':'#ff5f56','3 Wood':'#e07b39','5 Wood':'#c98a55','2 Iron':'#ffb347','4 Iron':'#ff8a3d','5 Iron':'#5aa0e8','7 Iron':'#a78bfa','8 Iron':'#f5c451','9 Iron':'#37c98a','PW':'#34e0d0','56°':'#7fd4ff','60°':'#9aa8bb'};
+// Estimated roll-out (m) for TOTAL where Trackman total wasn't exported. Driver from 25 Aug (234 carry → 249 total). Others: typical firm-ish fairway roll — edit to taste.
+const ROLL={'Driver':15,'3 Wood':10,'5 Wood':8,'2 Iron':7,'4 Iron':6,'5 Iron':5,'7 Iron':4,'8 Iron':3,'9 Iron':3,'PW':2,'56°':1,'60°':1};
 function tmMed(a){a=a.filter(x=>x!=null).sort((x,y)=>x-y);const n=a.length;return n?(n%2?a[(n-1)/2]:(a[n/2-1]+a[n/2])/2):null;}
-function tmClubs(s){
-  // shot-level session → derived club rows; summary-only session → passthrough
-  if(!s.shots)return s.clubs.map(c=>Object.assign({},c));
+// classify a session's shots (partials by that session's club median; solid by smash bar)
+function tmClassify(s){
   return Object.entries(s.shots).map(([club,sh])=>{
     const mcs=tmMed(sh.map(x=>x[0])),mbs=tmMed(sh.map(x=>x[2]));
-    const shots=sh.map(x=>{const full=x[0]!=null?x[0]>=0.8*mcs:x[2]>=0.6*mbs;const solid=full&&x[6]!=null&&x[6]>=s.smashMin[club];return{cs:x[0],aa:x[1],bs:x[2],spin:x[3],carry:x[4],side:x[5],smash:x[6],ht:x[7],path:x[8],f2p:x[9],full,solid};});
-    const full=shots.filter(x=>x.full),solid=shots.filter(x=>x.solid);
-    const col=(a,k)=>a.map(x=>x[k]).filter(v=>v!=null);
-    const r1=v=>v==null?null:Math.round(v*10)/10;
-    return{club,shots,n:sh.length,nFull:full.length,nSolid:solid.length,
-      work:solid.length?Math.round(tmMed(col(solid,'carry'))):null,
-      flush:solid.length?Math.round(Math.max(...col(solid,'carry'))):null,
-      spin:solid.length?Math.round(tmMed(col(solid,'spin'))):null,
-      attack:col(full,'aa').length?r1(avg(col(full,'aa'))):null,
-      path:col(full,'path').length?r1(avg(col(full,'path'))):null,pathSD:col(full,'path').length>1?r1(sd(col(full,'path'))):null,
-      f2p:col(full,'f2p').length?r1(avg(col(full,'f2p'))):null,f2pSD:col(full,'f2p').length>1?r1(sd(col(full,'f2p'))):null,
-      side:solid.length?r1(avg(col(solid,'side'))):null,sideSD:solid.length>1?r1(sd(col(solid,'side'))):null,
-      note:s.notes&&s.notes[club]};
+    return{club,shots:sh.map(x=>{const full=x[0]!=null?x[0]>=0.8*mcs:x[2]>=0.6*mbs;const solid=full&&x[6]!=null&&x[6]>=s.smashMin[club];
+      return{cs:x[0],aa:x[1],bs:x[2],spin:x[3],carry:x[4],side:x[5],smash:x[6],ht:x[7],path:x[8],f2p:x[9],dl:x[10]??null,total:x[12]??null,full,solid,date:s.date};})};
   });
+}
+function tmAgg(club,shots,extra){
+  const full=shots.filter(x=>x.full),solid=shots.filter(x=>x.solid);
+  const col=(a,k)=>a.map(x=>x[k]).filter(v=>v!=null);
+  const r1=v=>v==null?null:Math.round(v*10)/10;
+  const m=(a,k)=>col(a,k).length?avg(col(a,k)):null, s_=(a,k)=>col(a,k).length>1?r1(sd(col(a,k))):null;
+  const carry=solid.length?Math.round(avg(col(solid,'carry'))):null;
+  return Object.assign({club,shots,n:shots.length,nFull:full.length,nSolid:solid.length,
+    carry,carryAll:full.length?Math.round(avg(col(full,'carry'))):null,
+    // roll measured from Trackman totals where available (solid strikes), else estimated ROLL table
+    ...(()=>{const wt=solid.filter(x=>x.total!=null&&x.carry!=null);
+      if(carry!=null&&wt.length)return{total:Math.round(carry+avg(wt.map(x=>x.total-x.carry))),totalEst:false,rollN:wt.length};
+      return{total:carry!=null&&ROLL[club]!=null?carry+ROLL[club]:null,totalEst:true};})(),
+    flush:solid.length?Math.round(Math.max(...col(solid,'carry'))):null,
+    spin:solid.length?Math.round(tmMed(col(solid,'spin'))):null,
+    attack:r1(m(full,'aa')),path:r1(m(full,'path')),pathSD:s_(full,'path'),
+    f2p:r1(m(full,'f2p')),f2pSD:s_(full,'f2p'),dl:r1(m(solid,'dl')),
+    side:r1(m(solid,'side')),sideSD:s_(solid,'side')},extra||{});
+}
+function tmSummaryClub(c,date){ // summary-only session row (no shot list)
+  return Object.assign({},c,{carry:c.work??null,carryAll:null,total:c.total??(c.work!=null&&ROLL[c.club]!=null?c.work+ROLL[c.club]:null),totalEst:c.total==null,n:null,shots:[],src:date});
+}
+function tmClubs(s){
+  if(!s.shots)return s.clubs.map(c=>tmSummaryClub(c,s.date));
+  return tmClassify(s).map(({club,shots})=>tmAgg(club,shots,{note:s.notes&&s.notes[club]}));
+}
+function tmAll(){
+  const pool={},dates={};
+  RANGE.forEach(s=>{if(!s.shots)return;tmClassify(s).forEach(({club,shots})=>{(pool[club]=pool[club]||[]).push(...shots);(dates[club]=dates[club]||[]).push(s.date);});});
+  const rows=Object.entries(pool).map(([club,sh])=>tmAgg(club,sh,{sessions:dates[club]}));
+  // clubs only in summary sessions (no shots) — newest summary wins
+  RANGE.forEach(s=>{if(s.shots)return;s.clubs.forEach(c=>{if(!pool[c.club]&&!rows.find(r=>r.club===c.club))rows.push(Object.assign(tmSummaryClub(c,s.date),{sessions:[s.date]}));});});
+  return rows.sort((a,b)=>(b.carry??-1)-(a.carry??-1));
 }
 function bsRange(){
   const el=document.getElementById('bs-range');
   if(typeof RANGE==='undefined'||!RANGE.length){document.getElementById('bs-range-card').style.display='none';return;}
   const sub=document.getElementById('bs-range-sub');
-  const s=RANGE[RANGE_IDX];
-  sub.innerHTML=(RANGE.length>1?`<select class="minisel" id="bs-range-sel">${RANGE.map((r,i)=>`<option value="${i}"${i===RANGE_IDX?' selected':''}>${r.date}</option>`).join('')}</select> `:'')+`${s.ball} · ${s.device}`;
-  const selEl=document.getElementById('bs-range-sel');if(selEl)selEl.onchange=e=>{RANGE_IDX=+e.target.value;bsRange();};
-  const clubs=tmClubs(s);
+  const all=RANGE_IDX<0,s=all?null:RANGE[RANGE_IDX];
+  sub.innerHTML=`<select class="minisel" id="bs-range-sel"><option value="-1"${all?' selected':''}>All sessions</option>${RANGE.map((r,i)=>`<option value="${i}"${i===RANGE_IDX?' selected':''}>${r.date}</option>`).join('')}</select> ${all?`${RANGE.length} sessions`:`${s.ball} · ${s.device}`}`;
+  document.getElementById('bs-range-sel').onchange=e=>{RANGE_IDX=+e.target.value;bsRange();};
+  const clubs=all?tmAll():tmClubs(s);
   const dg=(v,sdv)=>v==null?'—':`${v.toFixed(1)}°${sdv!=null?` <span style="color:var(--ink3)">±${sdv}</span>`:''}`;
-  const hasTotal=clubs.some(c=>c.total!=null);
+  const hasDl=clubs.some(c=>c.dl!=null),hasF2p=clubs.some(c=>c.f2p!=null);
+  const dot=c=>TM_COL[c]?`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${TM_COL[c]};margin-right:6px"></span>`:'';
   const rows=clubs.map(c=>{
     const f2pCol=c.f2pSD==null?'':(c.f2pSD<2?'good':c.f2pSD<=3?'mid':'bad');
     const pct=c.nFull?Math.round(c.nSolid/c.nFull*100):null;
     const stCol=pct==null?'':pct>=60?'good':pct>=40?'mid':'bad';
     const spin=c.spinLo?`${c.spinLo}–${c.spinHi}`:c.spin;
     const side=c.side==null?'—':`${Math.abs(c.side).toFixed(0)}${c.side<0?'L':'R'}${c.sideSD!=null?` <span style="color:var(--ink3)">±${c.sideSD.toFixed(0)}</span>`:''}`;
-    return `<tr><td class="lbl">${TM_COL[c.club]?`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${TM_COL[c.club]};margin-right:6px"></span>`:''}${c.club}</td>`+
+    const srcNote=c.src&&all?` <span style="color:var(--ink3);font-size:9.5px">${c.src}</span>`:'';
+    return `<tr><td class="lbl">${dot(c.club)}${c.club}${srcNote}</td>`+
       `<td>${c.n!=null?`${c.nFull}<span style="color:var(--ink3)">/${c.n}</span>`:'—'}</td>`+
       `<td class="${stCol}">${pct!=null?pct+'%':'—'}</td>`+
-      `<td>${c.work!=null?c.work+'m':'—'}</td>`+(hasTotal?`<td>${c.total?c.total+'m':'—'}</td>`:'')+
+      `<td><b>${c.carry!=null?c.carry+'m':'—'}</b></td>`+
+      `<td style="color:var(--ink3)">${c.carryAll!=null?c.carryAll:'—'}</td>`+
+      `<td>${c.total!=null?(c.totalEst?'≈':'')+c.total+'m':'—'}</td>`+
       `<td style="color:var(--ink3)">${c.flush!=null?c.flush:'—'}</td><td>${spin??'—'}</td>`+
-      `<td>${c.attack!=null?c.attack.toFixed(1)+'°':'—'}</td><td>${dg(c.path,c.pathSD)}</td><td class="${f2pCol}">${dg(c.f2p,c.f2pSD)}</td><td>${side}</td></tr>`;
+      `<td>${c.attack!=null?c.attack.toFixed(1)+'°':'—'}</td>`+(hasDl?`<td>${c.dl!=null?c.dl.toFixed(1)+'°':'—'}</td>`:'')+`<td>${dg(c.path,c.pathSD)}</td>`+(hasF2p?`<td class="${f2pCol}">${dg(c.f2p,c.f2pSD)}</td>`:'')+`<td>${side}</td></tr>`;
   }).join('');
+  // ---- gapping (All view) ----
+  let gap='';
+  if(all){
+    const g=clubs.filter(c=>c.carry!=null);
+    const mx=Math.ceil((Math.max(...g.map(c=>Math.max(c.total||0,c.flush||0)))+10)/20)*20;
+    const W=640,rowH=26,pL=74,pR=46,H=g.length*rowH+24;
+    const xO=v=>pL+v/mx*(W-pL-pR);
+    let sv='';
+    for(let v=0;v<=mx;v+=40)sv+=`<line class="axis" x1="${xO(v)}" y1="4" x2="${xO(v)}" y2="${H-18}"/><text class="axlbl" x="${xO(v)}" y="${H-6}" text-anchor="middle">${v}</text>`;
+    g.forEach((c,i)=>{const y=6+i*rowH,col=TM_COL[c.club]||'#9aa8bb';
+      sv+=`<text x="${pL-8}" y="${y+14}" text-anchor="end" fill="var(--ink2)" font-family="JetBrains Mono" font-size="10.5">${c.club}</text>`;
+      if(c.total)sv+=`<rect x="${xO(0)}" y="${y+3}" width="${xO(c.total)-xO(0)}" height="15" rx="3" fill="${col}" opacity="0.22"/>`;
+      sv+=`<rect x="${xO(0)}" y="${y+3}" width="${xO(c.carry)-xO(0)}" height="15" rx="3" fill="${col}" opacity="0.9"/>`;
+      if(c.flush)sv+=`<line x1="${xO(c.flush)}" y1="${y+1}" x2="${xO(c.flush)}" y2="${y+20}" stroke="${col}" stroke-width="2"/>`;
+      sv+=`<text x="${xO(Math.max(c.total||0,c.flush||0,c.carry))+5}" y="${y+14}" fill="var(--ink)" font-family="JetBrains Mono" font-size="10.5" font-weight="600">${c.carry}${c.total?`<tspan fill="var(--ink3)" font-weight="400"> / ${c.total}</tspan>`:''}</text>`;
+    });
+    const gaps=g.slice(1).map((c,i)=>({a:g[i].club,b:c.club,d:g[i].carry-c.carry}));
+    const flag=gaps.filter(x=>x.d<8||x.d>20);
+    gap=`<div style="margin-top:14px"><div class="note" style="margin-bottom:4px"><b>Bag gapping</b> · solid bar = avg carry (solid strikes) · faded = ≈total · tick = flush</div><div style="overflow-x:auto"><svg viewBox="0 0 ${W} ${H}" style="min-width:420px;max-width:760px">${sv}</svg></div>`+
+      `<div class="note" style="margin-top:6px">Gaps: ${gaps.map(x=>`<span style="color:${x.d<8||x.d>20?'var(--amber)':'var(--ink2)'}">${x.a.replace(' Iron','i').replace(' Wood','w')}→${x.b.replace(' Iron','i').replace(' Wood','w')} ${x.d}m</span>`).join(' · ')}${flag.length?' — amber = under 8m (overlap) or over 20m (hole in the bag)':''}</div></div>`;
+  }
   let scatter='';
-  if(s.shots){
+  if(!all&&s.shots){
     const W=640,H=230,pL=30,pR=10,pT=10,pB=22,xMax=240,yM=50;
     const xO=v=>pL+Math.min(v,xMax)/xMax*(W-pL-pR),yO=v=>pT+(H-pT-pB)/2-Math.max(-yM,Math.min(yM,v))/yM*(H-pT-pB)/2;
     let g='';
@@ -1166,13 +1268,155 @@ function bsRange(){
     g+=pts.map(([club,x],i)=>{const col=TM_COL[club]||'#9aa8bb';return `<circle class="dotpt tmpt" data-i="${i}" cx="${xO(x.carry)}" cy="${yO(x.side)}" r="${x.solid?4:3.5}" fill="${x.solid?col:'none'}" stroke="${col}" stroke-width="1.3" opacity="${x.solid?0.9:0.6}"/>`;}).join('');
     scatter=`<div style="margin-top:12px"><div class="note" style="margin-bottom:4px">Dispersion · full swings · carry (m) × side (m) · <b>filled = solid</b>, hollow = below smash bar</div><svg id="bs-tm-sc" viewBox="0 0 ${W} ${H}">${g}</svg>`+
       `<div style="display:flex;gap:11px;flex-wrap:wrap;margin-top:6px">${clubs.map(c=>`<span class="note" style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:${TM_COL[c.club]}"></span>${c.club}</span>`).join('')}</div></div>`;
-    setTimeout(()=>{document.querySelectorAll('#bs-tm-sc .tmpt').forEach(el=>{const [club,x]=pts[+el.dataset.i];const html=`<div class="tt">${club}${x.solid?'':' · mishit'}</div><div class="tr"><span>carry</span><b>${x.carry}m</b></div><div class="tr"><span>side</span><b>${Math.abs(x.side)}${x.side<0?'L':'R'}</b></div><div class="tr"><span>smash</span><b>${x.smash??'—'}</b></div><div class="tr"><span>spin</span><b>${x.spin}</b></div><div class="tr"><span>face·path</span><b>${x.f2p??'—'}</b></div>`;el.onmouseenter=e=>showTip(html,e);el.onmousemove=moveTip;el.onmouseleave=hideTip;el.onclick=e=>showTip(html,e);});},0);
+    setTimeout(()=>{document.querySelectorAll('#bs-tm-sc .tmpt').forEach(el=>{const [club,x]=pts[+el.dataset.i];const html=`<div class="tt">${club}${x.solid?'':' · mishit'}</div><div class="tr"><span>carry</span><b>${x.carry}m</b></div><div class="tr"><span>side</span><b>${Math.abs(x.side)}${x.side<0?'L':'R'}</b></div><div class="tr"><span>smash</span><b>${x.smash??'—'}</b></div><div class="tr"><span>spin</span><b>${x.spin}</b></div>${x.f2p!=null?`<div class="tr"><span>face·path</span><b>${x.f2p}</b></div>`:''}${x.dl!=null?`<div class="tr"><span>dyn loft</span><b>${x.dl}°</b></div>`:''}${x.ht!=null?`<div class="tr"><span>height</span><b>${x.ht}m</b></div>`:''}`;el.onmouseenter=e=>showTip(html,e);el.onmousemove=moveTip;el.onmouseleave=hideTip;el.onclick=e=>showTip(html,e);});},0);
   }
-  const tot=s.shots?`<div class="note" style="margin-top:6px">${clubs.reduce((a,c)=>a+c.n,0)} shots · ${clubs.reduce((a,c)=>a+c.nFull,0)} full swings · ${clubs.reduce((a,c)=>a+c.nSolid,0)} solid. Work = median carry of solid strikes; flush = best solid carry; side = solid-strike mean ±SD; attack/path/face·path over full swings.</div>`:'';
-  const notes=clubs.filter(c=>c.note).map(c=>`<div class="note" style="margin-top:5px"><b style="color:${TM_COL[c.club]||'var(--ink2)'}">${c.club}:</b> ${c.note}</div>`).join('');
-  el.innerHTML=`<div style="overflow-x:auto"><table><thead><tr><th>Club</th><th>Full/n</th><th>Solid</th><th>Work</th>${hasTotal?'<th>Total</th>':''}<th>Flush</th><th>Spin</th><th>Attack</th><th>Path</th><th>Face·Path</th><th>Side</th></tr></thead><tbody>${rows}</tbody></table></div>`+tot+scatter+
-    `<div style="margin-top:12px;padding:11px 13px;background:var(--panel2);border-radius:10px;border-left:3px solid var(--teal)" class="note">${s.summary}</div>`+
+  const anyShots=clubs.some(c=>c.n);
+  const tot=anyShots?`<div class="note" style="margin-top:6px">${clubs.reduce((a,c)=>a+(c.n||0),0)} shots · ${clubs.reduce((a,c)=>a+(c.nFull||0),0)} full swings · ${clubs.reduce((a,c)=>a+(c.nSolid||0),0)} solid. <b>Avg carry</b> = mean of solid strikes; <b>all</b> = mean of every full swing incl. mishits; <b>total</b> = avg carry + roll — measured from Trackman totals where exported, <b>≈</b> = estimated roll; flush = best solid carry.${all?' Clubs with a date beside them only have that summary session.':''}</div>`:'';
+  const notes=all?'':clubs.filter(c=>c.note).map(c=>`<div class="note" style="margin-top:5px"><b style="color:${TM_COL[c.club]||'var(--ink2)'}">${c.club}:</b> ${c.note}</div>`).join('');
+  el.innerHTML=`<div style="overflow-x:auto"><table><thead><tr><th>Club</th><th>Full/n</th><th>Solid</th><th>Avg carry</th><th>All</th><th>Total</th><th>Flush</th><th>Spin</th><th>Attack</th>${hasDl?'<th>Dyn loft</th>':''}<th>Path</th>${hasF2p?'<th>Face·Path</th>':''}<th>Side</th></tr></thead><tbody>${rows}</tbody></table></div>`+tot+gap+scatter+
+    (all?'':`<div style="margin-top:12px;padding:11px 13px;background:var(--panel2);border-radius:10px;border-left:3px solid var(--teal)" class="note">${s.summary}</div>`)+
     (notes?`<div style="margin-top:8px">${notes}</div>`:'');
+}
+
+/* ===== BREAK 80 BY CHRISTMAS ===== */
+const B80={start:'2026-10-06',end:'2026-12-25',goal:79,
+  checkpoints:[
+    {by:'2026-10-31',label:'End Oct',avg:89,dbl:4,txt:'Avg ≤ 89 · doubles ≤ 4/rd'},
+    {by:'2026-11-30',label:'End Nov',avg:87,best:84,txt:'Avg ≤ 87 · break 85 once'},
+    {by:'2026-12-25',label:'Christmas',best:79,txt:'Shoot 79 or better'}
+  ]};
+const MON3={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+function rDate(r){const m=String(r.label).match(/(\d{1,2})\s+([A-Za-z]{3})/);return m?new Date(2026,MON3[m[2]],+m[1]):null;}
+function b80Stats(rs){
+  const g=rs.map(r=>r.strokes.reduce((a,b)=>a+b,0));
+  const a=v=>v.length?v.reduce((x,y)=>x+y,0)/v.length:null;
+  const dbl=rs.map(r=>r.strokes.filter((s,i)=>s-PAR[i]>=2).length);
+  const p3=[];rs.forEach(r=>r.strokes.forEach((s,i)=>{if(PAR[i]===3)p3.push(s-3);}));
+  const sg=rs.filter(r=>(r.chips!=null||r.ch)&&r.gir!=null).map(r=>{const ch=r.chips??r.ch.reduce((x,y)=>x+(y||0),0);const miss=18-Math.round(r.gir*18/100);return miss>0?(ch+(r.sand||0))/miss:null;}).filter(v=>v!=null);
+  return{n:rs.length,avg:a(g),best:g.length?Math.min(...g):null,dbl:a(dbl),putts:a(rs.map(r=>r.putts).filter(v=>v!=null)),pen:a(rs.map(r=>r.pen).filter(v=>v!=null)),p3:a(p3),cpm:a(sg),cpmN:sg.length};
+}
+function break80(){
+  const el=document.getElementById('b80');if(!el)return;
+  const today=new Date();today.setHours(0,0,0,0);
+  const start=new Date(B80.start+'T00:00:00'),end=new Date(B80.end+'T00:00:00');
+  const days=Math.max(0,Math.ceil((end-today)/864e5)),totalDays=Math.ceil((end-start)/864e5),pct=Math.min(100,Math.max(0,(1-days/totalDays)*100));
+  const all=R.filter(r=>r.strokes&&r.strokes.length===18);
+  const since=all.filter(r=>{const d=rDate(r);return d&&d>=start;});
+  const form=all.slice(-5),F=b80Stats(form),S=b80Stats(since);
+  const done=S.best!=null&&S.best<=B80.goal;
+  // checkpoints
+  const cps=B80.checkpoints.map(c=>{const by=new Date(c.by+'T00:00:00');
+    const upto=all.filter(r=>{const d=rDate(r);return d&&d<=by;}).slice(-5),st=b80Stats(upto);
+    const sinceBy=since.filter(r=>rDate(r)<=by),bestBy=sinceBy.length?Math.min(...sinceBy.map(r=>r.strokes.reduce((a,b)=>a+b,0))):null;
+    const ok=(c.avg==null||(st.avg!=null&&st.avg<=c.avg))&&(c.dbl==null||(st.dbl!=null&&st.dbl<=c.dbl))&&(c.best==null||(bestBy!=null&&bestBy<=c.best));
+    const past=today>by,live=!past&&B80.checkpoints.find(x=>today<=new Date(x.by+'T00:00:00'))===c;
+    const now=c.avg!=null?`avg ${F.avg.toFixed(1)}${c.dbl!=null?` · dbl ${F.dbl.toFixed(1)}`:''}`:`best ${S.best??'—'}`;
+    return{...c,state:ok?'hit':past?'missed':live?'live':'next',now};});
+  const stCol={hit:'var(--green)',missed:'var(--red)',live:'var(--gold)',next:'var(--ink3)'},stTxt={hit:'✓ hit',missed:'✗ missed',live:'● now',next:'upcoming'};
+  // levers
+  const lev=[
+    ['Doubles+ / rd',F.dbl,3,1,'Bogey is fine — no hero shots'],
+    ['Putts / rd',F.putts,33,1,'1–2m circle drill'],
+    ['Chips per missed green',F.cpm,1.3,2,F.cpmN?`${F.cpmN} rd${F.cpmN>1?'s':''} logged · on in one`:'log chips to track'],
+    ['Par 3s (avg over)',F.p3,0.8,2,'Middle of the green'],
+    ['Penalties / rd',F.pen,0.7,1,'Log where they came from']
+  ].map(([k,v,t,dp,why])=>{const ok=v!=null&&v<=t;return `<div class="b80-lev"><div><div class="k">${k}</div><div class="why">${why}</div></div><div class="vv"><b style="color:${v==null?'var(--ink3)':ok?'var(--green)':'var(--amber)'}">${v==null?'—':(k.startsWith('Par')?'+':'')+v.toFixed(dp)}</b><span>≤ ${(k.startsWith('Par')?'+':'')+t}</span></div></div>`;}).join('');
+  // chart: last 15 rounds gross + rolling 5 avg
+  const show=all.slice(-15),gs=show.map(r=>r.strokes.reduce((a,b)=>a+b,0));
+  const narrow=(el.clientWidth||800)<560;
+  const W=narrow?400:640,H=narrow?230:170,pL=24,pR=50,pT=12,pB=22,mn=Math.min(76,...gs)-1,mx=Math.max(...gs)+2;
+  const xO=i=>pL+i*(W-pL-pR)/Math.max(1,show.length-1),yO=v=>pT+(v-mn)/(mx-mn)*(H-pT-pB);
+  let sv='';for(let v=Math.ceil(mn/5)*5;v<=mx;v+=5)sv+=`<line class="axis" x1="${pL}" y1="${yO(v)}" x2="${W-pR}" y2="${yO(v)}"/><text class="axlbl" x="${pL-4}" y="${yO(v)+3}" text-anchor="end">${v}</text>`;
+  const si=show.findIndex(r=>{const d=rDate(r);return d&&d>=start;});
+  if(si>=0)sv+=`<rect x="${xO(si)-8}" y="${pT}" width="${W-pR-xO(si)+8}" height="${H-pT-pB}" fill="rgba(245,196,81,0.06)"/><text class="axlbl" x="${xO(si)-4}" y="${pT+8}" fill="#f5c451">challenge</text>`;
+  [[B80.goal,'#37c98a','79 goal'],[87,'#f5c451','87 Nov'],[89,'#9aa8bb','89 Oct']].forEach(([v,c,l])=>{sv+=`<line x1="${pL}" y1="${yO(v)}" x2="${W-pR}" y2="${yO(v)}" stroke="${c}" stroke-dasharray="4,4" stroke-opacity="0.7"/><text class="axlbl" x="${W-pR+4}" y="${yO(v)+3}" fill="${c}">${l}</text>`;});
+  const roll=gs.map((_,i)=>{const s=gs.slice(Math.max(0,i-4),i+1);return s.reduce((a,b)=>a+b,0)/s.length;});
+  sv+=`<polyline points="${roll.map((v,i)=>`${xO(i)},${yO(v)}`).join(' ')}" fill="none" stroke="#5aa0e8" stroke-width="2"/>`;
+  gs.forEach((g,i)=>{sv+=`<circle cx="${xO(i)}" cy="${yO(g)}" r="4" fill="${g<=B80.goal?'#37c98a':g<=84?'#f5c451':'#2a3442'}" stroke="#9aa8bb" stroke-width="1"><title>${show[i].label}: ${g}</title></circle>`;if(i%(narrow?5:3)===0||i===gs.length-1)sv+=`<text class="axlbl" x="${xO(i)}" y="${H-7}" text-anchor="middle">${show[i].label}</text>`;});
+  const gap=F.avg!=null?F.avg-86:null;
+  el.innerHTML=`
+   <div class="b80-top">
+     <div><div class="b80-eyebrow">Break 80 by Christmas</div>
+       <div class="b80-big">${done?'🎉 Done':days}<small>${done?` — ${S.best} shot`:' days to go'}</small></div>
+       <div class="b80-bar"><i style="width:${pct}%"></i></div>
+       <div class="b80-sub">${since.length} round${since.length===1?'':'s'} since 6 Oct · best ${S.best??'—'} · all-time best ${Math.min(...all.map(r=>r.strokes.reduce((a,b)=>a+b,0)))}</div></div>
+     <div class="b80-form"><div class="k">Form · last 5</div><div class="v">${F.avg.toFixed(1)}</div><div class="s">${gap>0?`${gap.toFixed(1)} shots above the ~86 avg where 79 becomes a good-day score`:'In range — a good day is 79'}</div></div>
+   </div>
+   <div class="b80-cps">${cps.map(c=>`<div class="b80-cp" style="border-color:${stCol[c.state]}"><div class="h"><span>${c.label}</span><b style="color:${stCol[c.state]}">${stTxt[c.state]}</b></div><div class="t">${c.txt}</div><div class="n">now: ${c.now}</div></div>`).join('')}</div>
+   <div class="b80-grid"><div><div class="b80-lbl">Gross · last 15 rounds · blue = rolling 5 avg</div><svg viewBox="0 0 ${W} ${H}">${sv}</svg></div>
+   <div><div class="b80-lbl">Levers · last 5 rounds vs target</div>${lev}</div></div>`;
+}
+
+/* ===== CLUB TARGETS · scratch, −3° path baby draw ===== */
+// Tour reference (Trackman PGA Tour averages, converted to metric): club speed m/s, ball speed m/s, carry m.
+// 2 Iron is interpolated (no published tour average). Scratch smash = tour − ~0.02.
+// Speed-independent targets (smash, attack, dyn loft, spin, path, face, side) are what a scratch iron player delivers.
+// Distance targets are scaled to YOUR club speed: carry ≈ tour carry × (your speed × scratch smash) / tour ball speed.
+// Shot-shape convention (your bay): path −3° with face·path ≈ +2° = ball starts just left of target and curves back right → your baby draw.
+const CLUB_TGT={
+ 'Driver': {tcs:50.5,tbs:74.7,tc:251,smash:1.46,aa:[2,5],dl:[12,15],spin:[2200,2800],side:8},
+ '3 Wood': {tcs:47.8,tbs:70.6,tc:222,smash:1.45,aa:[-3,0],dl:[11,14],spin:[3200,4000],side:8},
+ '5 Wood': {tcs:46.0,tbs:67.9,tc:210,smash:1.44,aa:[-3.5,-1],dl:[13,16],spin:[3800,4800],side:7},
+ '2 Iron': {tcs:44.7,tbs:65.3,tc:201,smash:1.42,aa:[-3,-1],dl:[13,16],spin:[3800,4800],side:7},
+ '4 Iron': {tcs:42.9,tbs:61.2,tc:186,smash:1.40,aa:[-4,-2],dl:[15,18],spin:[4300,5300],side:6},
+ '5 Iron': {tcs:42.0,tbs:59.0,tc:177,smash:1.38,aa:[-4,-2.5],dl:[16,20],spin:[4800,5900],side:6},
+ '7 Iron': {tcs:40.2,tbs:53.6,tc:157,smash:1.31,aa:[-5,-3],dl:[20,24],spin:[6300,7800],side:5},
+ '8 Iron': {tcs:38.9,tbs:51.4,tc:146,smash:1.29,aa:[-5,-3],dl:[23,27],spin:[7100,8800],side:5},
+ '9 Iron': {tcs:38.0,tbs:48.7,tc:135,smash:1.26,aa:[-5.5,-3.5],dl:[27,31],spin:[7700,9500],side:5},
+ 'PW':     {tcs:37.1,tbs:45.6,tc:124,smash:1.22,aa:[-6,-4],dl:[31,35],spin:[8300,10200],side:5}
+};
+const PATH_TGT=[-4,-2], F2P_TGT=[1,3], FACE_TGT=[-2,0];
+let TGT_CLUB=null;
+function clubTargets(){
+  const sel=document.getElementById('tgt-sel'),el=document.getElementById('tgt-body');if(!sel||!el)return;
+  const mine={};(typeof tmAll==='function'?tmAll():[]).forEach(c=>mine[c.club]=c);
+  const order=Object.keys(CLUB_TGT);
+  if(!TGT_CLUB)TGT_CLUB=mine['PW']?'PW':order.find(k=>mine[k])||order[0];
+  sel.innerHTML=order.map(k=>`<option value="${k}"${k===TGT_CLUB?' selected':''}>${k}${mine[k]&&mine[k].n?'':' · no data'}</option>`).join('');
+  sel.onchange=e=>{TGT_CLUB=e.target.value;clubTargets();};
+  const t=CLUB_TGT[TGT_CLUB],c=mine[TGT_CLUB]||null,shots=c&&c.shots?c.shots:[];
+  const full=shots.filter(x=>x.full),solid=shots.filter(x=>x.solid);
+  const mean=(a,f)=>{const v=a.map(f).filter(x=>x!=null&&!isNaN(x));return v.length?avg(v):null;};
+  const you={
+    cs:mean(full,x=>x.cs), bs:mean(solid,x=>x.bs),
+    smash:mean(full,x=>(x.cs&&x.bs)?x.bs/x.cs:x.smash),
+    carry:c?c.carry:null, total:c?c.total:null,
+    aa:mean(full,x=>x.aa), dl:mean(solid,x=>x.dl), spin:mean(solid,x=>x.spin),
+    path:mean(full,x=>x.path), f2p:mean(full,x=>x.f2p),
+    face:mean(full,x=>(x.path!=null&&x.f2p!=null)?x.path+x.f2p:null),
+    side:mean(solid,x=>x.side)
+  };
+  if(c&&!c.n){you.carry=c.carry;you.total=c.total;you.aa=c.attack??null;you.path=c.path??null;you.f2p=c.f2p??null;you.spin=c.spin??null;}
+  const csMed=tmMed(full.map(x=>x.cs)); // median: one slow/partial swing shouldn't drag the distance target
+  const cs=csMed||you.cs||t.tcs, tBs=cs*t.smash, tCarry=Math.round(t.tc*tBs/t.tbs);
+  const roll=c&&c.total!=null&&c.carry!=null?c.total-c.carry:(ROLL[TGT_CLUB]||0);
+  const f1=v=>v==null?'—':v.toFixed(1), f2=v=>v==null?'—':v.toFixed(2), f0=v=>v==null?'—':Math.round(v).toLocaleString();
+  const sideTxt=v=>v==null?'—':`${Math.abs(v).toFixed(0)}${v<0?'L':'R'}`;
+  // status: range [lo,hi] or min
+  const st=(v,lo,hi,unit,dp=1)=>{ if(v==null)return['','—'];v=Math.round(v*10**dp)/10**dp;
+    if(v>=lo&&v<=hi)return['good','✓'];
+    const d=v<lo?lo-v:hi-v; // signed change needed to reach the nearest edge of the window
+    const big=Math.abs(d)>(hi-lo||Math.abs(lo)*0.05||1);
+    return[big?'bad':'mid',`${d>0?'+':'−'}${Math.abs(d).toFixed(dp)}${unit}`]; };
+  const rows=[
+    ['Club speed', you.cs!=null?f1(you.cs)+' m/s':'—', `tour ${t.tcs.toFixed(1)}`, ['','ref'], you.cs!=null?'Speed is yours — targets below are scaled to it':'No data — distances use tour speed'],
+    ['Ball speed', you.bs!=null?f1(you.bs)+' m/s':'—', `≥ ${tBs.toFixed(1)}`, you.bs==null?['','—']:(you.bs>=tBs-0.3?['good','✓']:st(you.bs,tBs,999,' m/s')), 'Your speed × scratch smash'],
+    ['Smash', f2(you.smash), `≥ ${t.smash.toFixed(2)}`, you.smash==null?['','—']:(you.smash>=t.smash-0.005?['good','✓']:st(you.smash,t.smash,9,'',2)), 'Centre-face strike'],
+    ['Carry', you.carry!=null?you.carry+'m':'—', `≈ ${tCarry}m<div class="tgt-why">tour ${t.tc}m @ ${t.tcs} m/s</div>`, you.carry==null?['','—']:(you.carry>=tCarry-2?['good','✓']:st(you.carry,tCarry-2,999,'m',0)), 'Scratch strike at your speed'],
+    ['Total', you.total!=null?you.total+'m':'—', `≈ ${tCarry+Math.round(roll)}m`, you.total==null?['','—']:(you.total>=tCarry+roll-2?['good','✓']:st(you.total,tCarry+roll-2,999,'m',0)), 'Carry + your roll'],
+    ['Attack', you.aa!=null?f1(you.aa)+'°':'—', `${t.aa[0]} to ${t.aa[1]}°`, st(you.aa,t.aa[0],t.aa[1],'°'), TGT_CLUB==='Driver'?'Hit up for distance':'Ball-first, divot after'],
+    ['Dyn loft', you.dl!=null?f1(you.dl)+'°':'—', `${t.dl[0]}–${t.dl[1]}°`, st(you.dl,t.dl[0],t.dl[1],'°'), 'Consistent shaft lean'],
+    ['Spin', f0(you.spin), `${t.spin[0].toLocaleString()}–${t.spin[1].toLocaleString()}`, st(you.spin,t.spin[0],t.spin[1],'',0), (/Driver|Wood/.test(TGT_CLUB)?'Launch window — not too much, not too little':'Holds greens without ballooning')],
+    ['Club path', you.path!=null?f1(you.path)+'°':'—', `${PATH_TGT[0]} to ${PATH_TGT[1]}°`, st(you.path,PATH_TGT[0],PATH_TGT[1],'°'), '−3° = your draw path'],
+    ['Face angle', you.face!=null?f1(you.face)+'°':'—', `${FACE_TGT[0]} to ${FACE_TGT[1]}°`, st(you.face,FACE_TGT[0],FACE_TGT[1],'°'), 'Start just left of target'],
+    ['Face·path', you.f2p!=null?f1(you.f2p)+'°':'—', `+${F2P_TGT[0]} to +${F2P_TGT[1]}°`, st(you.f2p,F2P_TGT[0],F2P_TGT[1],'°'), 'Baby draw curve'],
+    ['Side (solid)', sideTxt(you.side), `within ${t.side}m`, you.side==null?['','—']:(Math.abs(you.side)<=t.side?['good','✓']:['bad',`${(Math.abs(you.side)-t.side).toFixed(0)}m ${you.side<0?'right':'left'}`]), 'Finishes on line']
+  ];
+  const sum=rows.filter(r=>r[3][1]==='✓').length,scored=rows.filter(r=>r[3][1]!=='—'&&r[3][1]!=='ref').length;
+  const hdr=c&&c.n?`<div class="note" style="margin-bottom:8px">${c.nFull} full swings · ${c.nSolid} solid · ${(c.sessions||[]).join(', ')} · <b style="color:${sum/scored>=0.6?'var(--green)':sum/scored>=0.4?'var(--amber)':'var(--red)'}">${sum}/${scored} on target</b></div>`:
+    (c?`<div class="note" style="margin-bottom:8px">Summary data only (${c.src}) — no shot-level numbers yet.</div>`:`<div class="note" style="margin-bottom:8px">No Trackman data for this club yet — targets shown so you know what to aim for.</div>`);
+  el.innerHTML=hdr+`<div style="overflow-x:auto"><table class="tgt-tbl"><thead><tr><th>Metric</th><th>You</th><th>Scratch target</th><th>Change</th></tr></thead><tbody>${rows.map(r=>`<tr><td class="lbl">${r[0]}<div class="tgt-why">${r[4]}</div></td><td>${r[1]}</td><td style="color:var(--ink2)">${r[2]}</td><td class="${r[3][0]}" style="font-weight:600">${r[3][1]}</td></tr>`).join('')}</tbody></table></div>`+
+    `<div class="note" style="margin-top:8px">Targets: scratch-level delivery for a <b>−3° path, baby draw</b> (start ≈1° left, curve back). Distance targets scale tour carry to your club speed at scratch smash. Delivery numbers = all full swings; carry, spin, dyn loft & side = solid strikes. Pooled across all Trackman sessions. <b>Change</b> = how far to move to reach the window (+ more, − less).</div>`;
 }
 
 /* ===== COACH TAB ===== */
@@ -1209,10 +1453,10 @@ async function coachAsk(){
 /* ===== WIRING ===== */
 function renderAll(){
   document.getElementById('top-meta').textContent=`Pacific GC · ${R.length} rounds · LH`;
-  hero();ovTiles();ovFocus();ovStrokesGained();ovTimeline();ovProjection();
+  hero();break80();ovTiles();ovFocus();ovStrokesGained();ovTimeline();ovProjection();
   scTiles();scTable();scMix();scDoubles();scBirdie();scMatrix();
   sgTiles();sgPutts();sgPuttHole();lineChart('sg-ud',filt(),'ud','#a78bfa',{target:50,min:0,max:60});sgBlow();
-  bsTiles();bsHeat();bsFw();bsRange();
+  bsTiles();bsHeat();bsFw();bsRange();clubTargets();
 }
 function setTab(t){
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
