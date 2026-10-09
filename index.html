@@ -189,6 +189,21 @@
   .b80-lev .vv{text-align:right;font-family:'JetBrains Mono',monospace;white-space:nowrap;}
   .b80-lev .vv b{font-size:15px;}
   .b80-lev .vv span{display:block;font-size:9.5px;color:var(--ink3);}
+  .lay-order{display:flex;flex-wrap:wrap;gap:3px;margin-top:8px;}
+  .lay-h{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--panel2);border-radius:5px;padding:3px 5px;color:var(--ink2);}
+  .lay-h i{font-style:normal;color:var(--ink3);margin-left:2px;font-size:8.5px;}
+  .lay-h.tmp{background:rgba(245,196,81,0.15);color:var(--gold);}
+  #lay-editor{margin-top:10px;padding:12px;background:rgba(0,0,0,0.2);border:1px solid var(--line);border-radius:12px;}
+  .lay-f{display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink3);text-transform:uppercase;letter-spacing:0.08em;}
+  .lay-f input,.lay-trow input,.lay-trow select{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px;font-size:13px;font-family:'Inter',sans-serif;min-width:0;}
+  .lay-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;}
+  .lay-out{background:var(--panel2);border:1px solid var(--line);border-radius:7px;color:var(--ink);padding:6px 0;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;}
+  .lay-out i{font-style:normal;font-size:8.5px;color:var(--ink3);}
+  .lay-out.on{background:rgba(255,95,86,0.15);border-color:var(--red);color:var(--red);text-decoration:line-through;}
+  .lay-trow{display:flex;gap:6px;align-items:center;margin-bottom:6px;}
+  .lay-trow input{width:70px;flex:1;} .lay-trow span{font-size:11px;color:var(--ink3);}
+  .lay-x{background:none;border:none;color:var(--ink3);font-size:14px;cursor:pointer;}
+  .lay-tot{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);} .lay-tot.bad{color:var(--amber);}
   .note{font-size:11px;color:var(--ink3);font-family:'JetBrains Mono',monospace;line-height:1.55;}
   .note b{color:var(--ink2);}
   .sectlabel{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin:22px 2px 11px;}
@@ -275,7 +290,7 @@
   .rs-hint{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink3);margin-left:4px;}
   .rs-sec{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
   .rs-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
-  .rs-tees{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .rs-tees{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
   .rs-tee{position:relative;background:var(--panel2);border:1.5px solid var(--line);border-radius:14px;padding:11px 10px 10px;text-align:left;cursor:pointer;color:var(--ink);font-family:'Inter',sans-serif;overflow:hidden;transition:border-color .12s,transform .12s;}
   .rs-tee::before{content:'';position:absolute;left:0;top:0;right:0;height:4px;background:var(--tc);}
   .rs-tee .tn{font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px;}
@@ -488,8 +503,16 @@
 
       <div class="rs-sec">
         <div class="rs-lbl">Tee</div>
-        <select id="af-tee" style="display:none"><option value="blue">Blue</option><option value="white">White</option><option value="yellow">Yellow</option></select>
+        <select id="af-tee" style="display:none"><option value="blue">Blue</option><option value="white">White</option><option value="yellow">Yellow</option><option value="red">Red</option></select>
         <div class="rs-tees" id="rs-tees"></div>
+      </div>
+
+      <div class="rs-sec">
+        <div class="rs-lbl">Course layout <span><button class="rs-reset" id="lay-new-btn">+ new</button> <button class="rs-reset" id="lay-edit-btn">✎ edit</button></span></div>
+        <select class="minisel" id="lay-sel" style="width:100%;padding:9px 10px;font-size:13px"></select>
+        <div class="rs-calc" id="lay-sum" style="text-align:left;margin-top:7px"></div>
+        <div class="lay-order" id="lay-order"></div>
+        <div id="lay-editor" style="display:none"><div id="lay-ed"></div></div>
       </div>
 
       <div class="rs-sec">
@@ -799,13 +822,34 @@ const SOCIAL=[
 const HCP_HISTORY=[{before:true,hcp:18},{after:'25 Jun',hcp:17},{after:'29 Aug',hcp:14.9},{after:'26 Sep',hcp:13.9},{after:'01 Oct',hcp:13.8}];
 const HCP_CURRENT=13.8;
 const PAR_TOTAL=72, CR=73, SLOPE=129;
-const TEE_COL={blue:'#5aa0e8',white:'#9fb0c0',yellow:'#f0b53e'};
+const TEE_COL={blue:'#5aa0e8',white:'#9fb0c0',yellow:'#f0b53e',red:'#e8605a'};
+
+/* ===== COURSE LAYOUTS =====
+   A round may carry layout:[{h:'5A',p:4},...] (18 entries, in the order played on the card) when the course
+   is in a temporary arrangement. No layout = standard 1–18. Optional rating:{cr,sl} = temporary course rating
+   for handicap maths; without it the round is left out of the WHS index calc (can't compute a differential). */
+const STD_LAYOUT=PAR.map((p,i)=>({h:String(i+1),p}));
+const layOf=r=>(r&&Array.isArray(r.layout)&&r.layout.length===18)?r.layout:STD_LAYOUT;
+const parOf=(r,i)=>layOf(r)[i].p;
+const holeOf=(r,i)=>layOf(r)[i].h;
+const parTot=r=>layOf(r).reduce((a,x)=>a+x.p,0);
+const isTemp=r=>layOf(r)!==STD_LAYOUT;
+// position in round r of standard hole i (0-based), or -1 if it wasn't played as normal that day
+const stdPos=(r,i)=>{const L=layOf(r);if(L===STD_LAYOUT)return i;return L.findIndex(x=>x.h===String(i+1)&&x.p===PAR[i]);};
+function buildLayout(out,temps){ // out: Set of standard hole numbers removed; temps: [{h,p,after}] (after = std hole no., 0 = before H1)
+  const L=[];const add=a=>temps.filter(t=>+t.after===a).forEach(t=>L.push({h:String(t.h),p:+t.p}));
+  add(0);for(let n=1;n<=18;n++){if(!out.has(n))L.push({h:String(n),p:PAR[n-1]});add(n);}return L;
+}
+const BUILTIN_LAYOUTS=[
+  {id:'std',name:'Standard (par 72)',holes:STD_LAYOUT},
+  {id:'temp-oct26',name:'Temp · H1 out, 5 split 5A/5B',holes:buildLayout(new Set([1,5]),[{h:'5A',p:4,after:4},{h:'5B',p:3,after:4}])}
+];
 
 R.forEach(r=>{
   r.out=r.strokes.slice(0,9).reduce((a,b)=>a+b,0);
   r.inn=r.strokes.slice(9).reduce((a,b)=>a+b,0);
   r.gross=r.out+r.inn;
-  r.blow=r.strokes.reduce((a,s,i)=>a+Math.max(0,s-PAR[i]-1),0);
+  r.blow=r.strokes.reduce((a,s,i)=>a+Math.max(0,s-parOf(r,i)-1),0);
 });
 
 /* ===== utils ===== */
@@ -826,7 +870,7 @@ function diffOf(r){return (113/SLOPE)*(r.gross-CR);}
 /* ---- WHS index engine (from logged gross; cap = par+3 per hole ≈ net double at daily HC ~17–22, no SI on file) ---- */
 const TEE_RATING={blue:{cr:73,sl:129},white:{cr:71,sl:128}};
 function whsRounds(){
-  return R.filter(r=>TEE_RATING[r.tee]).map(r=>{const t=TEE_RATING[r.tee];const ags=r.strokes.reduce((a,s,i)=>a+Math.min(s,PAR[i]+3),0);return{r,ags,diff:Math.round(1130/t.sl*(ags-t.cr))/10};});
+  return R.filter(r=>r.strokes&&(isTemp(r)?(r.rating&&r.rating.cr):TEE_RATING[r.tee])).map(r=>{const t=isTemp(r)?r.rating:TEE_RATING[r.tee];const ags=r.strokes.reduce((a,s,i)=>a+Math.min(s,parOf(r,i)+3),0);return{r,ags,diff:Math.round(1130/t.sl*(ags-t.cr))/10};});
 }
 function whsIndex(diffs){const b=diffs.slice().sort((a,b)=>a-b).slice(0,8);return b.length?Math.floor(b.reduce((a,x)=>a+x,0)/b.length*10+1e-9)/10:null;}
 function hero(){
@@ -842,7 +886,7 @@ function hero(){
   document.getElementById('hero-delta').innerHTML=`&#9662; ${drop}<span class="from">from ${start} · started Apr</span><span class="hx-calc">logged calc <b style="color:${match?'var(--green)':'var(--amber)'}">${calc.toFixed(1)}</b> ${match?'✓ matches GA':'vs GA '+HCP_CURRENT}</span>`;
 
   // ---- next round: blue tees, what gross moves the index ----
-  const t=TEE_RATING.blue,dh=Math.round(HCP_CURRENT*t.sl/113+(t.cr-PAR_TOTAL));
+  const t=TEE_RATING.blue,dh=Math.round((HCP_CURRENT*t.sl/113+(t.cr-PAR_TOTAL))*0.93);
   const rest=diffs.slice(1); // oldest rolls off
   const dOf=g=>Math.round(1130/t.sl*(g-t.cr))/10;
   const idxIf=g=>whsIndex(rest.concat(dOf(g)));
@@ -885,7 +929,8 @@ function hero(){
   const hist=HCP_HISTORY.map(e=>`<span class="hx-chip">${e.before?'Apr':e.after} <b>${e.hcp}</b></span>`).join('<span>→</span>');
   const lowIdx=idxs.slice().sort((a,b)=>a-b)[0];
   const best=idxs.reduce((a,b)=>win[a].diff<=win[b].diff?a:b);
-  document.getElementById('hx-foot').innerHTML=hist+`<span style="margin-left:auto">best ${win[best].diff.toFixed(1)} (${win[best].r.label}) in the window for ${best+1} more rds · next counting score drops out in ${lowIdx+1}</span>`;
+  const exTemp=R.filter(r=>r.strokes&&isTemp(r)&&!(r.rating&&r.rating.cr)).length;
+  document.getElementById('hx-foot').innerHTML=(exTemp?`<span class="hx-chip" style="color:var(--amber)">${exTemp} temp-layout round${exTemp>1?'s':''} not in calc · add temp rating</span>`:'')+hist+`<span style="margin-left:auto">best ${win[best].diff.toFixed(1)} (${win[best].r.label}) in the window for ${best+1} more rds · next counting score drops out in ${lowIdx+1}</span>`;
 
   document.getElementById('hero-journey').innerHTML=`Down from <b>${start}</b> to <b>${HCP_CURRENT}</b>. Your long game already plays near <b>single figures</b> — driving accuracy and iron striking are there. The strokes between you and a 5 are almost all <b>inside 60 metres</b>: putting and up-and-downs.`;
 }
@@ -1000,7 +1045,7 @@ function ovTimeline(){
     h+=`<circle class="dot" cx="${x}" cy="${y}" r="4" fill="${TEE_COL[r.tee]||'#5aa0e8'}" stroke="#0c1015" stroke-width="2" data-i="${i}"/>`;
     if(i%Math.ceil(rounds.length/9)===0||i===rounds.length-1)h+=`<text class="axlbl" x="${x}" y="${H-9}" text-anchor="middle">${r.label.split(' ')[0]} ${r.label.split(' ')[1]||''}</text>`;});
   el.innerHTML=h;
-  el.querySelectorAll('.dot').forEach(c=>{const r=rounds[+c.dataset.i];c.onmouseenter=e=>showTip(`<div class="tt">${r.label} · ${r.stableford} pts</div><div class="tr"><span>gross</span><b>${r.gross} (+${r.gross-PAR_TOTAL})</b></div><div class="tr"><span>blow-up tax</span><b>${r.blow}</b></div>`,e);c.onmousemove=moveTip;c.onmouseleave=hideTip;});
+  el.querySelectorAll('.dot').forEach(c=>{const r=rounds[+c.dataset.i];c.onmouseenter=e=>showTip(`<div class="tt">${r.label} · ${r.stableford} pts</div><div class="tr"><span>gross</span><b>${r.gross} (+${r.gross-parTot(r)})</b></div><div class="tr"><span>blow-up tax</span><b>${r.blow}</b></div>`,e);c.onmousemove=moveTip;c.onmouseleave=hideTip;});
 }
 
 function ovProjection(){
@@ -1047,7 +1092,7 @@ function scTable(){
 }
 function scMix(){
   const rounds=filt();let par=0,bog=0,dbl=0,bird=0,tot=0;
-  rounds.forEach(r=>r.strokes.forEach((s,i)=>{const d=s-PAR[i];tot++;if(d<0)bird++;else if(d===0)par++;else if(d===1)bog++;else dbl++;}));
+  rounds.forEach(r=>r.strokes.forEach((s,i)=>{const d=s-parOf(r,i);tot++;if(d<0)bird++;else if(d===0)par++;else if(d===1)bog++;else dbl++;}));
   const data=[['Birdie+',bird,'#e8b24a'],['Par',par,'#5aa0e8'],['Bogey',bog,'#f0b53e'],['Dbl+',dbl,'#ff5f56']];
   const W=320;let x=0,h='';
   data.forEach(([nm,v,c])=>{const w=v/tot*W;if(w>0){h+=`<rect x="${x}" y="20" width="${Math.max(w-2,1)}" height="26" fill="${c}" rx="4"/>`;if(w>28)h+=`<text class="axlbl" x="${x+w/2}" y="14" text-anchor="middle" fill="${c}">${(v/tot*100).toFixed(0)}%</text>`;}x+=w;});
@@ -1057,7 +1102,7 @@ function scMix(){
 }
 function scDoubles(){
   const rounds=filt().filter(r=>r.strokes);
-  const withDbl=rounds.map(r=>({...r,dbl:r.strokes.filter((s,i)=>s-PAR[i]>=2).length}));
+  const withDbl=rounds.map(r=>({...r,dbl:r.strokes.filter((s,i)=>s-parOf(r,i)>=2).length}));
   lineChart('sc-dbl',withDbl,'dbl','#ff5f56',{min:0});
   const vals=withDbl.map(r=>r.dbl);
   const recent=vals.slice(-5),early=vals.slice(0,5);
@@ -1069,7 +1114,7 @@ function scDoubles(){
 }
 function scBirdie(){
   const rounds=filt();
-  const holes=PAR.map((par,i)=>{let b=0,e=0,best=99;rounds.forEach(r=>{if(r.strokes[i]!=null){const st=r.strokes[i];if(st<best)best=st;const d=st-par;if(d<=-2)e++;else if(d===-1)b++;}});return {hole:i+1,par,c:b+e,e,best};});
+  const holes=PAR.map((par,i)=>{let b=0,e=0,best=99;rounds.forEach(r=>{const k=r.strokes?stdPos(r,i):-1;if(k>=0&&r.strokes[k]!=null){const st=r.strokes[k];if(st<best)best=st;const d=st-par;if(d<=-2)e++;else if(d===-1)b++;}});return {hole:i+1,par,c:b+e,e,best};});
   const cell=x=>{const got=x.c>0;const bg=x.e>0?'var(--teal)':got?'var(--gold)':'var(--panel2)';const op=got?Math.min(0.4+x.c*0.2,1):1;const tc=got?'#1a1205':'var(--ink3)';const mk=x.e>0?'★':got?'●'+(x.c>1?x.c:''):'—';return `<div class="cell" style="background:${bg};opacity:${op}"><div class="hh" style="color:${got?'rgba(26,18,5,.7)':'var(--ink3)'}">${x.hole}·p${x.par}</div><div class="hv" style="color:${tc}">${mk}</div></div>`;};
   document.getElementById('sc-bird-f').innerHTML=holes.slice(0,9).map(cell).join('');
   document.getElementById('sc-bird-b').innerHTML=holes.slice(9).map(cell).join('');
@@ -1081,7 +1126,7 @@ function scBirdie(){
 function scMatrix(){
   let h=`<thead><tr><th>Round</th>${PAR.map((p,i)=>`<th style="text-align:center">${i+1}</th>`).join('')}<th>Gr</th></tr></thead><tbody>`;
   h+=`<tr><td class="lbl" style="color:var(--ink3)">PAR</td>${PAR.map(p=>`<td style="text-align:center;color:var(--ink3)">${p}</td>`).join('')}<td>72</td></tr>`;
-  filt().slice().reverse().forEach(r=>{h+=`<tr><td class="lbl">${r.label}</td>${r.strokes.map((s,i)=>{const d=s-PAR[i];const c=d<0?'#e8b24a':d===0?'var(--ink2)':d===1?'#f0b53e':'#ff5f56';return `<td style="text-align:center;color:${c};font-weight:${d>=2||d<0?'600':'400'}">${s}</td>`;}).join('')}<td>${r.gross}</td></tr>`;});
+  filt().slice().reverse().forEach(r=>{const tmp=isTemp(r);h+=`<tr><td class="lbl">${r.label}${tmp?' <span style="color:var(--gold);font-size:9px" title="Temporary layout · par '+parTot(r)+'">TEMP</span>':''}</td>${r.strokes.map((s,i)=>{const d=s-parOf(r,i);const c=d<0?'#e8b24a':d===0?'var(--ink2)':d===1?'#f0b53e':'#ff5f56';return `<td style="text-align:center;color:${c};font-weight:${d>=2||d<0?'600':'400'}" title="H${holeOf(r,i)} · par ${parOf(r,i)}">${s}${tmp&&holeOf(r,i)!==String(i+1)?`<sup style="font-size:7px;color:var(--ink3)">${holeOf(r,i)}</sup>`:''}</td>`;}).join('')}<td>${r.gross}</td></tr>`;});
   document.getElementById('sc-matrix').innerHTML=h+`</tbody>`;
 }
 
@@ -1130,7 +1175,7 @@ function sgPuttHole(){
   const rounds=filt().filter(r=>Array.isArray(r.ph)&&r.ph.length===18);
   const card=document.getElementById('sg-ph-f').closest('.card');
   if(rounds.length<1){document.getElementById('sg-ph-f').innerHTML='';document.getElementById('sg-ph-b').innerHTML='';document.getElementById('sg-ph-sub').textContent='no per-hole data yet';document.getElementById('sg-ph-note').innerHTML='Per-hole putts get captured from scorecards going forward.';return;}
-  const holes=PAR.map((par,i)=>{const v=rounds.map(r=>r.ph[i]).filter(x=>x!=null);const a=v.length?v.reduce((x,y)=>x+y,0)/v.length:null;const tp=v.filter(x=>x>=3).length;return {hole:i+1,par,avg:a,tp};});
+  const holes=PAR.map((par,i)=>{const v=rounds.map(r=>{const k=stdPos(r,i);return k>=0?r.ph[k]:null;}).filter(x=>x!=null);const a=v.length?v.reduce((x,y)=>x+y,0)/v.length:null;const tp=v.filter(x=>x>=3).length;return {hole:i+1,par,avg:a,tp};});
   const mk=(idx,el)=>{document.getElementById(el).innerHTML=idx.map(i=>{const x=holes[i];if(x.avg==null)return `<div class="cell" style="background:var(--panel2)"><div class="hh">${x.hole}</div><div class="hv" style="color:var(--ink3)">—</div></div>`;const col=x.tp>=2?'#ff5f56':x.tp===1?'#f0b53e':'#1c8a52';return `<div class="cell" style="background:${col};opacity:${Math.min(0.4+x.tp*0.25,1)}"><div class="hh">${x.hole}·p${x.par}</div><div class="hv" style="color:#fff">${x.avg.toFixed(1)}</div></div>`;}).join('');};
   mk([0,1,2,3,4,5,6,7,8],'sg-ph-f');mk([9,10,11,12,13,14,15,16,17],'sg-ph-b');
   const t3=holes.reduce((a,x)=>a+x.tp,0);const worst=holes.filter(x=>x.avg!=null).sort((a,b)=>b.tp-a.tp).slice(0,3);
@@ -1155,7 +1200,8 @@ function bsTiles(){
 }
 function bsHeat(){
   const rounds=filt();
-  const mk=(idx,el)=>{document.getElementById(el).innerHTML=idx.map(i=>{const a=avg(rounds.map(r=>r.strokes[i]));const d=a-PAR[i];const col=d>=1.5?'#ff5f56':d>=1?'#f0b53e':d>=0.5?'#caa53a':'#1c8a52';return `<div class="cell" style="background:${col};opacity:${Math.min(0.45+d*0.3,1)}" data-h="${i+1}" data-avg="${a.toFixed(2)}" data-p="${PAR[i]}"><div class="hh">${i+1}·p${PAR[i]}</div><div class="hv" style="color:#fff">+${d.toFixed(1)}</div></div>`;}).join('');};
+  const atHole=i=>{const v=[];rounds.forEach(r=>{if(!r.strokes)return;const k=stdPos(r,i);if(k>=0)v.push(r.strokes[k]);});return v;};
+  const mk=(idx,el)=>{document.getElementById(el).innerHTML=idx.map(i=>{const v=atHole(i);if(!v.length)return `<div class="cell" style="background:var(--panel2)" data-h="${i+1}" data-avg="—" data-p="${PAR[i]}"><div class="hh">${i+1}·p${PAR[i]}</div><div class="hv" style="color:var(--ink3)">—</div></div>`;const a=avg(v);const d=a-PAR[i];const col=d>=1.5?'#ff5f56':d>=1?'#f0b53e':d>=0.5?'#caa53a':'#1c8a52';return `<div class="cell" style="background:${col};opacity:${Math.min(0.45+d*0.3,1)}" data-h="${i+1}" data-avg="${a.toFixed(2)}" data-p="${PAR[i]}"><div class="hh">${i+1}·p${PAR[i]}</div><div class="hv" style="color:#fff">+${d.toFixed(1)}</div></div>`;}).join('');};
   mk([0,1,2,3,4,5,6,7,8],'bs-heat-f');mk([9,10,11,12,13,14,15,16,17],'bs-heat-b');
   document.querySelectorAll('#bs-heat-f .cell,#bs-heat-b .cell').forEach(c=>{c.onmouseenter=e=>showTip(`<div class="tt">Hole ${c.dataset.h} · par ${c.dataset.p}</div><div class="tr"><span>avg</span><b>${c.dataset.avg}</b></div>`,e);c.onmousemove=moveTip;c.onmouseleave=hideTip;});
 }
@@ -1290,8 +1336,8 @@ function rDate(r){const m=String(r.label).match(/(\d{1,2})\s+([A-Za-z]{3})/);ret
 function b80Stats(rs){
   const g=rs.map(r=>r.strokes.reduce((a,b)=>a+b,0));
   const a=v=>v.length?v.reduce((x,y)=>x+y,0)/v.length:null;
-  const dbl=rs.map(r=>r.strokes.filter((s,i)=>s-PAR[i]>=2).length);
-  const p3=[];rs.forEach(r=>r.strokes.forEach((s,i)=>{if(PAR[i]===3)p3.push(s-3);}));
+  const dbl=rs.map(r=>r.strokes.filter((s,i)=>s-parOf(r,i)>=2).length);
+  const p3=[];rs.forEach(r=>r.strokes.forEach((s,i)=>{if(parOf(r,i)===3)p3.push(s-3);}));
   const sg=rs.filter(r=>(r.chips!=null||r.ch)&&r.gir!=null).map(r=>{const ch=r.chips??r.ch.reduce((x,y)=>x+(y||0),0);const miss=18-Math.round(r.gir*18/100);return miss>0?(ch+(r.sand||0))/miss:null;}).filter(v=>v!=null);
   return{n:rs.length,avg:a(g),best:g.length?Math.min(...g):null,dbl:a(dbl),putts:a(rs.map(r=>r.putts).filter(v=>v!=null)),pen:a(rs.map(r=>r.pen).filter(v=>v!=null)),p3:a(p3),cpm:a(sg),cpmN:sg.length};
 }
@@ -1503,20 +1549,81 @@ async function askClaude(messages,opts){
   const APPR=[['nw','↖'],['n','↑'],['ne','↗'],['w','←'],['hit','✓'],['e','→'],['sw','↙'],['s','↓'],['se','↘']];
   const APPR_NAME={nw:'long-left',n:'long',ne:'long-right',w:'left',hit:'on',e:'right',sw:'short-left',s:'short',se:'short-right'};
   const blank=()=>({s:null,p:null,chip:false,chips:0,fw:null,club:null,appr:null,ud:false,ss:false,sand:0,wasted:0,pen:0,pickup:false,fp:null,sgLie:null,sgDist:null,apDist:null,penSrc:null});
+  /* ---- course layout for this card ---- */
+  const LKEY='postle_layouts_v1', LLAST='postle_layout_last';
+  const loadCustom=()=>{try{return JSON.parse(localStorage.getItem(LKEY)||'{}');}catch(e){return {};}};
+  const saveCustom=o=>{try{localStorage.setItem(LKEY,JSON.stringify(o));}catch(e){}};
+  const BUILTIN_DEF={'temp-oct26':{name:'Temp · H1 out, 5 split 5A/5B',out:[1,5],temps:[{h:'5A',p:4,after:4},{h:'5B',p:3,after:4}],rating:{cr:71,sl:124,tees:{blue:{cr:71,sl:124},white:{cr:69,sl:123},red:{cr:67,sl:117}}}}};
+  function allLayouts(){ // std + built-ins (with any saved edits) + custom
+    const c=loadCustom(),list=[{id:'std',name:'Standard',out:[],temps:[],rating:null,builtin:true}];
+    Object.entries(BUILTIN_DEF).forEach(([id,d])=>list.push(Object.assign({id,builtin:true},d,c[id]||{})));
+    Object.entries(c).forEach(([id,d])=>{if(!BUILTIN_DEF[id])list.push(Object.assign({id},d));});
+    return list.map(x=>Object.assign(x,{holes:x.id==='std'?STD_LAYOUT:buildLayout(new Set(x.out),x.temps)}));
+  }
+  let LAYID='std',LAY=STD_LAYOUT,LRATE=null,LNAME='Standard';
+  try{const last=localStorage.getItem(LLAST);if(last){const L=allLayouts().find(x=>x.id===last);if(L){LAYID=L.id;LAY=L.holes;LRATE=L.rating;LNAME=L.name;}}}catch(e){}
+  const LP=i=>LAY[i].p, LH=i=>LAY[i].h, LPAR=()=>LAY.reduce((a,x)=>a+x.p,0);
+  window.arLayoutInfo=()=>({id:LAYID,name:LNAME,par:LPAR(),rating:LRATE,temp:LAYID!=='std'});
+  function setLayout(id){const L=allLayouts().find(x=>x.id===id)||allLayouts()[0];LAYID=L.id;LAY=L.holes;LRATE=L.rating||null;LNAME=L.name;try{localStorage.setItem(LLAST,LAYID);}catch(e){}paintLayout();if(started&&mode==='holes')render();save();if(window.rsLayoutChanged)window.rsLayoutChanged();}
+  function paintLayout(){
+    const sel=$('lay-sel');if(!sel)return;
+    sel.innerHTML=allLayouts().map(x=>`<option value="${x.id}"${x.id===LAYID?' selected':''}>${x.name}</option>`).join('');
+    const out=[...Array(18).keys()].map(i=>i+1).filter(n=>!LAY.some(x=>x.h===String(n)&&x.p===PAR[n-1]));
+    const temps=LAY.filter(x=>!/^\d+$/.test(x.h)||+x.h<1||+x.h>18);
+    $('lay-sum').innerHTML=LAYID==='std'?'18 holes · par 72 · CR 73 / slope 129 (blue)':
+      `18 holes · <b>par ${LPAR()}</b>${out.length?` · out: ${out.map(n=>'H'+n).join(', ')}`:''}${temps.length?` · temp: ${temps.map(x=>x.h+' (p'+x.p+')').join(', ')}`:''}<br>${LRATE&&LRATE.cr?`Temp rating CR ${LRATE.cr} / slope ${LRATE.sl}`:'<span style="color:var(--amber)">No temp rating on file — round won’t count in the index calc until one is added (✎ edit)</span>'}`;
+    $('lay-order').innerHTML=LAY.map((x,i)=>`<span class="lay-h${/^\d+$/.test(x.h)?'':' tmp'}" title="card slot ${i+1}">${x.h}<i>${x.p}</i></span>`).join('');
+  }
+  // editor
+  let ED=null;
+  function openEditor(copyFrom){
+    const base=allLayouts().find(x=>x.id===(copyFrom||LAYID));
+    ED={id:base.id==='std'?'custom-'+Date.now():base.id,name:base.id==='std'?'Temp layout':base.name,out:new Set(base.out||[]),temps:(base.temps||[]).map(t=>({...t})),rating:base.rating?{...base.rating}:{cr:'',sl:''},builtin:!!base.builtin&&base.id!=='std'};
+    $('lay-editor').style.display='block';paintEditor();
+  }
+  function paintEditor(){
+    const L=buildLayout(ED.out,ED.temps.filter(t=>t.h)),par=L.reduce((a,x)=>a+x.p,0),ok=L.length===18;
+    $('lay-ed').innerHTML=`
+      <label class="lay-f">Name<input id="led-name" value="${ED.name.replace(/"/g,'&quot;')}"></label>
+      <div class="ar-mini" style="margin:10px 0 6px">Tap holes that are OUT</div>
+      <div class="lay-grid">${[...Array(18).keys()].map(i=>`<button class="lay-out${ED.out.has(i+1)?' on':''}" data-lout="${i+1}">${i+1}<i>p${PAR[i]}</i></button>`).join('')}</div>
+      <div class="ar-mini" style="margin:12px 0 6px">Temporary holes</div>
+      ${ED.temps.map((t,k)=>`<div class="lay-trow"><input data-tk="${k}" data-tf="h" value="${t.h}" placeholder="5B" maxlength="4"><select data-tk="${k}" data-tf="p">${[3,4,5].map(p=>`<option${+t.p===p?' selected':''}>${p}</option>`).join('')}</select><span>after</span><select data-tk="${k}" data-tf="after"><option value="0"${+t.after===0?' selected':''}>start</option>${[...Array(18).keys()].map(i=>`<option value="${i+1}"${+t.after===i+1?' selected':''}>H${i+1}</option>`).join('')}</select><button class="lay-x" data-tdel="${k}">✕</button></div>`).join('')}
+      <button class="ar-chip" id="led-add" style="margin-top:6px">+ Add temp hole</button>
+      <div class="ar-mini" style="margin:12px 0 6px">Temp course rating (blue) · from the club / GolfLink</div>
+      <div class="lay-trow"><input id="led-cr" inputmode="decimal" placeholder="CR e.g. 71.0" value="${ED.rating.cr??''}"><input id="led-sl" inputmode="numeric" placeholder="Slope e.g. 127" value="${ED.rating.sl??''}"></div>
+      <div class="lay-tot ${ok?'':'bad'}">${L.length} holes · par ${par}${ok?' ✓':' — needs exactly 18'}</div>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="askbtn" id="led-save" ${ok?'':'disabled'} style="flex:1">Save layout</button><button class="ar-chip" id="led-cancel">Cancel</button>${(!ED.builtin&&allLayouts().some(x=>x.id===ED.id))?'<button class="ar-chip" id="led-del" style="color:var(--red)">Delete</button>':''}</div>`;
+    document.querySelectorAll('[data-lout]').forEach(b=>b.onclick=()=>{const n=+b.dataset.lout;ED.out.has(n)?ED.out.delete(n):ED.out.add(n);paintEditor();});
+    document.querySelectorAll('[data-tf]').forEach(el=>el.onchange=el.oninput=()=>{const t=ED.temps[+el.dataset.tk];t[el.dataset.tf]=el.dataset.tf==='h'?el.value.trim().toUpperCase():+el.value;if(el.tagName==='SELECT')paintEditor();else{const L2=buildLayout(ED.out,ED.temps.filter(t=>t.h));const tot=$('lay-ed').querySelector('.lay-tot');tot.textContent=`${L2.length} holes · par ${L2.reduce((a,x)=>a+x.p,0)}${L2.length===18?' ✓':' — needs exactly 18'}`;tot.classList.toggle('bad',L2.length!==18);$('led-save').disabled=L2.length!==18;}});
+    document.querySelectorAll('[data-tdel]').forEach(b=>b.onclick=()=>{ED.temps.splice(+b.dataset.tdel,1);paintEditor();});
+    $('led-add').onclick=()=>{ED.temps.push({h:'',p:3,after:0});paintEditor();};
+    $('led-name').oninput=e=>{ED.name=e.target.value;};
+    $('led-cr').oninput=e=>{ED.rating.cr=e.target.value;};$('led-sl').oninput=e=>{ED.rating.sl=e.target.value;};
+    $('led-cancel').onclick=()=>{ED=null;$('lay-editor').style.display='none';};
+    if($('led-del'))$('led-del').onclick=()=>{if(!confirm('Delete this layout?'))return;const c=loadCustom();delete c[ED.id];saveCustom(c);ED=null;$('lay-editor').style.display='none';setLayout('std');};
+    $('led-save').onclick=()=>{const c=loadCustom();const cr=parseFloat(ED.rating.cr),sl=parseInt(ED.rating.sl);
+      c[ED.id]={name:ED.name||'Temp layout',out:[...ED.out].sort((a,b)=>a-b),temps:ED.temps.filter(t=>t.h).map(t=>({h:t.h,p:+t.p,after:+t.after})),rating:(cr&&sl)?{cr,sl,...(ED.rating.tees?{tees:{...ED.rating.tees,blue:{cr,sl}}}:{})}:null};
+      saveCustom(c);const id=ED.id;ED=null;$('lay-editor').style.display='none';setLayout(id);};
+  }
+  $('lay-sel').onchange=e=>setLayout(e.target.value);
+  $('lay-edit-btn').onclick=()=>{if($('lay-editor').style.display==='block'){$('lay-editor').style.display='none';ED=null;}else openEditor();};
+  $('lay-new-btn').onclick=()=>openEditor('std');
+
   let H=Array.from({length:18},blank), cur=0, mode='holes', started=false, ptsEdited=false, step='basics';
   const buzz=()=>{try{navigator.vibrate&&navigator.vibrate(8);}catch(e){}};
 
   $('ar-clubs').innerHTML=CLUBS.map(c=>`<button class="ar-chip" data-club="${c}">${c}</button>`).join('');
   $('ar-appr').innerHTML=APPR.map(([k,g])=>`<button class="circ" data-appr="${k}">${g}</button>`).join('');
-  $('ar-strip').innerHTML=Array.from({length:18},(_,i)=>`<b data-jump="${i}" title="Hole ${i+1}"></b>`).join('');
+  const paintStrip=()=>{$('ar-strip').innerHTML=Array.from({length:18},(_,i)=>`<b data-jump="${i}" title="Hole ${LH(i)}"></b>`).join('');document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>{cur=+b.dataset.jump;buzz();render();save();});};
 
   /* ---- calc ---- */
   const hc=()=>{const v=Number($('af-hcp').value);return isNaN(v)?0:v;};
   const played=i=>H[i].pickup||H[i].s!=null;
-  const toPar=i=>{const h=H[i];if(h.pickup)return 2;if(h.s==null)return null;return h.s-PAR[i];};
-  const strokesAt=i=>{const h=H[i];return (h.pickup||h.s==null)?PAR[i]+2:h.s;};
+  const toPar=i=>{const h=H[i];if(h.pickup)return 2;if(h.s==null)return null;return h.s-LP(i);};
+  const strokesAt=i=>{const h=H[i];return (h.pickup||h.s==null)?LP(i)+2:h.s;};
   const ptsAt=i=>{const h=H[i];if(h.pickup)return 0;const o=toPar(i);if(o==null)return null;return Math.max(0,2+hc()/18-o);};
-  const girAt=i=>{const h=H[i];if(h.pickup||h.s==null||h.p==null)return null;return (h.s-h.p)<=PAR[i]-2;};
+  const girAt=i=>{const h=H[i];if(h.pickup||h.s==null||h.p==null)return null;return (h.s-h.p)<=LP(i)-2;};
   const fmtPar=o=>o==null?'–':o===0?'E':(o>0?'+'+o:String(o));
   const resCls=i=>{const o=toPar(i);if(o==null)return 'empty';if(H[i].pickup||o>=2)return 'db';if(o===1)return 'bg';if(o<0)return 'bd';return '';};
   const resCol=i=>({db:'var(--red)',bg:'var(--amber)',bd:'#34e0d0','':'var(--ink2)',empty:'rgba(255,255,255,0.08)'})[resCls(i)];
@@ -1533,13 +1640,13 @@ async function askClaude(messages,opts){
       $('ar-skip-holes').style.display=live?'none':'block';
       $('rs-discard').style.display=live?'block':'none';
       document.querySelector('#ar-step-basics .rs-kicker').textContent=live?'Round in progress · edit details':'Pacific Golf Club · new card';
-      if(window.rsRefresh)window.rsRefresh();
+      paintLayout();if(window.rsRefresh)window.rsRefresh();
     } else detailsChip();
   }
   function detailsChip(){
     const v=$('af-date').value,d=v?new Date(v+'T00:00:00'):null,t=$('af-tee').value||'blue';
     const ds=d?d.toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short'}):'no date';
-    document.querySelectorAll('[data-details]').forEach(b=>b.innerHTML=`<i style="background:${TEE_COL[t]}"></i>${ds} · ${t[0].toUpperCase()+t.slice(1)} · HC ${$('af-hcp').value||'—'} <b>✎ edit</b>`);
+    document.querySelectorAll('[data-details]').forEach(b=>b.innerHTML=`<i style="background:${TEE_COL[t]}"></i>${ds} · ${t[0].toUpperCase()+t.slice(1)} · HC ${$('af-hcp').value||'—'}${LAYID!=='std'?` · <span style="color:var(--gold)">par ${LPAR()}</span>`:''} <b>✎ edit</b>`);
   }
   function openModal(){ov.style.display='block';loadDraft();
     if(started){ if(mode==='totals')showStep('totals'); else {render();showStep('holes');} } else showStep('basics');}
@@ -1559,16 +1666,16 @@ async function askClaude(messages,opts){
   $('ar-card-btn').onclick=openCard;$('ar-card-btn2').onclick=openCard;
   $('ar-card-back').onclick=()=>{render();showStep('holes');};
   $('ar-card-review').onclick=()=>review();
-  document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>{cur=+b.dataset.jump;buzz();render();save();});
 
   /* ---- render hole ---- */
   let lastS=null;
   function render(){
-    const h=H[cur], par=PAR[cur];
-    $('ar-hole-n').textContent=cur+1;
+    const h=H[cur], par=LP(cur);
+    if(!$('ar-strip').children.length||$('ar-strip').children[0].title!==`Hole ${LH(0)}`)paintStrip();
+    $('ar-hole-n').textContent=LH(cur);
     const done=H.filter((_,i)=>played(i)).length;
     $('ar-ring').style.setProperty('--pct',(done/18*100)+'%');
-    $('ar-holemeta').textContent=`PAR ${par} · HOLE ${cur+1} OF 18 · ${done} PLAYED`;
+    $('ar-holemeta').textContent=`PAR ${par} · ${LAYID==='std'?`HOLE ${cur+1} OF 18`:`CARD ${cur+1} OF 18 · TEMP LAYOUT`} · ${done} PLAYED`;
     $('ar-par').textContent=par;
     const sv=$('ar-s-val');const txt=h.pickup?'P':(h.s??'–');
     if(String(txt)!==String(lastS)){sv.classList.remove('pop');void sv.offsetWidth;sv.classList.add('pop');lastS=txt;}
@@ -1586,7 +1693,7 @@ async function askClaude(messages,opts){
     document.querySelectorAll('[data-club]').forEach(b=>b.classList.toggle('sel',b.dataset.club===h.club));
     $('ar-fw-sec').style.display=par>=4?'block':'none';
     document.querySelectorAll('[data-fw]').forEach(b=>b.classList.toggle('sel',b.dataset.fw===h.fw));
-    let fh=0,fe=0;for(let i=0;i<18;i++){if(PAR[i]>=4&&H[i].fw){fe++;if(H[i].fw==='hit')fh++;}}
+    let fh=0,fe=0;for(let i=0;i<18;i++){if(LP(i)>=4&&H[i].fw){fe++;if(H[i].fw==='hit')fh++;}}
     $('ar-fw-total').textContent=fe?`${fh}/${fe} fairways so far`:'';
     document.querySelectorAll('[data-appr]').forEach(b=>b.classList.toggle('sel',b.dataset.appr===h.appr));
     if(g===true)h.ud=false;
@@ -1609,9 +1716,9 @@ async function askClaude(messages,opts){
   function upd(fn){fn(H[cur]);buzz();render();save();}
 
   /* ---- controls ---- */
-  $('ar-s-plus').onclick=()=>upd(h=>{h.pickup=false;h.s=h.s==null?PAR[cur]:Math.min(15,h.s+1);});
-  $('ar-s-minus').onclick=()=>upd(h=>{h.pickup=false;h.s=h.s==null?PAR[cur]-1:Math.max(1,h.s-1);});
-  $('ar-par-pill').onclick=()=>upd(h=>{h.pickup=false;h.s=PAR[cur];});
+  $('ar-s-plus').onclick=()=>upd(h=>{h.pickup=false;h.s=h.s==null?LP(cur):Math.min(15,h.s+1);});
+  $('ar-s-minus').onclick=()=>upd(h=>{h.pickup=false;h.s=h.s==null?LP(cur)-1:Math.max(1,h.s-1);});
+  $('ar-par-pill').onclick=()=>upd(h=>{h.pickup=false;h.s=LP(cur);});
   $('ar-pickup-pill').onclick=()=>upd(h=>{h.pickup=!h.pickup;if(h.pickup){h.s=null;h.ud=false;}});
   $('ar-p-plus').onclick=()=>upd(h=>{h.p=h.p==null?1:Math.min(6,h.p+1);h.chip=false;});
   $('ar-p-minus').onclick=()=>upd(h=>{h.p=h.p==null?0:Math.max(0,h.p-1);if(h.p>0)h.chip=false;});
@@ -1645,11 +1752,11 @@ async function askClaude(messages,opts){
     for(let i=0;i<18;i++){
       const h=H[i];if(played(i))thru++;
       fp.push(h.fp);sgLie.push(h.sgLie);sgDist.push(h.sgDist);apDist.push(h.apDist);penSrc.push(h.pen>0?h.penSrc:null);
-      strokes.push(strokesAt(i));ph.push(h.p);clubs.push(h.club);fwDir.push(PAR[i]>=4?h.fw:null);appr.push(h.appr);chipArr.push(h.chips);
+      strokes.push(strokesAt(i));ph.push(h.p);clubs.push(h.club);fwDir.push(LP(i)>=4?h.fw:null);appr.push(h.appr);chipArr.push(h.chips);
       const x=ptsAt(i);if(x!=null)pts+=x;
       if(h.p!=null){putts+=h.p;pc++;if(h.p>=3)tp++;}
       const g=girAt(i);if(g!=null){gE++;if(g)gH++;}
-      if(PAR[i]>=4&&h.fw){fE++;if(h.fw==='hit')fH++;}
+      if(LP(i)>=4&&h.fw){fE++;if(h.fw==='hit')fH++;}
       if(g===false){uE++;if(h.ud)uH++;}
       pen+=h.pen;sand+=h.sand;wasted+=h.wasted;chips+=h.chips;if(h.ss)ss++;if(h.chip)chipIns++;
     }
@@ -1658,22 +1765,22 @@ async function askClaude(messages,opts){
       gir:gE?+(gH/(thru===18?18:gE)*100).toFixed(1):null, // 18-hole basis when complete (pickups count as missed)
       fw:fE?+(fH/fE*100).toFixed(1):null,ud:uE?+(uH/uE*100).toFixed(1):null,
       pen,sand,ss,wasted,chips,chipIns,pts:Math.round(pts),
-      pickups:H.map((h,i)=>h.pickup?i+1:null).filter(Boolean)};
+      pickups:H.map((h,i)=>h.pickup?LH(i):null).filter(Boolean)};
   }
 
   /* ---- 18-hole card ---- */
   function scBlock(from){
     const idx=[...Array(9)].map((_,k)=>from+k);
-    const sumPar=idx.reduce((a,i)=>a+PAR[i],0);
+    const sumPar=idx.reduce((a,i)=>a+LP(i),0);
     const playedIdx=idx.filter(played);
     const sumS=playedIdx.reduce((a,i)=>a+strokesAt(i),0);
     const sumP=idx.filter(i=>H[i].p!=null).reduce((a,i)=>a+H[i].p,0);
     const sumPts=Math.round(idx.reduce((a,i)=>a+(ptsAt(i)||0),0));
-    let h=`<span class="rl">HOLE</span>${idx.map(i=>`<span class="hd">${i+1}</span>`).join('')}<span class="hd">${from?'IN':'OUT'}</span>`;
-    h+=`<span class="rl">PAR</span>${idx.map(i=>`<span>${PAR[i]}</span>`).join('')}<span class="tot">${sumPar}</span>`;
+    let h=`<span class="rl">HOLE</span>${idx.map(i=>`<span class="hd">${LH(i)}</span>`).join('')}<span class="hd">${from?'IN':'OUT'}</span>`;
+    h+=`<span class="rl">PAR</span>${idx.map(i=>`<span>${LP(i)}</span>`).join('')}<span class="tot">${sumPar}</span>`;
     h+=`<span class="rl">SCORE</span>${idx.map(i=>`<span class="sc${i===cur?' curh':''}" data-edit="${i}"><i class="${resCls(i)}">${H[i].pickup?'P':(H[i].s??'·')}</i></span>`).join('')}<span class="tot">${playedIdx.length?sumS:'–'}</span>`;
     h+=`<span class="rl">PUTT</span>${idx.map(i=>`<span style="${H[i].p>=3?'color:var(--red);font-weight:700':''}">${H[i].p??'·'}</span>`).join('')}<span class="tot">${sumP||'–'}</span>`;
-    h+=`<span class="rl">FW</span>${idx.map(i=>`<span>${PAR[i]<4?'':({hit:'✓',left:'←',right:'→'}[H[i].fw]||'·')}</span>`).join('')}<span></span>`;
+    h+=`<span class="rl">FW</span>${idx.map(i=>`<span>${LP(i)<4?'':({hit:'✓',left:'←',right:'→'}[H[i].fw]||'·')}</span>`).join('')}<span></span>`;
     h+=`<span class="rl">GIR</span>${idx.map(i=>{const g=girAt(i);return `<span style="color:${g?'var(--green)':'var(--ink3)'}">${g==null?'·':g?'●':'○'}</span>`;}).join('')}<span></span>`;
     h+=`<span class="rl">PTS</span>${idx.map(i=>{const x=ptsAt(i);return `<span>${x==null?'·':Math.round(x)}</span>`;}).join('')}<span class="tot">${sumPts}</span>`;
     return h;
@@ -1681,10 +1788,10 @@ async function askClaude(messages,opts){
   function insights(c){
     const out=[];
     const blow=H.map((h,i)=>played(i)&&toPar(i)>=2?i:null).filter(v=>v!=null);
-    if(blow.length){const lost=blow.reduce((a,i)=>a+Math.max(0,toPar(i)-1),0);out.push(['💥',`<b>${blow.length} double${blow.length>1?'s':''}+</b> on H${blow.map(i=>i+1).join(', H')} — ~${lost} shots past bogey.`]);}
-    const three=H.map((h,i)=>h.p>=3?i+1:null).filter(Boolean);
+    if(blow.length){const lost=blow.reduce((a,i)=>a+Math.max(0,toPar(i)-1),0);out.push(['💥',`<b>${blow.length} double${blow.length>1?'s':''}+</b> on H${blow.map(i=>LH(i)).join(', H')} — ~${lost} shots past bogey.`]);}
+    const three=H.map((h,i)=>h.p>=3?LH(i):null).filter(Boolean);
     if(three.length)out.push(['⛳',`<b>3-putts:</b> H${three.join(', H')}.`]);
-    const byClub={};H.forEach((h,i)=>{if(PAR[i]>=4&&h.club&&h.fw){byClub[h.club]=byClub[h.club]||[0,0];byClub[h.club][1]++;if(h.fw==='hit')byClub[h.club][0]++;}});
+    const byClub={};H.forEach((h,i)=>{if(LP(i)>=4&&h.club&&h.fw){byClub[h.club]=byClub[h.club]||[0,0];byClub[h.club][1]++;if(h.fw==='hit')byClub[h.club][0]++;}});
     const cl=Object.entries(byClub);if(cl.length)out.push(['🏌️',`<b>Off the tee:</b> ${cl.map(([k,[a,b]])=>`${k} ${a}/${b}`).join(' · ')}`]);
     const miss={};H.forEach(h=>{if(h.appr&&h.appr!=='hit')miss[h.appr]=(miss[h.appr]||0)+1;});
     const top=Object.entries(miss).sort((a,b)=>b[1]-a[1])[0];
@@ -1710,7 +1817,7 @@ async function askClaude(messages,opts){
     if(mode==='holes'){
       const c=compute();
       if(!ptsEdited)$('ar-final-pts').value=c.pts;
-      const t=[['Stableford ≈',c.pts],['Gross',c.gross+' ('+fmtPar(c.gross-72)+')'],['Putts',c.putts??'—'],['3-putts',c.threeputt??'—'],
+      const t=[['Stableford ≈',c.pts],['Gross',c.gross+' ('+fmtPar(c.gross-LPAR())+')'+(LAYID!=='std'?' · par '+LPAR():'')],['Putts',c.putts??'—'],['3-putts',c.threeputt??'—'],
         ['GIR',c.gir!=null?c.gir+'%':'—'],['Fairways',c.fw!=null?c.fw+'%':'—'],['Up & down',c.ud!=null?c.ud+'%':'—'],['Chips',c.chips],
         ['Penalties',c.pen],['Sand saves',c.sand?`${c.ss}/${c.sand}`:'—'],['Chip-ins',c.chipIns],['Wasted',c.wasted]];
       $('ar-summary-tiles').innerHTML=t.map(([k,v])=>`<div class="tile"><div class="k">${k}</div><div class="v" style="font-size:19px">${v}</div></div>`).join('');
@@ -1724,7 +1831,7 @@ async function askClaude(messages,opts){
   $('ar-debrief-btn').onclick=async function(){
     const c=compute(),out=$('ar-debrief-out'),btn=this;
     btn.disabled=true;out.innerHTML='<span style="color:var(--ink3)">✦ reading the card…</span>';
-    const holes=H.map((h,i)=>`H${i+1} p${PAR[i]}: ${h.pickup?'pickup':(h.s??'-')}${h.p!=null?`, ${h.p} putts`:''}${h.chips?`, ${h.chips} chips`:''}${h.club?`, tee ${h.club}`:''}${h.fw?`, fw ${h.fw}`:''}${h.appr?`, approach ${APPR_NAME[h.appr]}`:''}${h.ud?', up&down':''}${h.sand?`, ${h.sand} sand`:''}${h.pen?`, ${h.pen} pen`:''}`).join('\n');
+    const holes=H.map((h,i)=>`H${LH(i)} p${LP(i)}: ${h.pickup?'pickup':(h.s??'-')}${h.p!=null?`, ${h.p} putts`:''}${h.chips?`, ${h.chips} chips`:''}${h.club?`, tee ${h.club}`:''}${h.fw?`, fw ${h.fw}`:''}${h.appr?`, approach ${APPR_NAME[h.appr]}`:''}${h.ud?', up&down':''}${h.sand?`, ${h.sand} sand`:''}${h.pen?`, ${h.pen} pen`:''}`).join('\n');
     const ctx=`Handicap ${typeof HCP_CURRENT!=='undefined'?HCP_CURRENT:'~14'}, left-handed, Pacific GC blue tees. Known leaks: approach proximity, lag putting/3-putts, up-and-down conversion. Currently playing a cut shape and often 2-iron off the tee.`;
     const prompt=`Round just played. ${ctx}\nTotals: ~${c.pts} Stableford pts, gross ${c.gross}, putts ${c.putts}, 3-putts ${c.threeputt}, GIR ${c.gir}%, fairways ${c.fw}%, up&down ${c.ud}%, chips ${c.chips}, penalties ${c.pen}.\nHole by hole:\n${holes}\n\nWrite a straight-talking debrief under 110 words, plain text, exactly three short lines starting with "What happened:", "Where the points went:", "Practise this week:". Be specific to the holes and numbers.`;
     try{
@@ -1741,13 +1848,14 @@ async function askClaude(messages,opts){
   const setVal=(id,v)=>{const e=$(id);if(e&&v!=null)e.value=v;};
   const TOT=['af-pts','af-putts','af-gir','af-fw','af-ud','af-pen','af-3p'];
   function save(){
-    const d={date:val('af-date'),tee:val('af-tee'),hcp:val('af-hcp'),mode,started,cur,H,ptsEdited,finalPts:val('ar-final-pts'),
+    const d={date:val('af-date'),tee:val('af-tee'),hcp:val('af-hcp'),layId:LAYID,mode,started,cur,H,ptsEdited,finalPts:val('ar-final-pts'),
       totals:Object.fromEntries(TOT.map(id=>[id,val(id)])),note:val('af-note')};
     try{localStorage.setItem(KEY,JSON.stringify(d));$('draft-badge').style.display='inline-flex';}catch(e){}
   }
   function loadDraft(){
     try{const raw=localStorage.getItem(KEY)||localStorage.getItem(OLDKEY);if(!raw)return;const d=JSON.parse(raw);
       setVal('af-date',d.date);setVal('af-tee',d.tee);setVal('af-hcp',d.hcp);
+      if(d.layId){const L=allLayouts().find(x=>x.id===d.layId);if(L){LAYID=L.id;LAY=L.holes;LRATE=L.rating||null;LNAME=L.name;}}
       if(Array.isArray(d.H)&&d.H.length===18)H=d.H.map(h=>Object.assign(blank(),h));
       mode=d.mode||'holes';started=!!d.started;cur=d.cur||0;ptsEdited=!!d.ptsEdited;setVal('ar-final-pts',d.finalPts);
       if(d.totals)TOT.forEach(id=>setVal(id,d.totals[id]));setVal('af-note',d.note);
@@ -1783,10 +1891,11 @@ async function askClaude(messages,opts){
         `pen:${c.pen}`,`threeputt:${J(c.threeputt)}`,`chips:${c.chips}`,`strokes:${J(c.strokes)}`,`ph:${J(c.ph)}`,`ch:${J(c.chipArr)}`,
         `clubs:${J(c.clubs)}`,`fwDir:${J(c.fwDir)}`,`appr:${J(c.appr)}`,`sand:${c.sand}`,`sandSaves:${c.ss}`,`wasted:${c.wasted}`,`chipIns:${c.chipIns}`,`mizuno:true`];
       [['fp',c.fp],['sgLie',c.sgLie],['sgDist',c.sgDist],['apDist',c.apDist],['penSrc',c.penSrc]].forEach(([k,a])=>{if(a.some(v=>v!=null))parts.push(`${k}:${J(a)}`);});
+      if(LAYID!=='std'){parts.push(`layout:${J(LAY)}`);const rt=LRATE?((LRATE.tees&&LRATE.tees[tee])||(tee==='blue'&&LRATE.cr?{cr:LRATE.cr,sl:LRATE.sl}:null)):null;if(rt)parts.push(`rating:${J({cr:rt.cr,sl:rt.sl})}`);}
       const autoNote=c.pickups.length?`Pickups H${c.pickups.join(',H')} (net-double). `:'';
       if(autoNote||note)parts.push(`note:${J((autoNote+note).trim())}`);
     }else{
-      parts=[`key:'${key}'`,`label:'${label}'`,`tee:'${tee}'`,`stableford:${J(n('af-pts'))}`,`putts:${J(n('af-putts'))}`,`gir:${J(n('af-gir'))}`,`fw:${J(n('af-fw'))}`,
+      parts=[`key:'${key}'`,`label:'${label}'`,`tee:'${tee}'`,...(LAYID!=='std'?[`layout:${J(LAY)}`]:[]),`stableford:${J(n('af-pts'))}`,`putts:${J(n('af-putts'))}`,`gir:${J(n('af-gir'))}`,`fw:${J(n('af-fw'))}`,
         `ud:${J(n('af-ud'))}`,`pen:${J(n('af-pen'))}`,`threeputt:${J(n('af-3p'))}`,`strokes:null`,`mizuno:true`];
       if(note)parts.push(`note:${J(note)}`);
     }
@@ -1806,12 +1915,16 @@ async function askClaude(messages,opts){
 /* ===== START-ROUND SCREEN ===== */
 (function(){
   const $=id=>document.getElementById(id);if(!$('rs-tees'))return;
-  const TEES=[{k:'blue',n:'Blue',cr:73,sl:129},{k:'white',n:'White',cr:71,sl:128},{k:'yellow',n:'Yellow',cr:null,sl:null}];
+  const TEES=[{k:'blue',n:'Blue',cr:73,sl:129},{k:'white',n:'White',cr:71,sl:128},{k:'yellow',n:'Yellow',cr:null,sl:null},{k:'red',n:'Red',cr:null,sl:null}];
   const idx=()=>typeof HCP_CURRENT!=='undefined'?HCP_CURRENT:null;
   let manual=false;
   const fire=el=>el.dispatchEvent(new Event('input',{bubbles:true}));
   const teeOf=()=>TEES.find(t=>t.k===$('af-tee').value)||TEES[0];
-  const calcHC=t=>(idx()==null||t.cr==null)?null:idx()*t.sl/113+(t.cr-PAR_TOTAL);
+  const LI=()=>window.arLayoutInfo?window.arLayoutInfo():{par:PAR_TOTAL,temp:false,rating:null};
+  // effective rating: temp layout rating (blue) when entered; otherwise the standard tee rating against par 72
+  const eff=t=>{const li=LI();const rt=li.temp&&li.rating?((li.rating.tees&&li.rating.tees[t.k])||(t.k==='blue'&&li.rating.cr?li.rating:null)):null;if(rt)return{...t,cr:rt.cr,sl:rt.sl,par:li.par,src:'temp'};return{...t,par:PAR_TOTAL,src:li.temp?'std-fallback':'std'};};
+  // Golf Australia: Daily HC = (GA × slope/113 + (scratch − par)) × 0.93
+  const calcHC=t0=>{const t=eff(t0);return(idx()==null||t.cr==null)?null:(idx()*t.sl/113+(t.cr-t.par))*0.93;};
   const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   function paint(){
     const t=teeOf();
@@ -1821,14 +1934,14 @@ async function askClaude(messages,opts){
     const today=iso(new Date()),yest=iso(new Date(Date.now()-864e5));
     document.querySelectorAll('[data-rsday]').forEach(b=>b.classList.toggle('sel',v===(b.dataset.rsday==='0'?today:yest)));
     // tees
-    $('rs-tees').innerHTML=TEES.map(x=>`<button class="rs-tee${x.k===t.k?' on':''}" data-rstee="${x.k}" style="--tc:${TEE_COL[x.k]}"><div class="tn"><i></i>${x.n}</div><div class="tr2">${x.cr!=null?`CR <b>${x.cr}</b><br>Slope <b>${x.sl}</b>`:'no rating<br>on file'}</div></button>`).join('');
+    $('rs-tees').innerHTML=TEES.map(x=>`<button class="rs-tee${x.k===t.k?' on':''}" data-rstee="${x.k}" style="--tc:${TEE_COL[x.k]}"><div class="tn"><i></i>${x.n}</div><div class="tr2">${(()=>{const e=eff(x);return e.cr!=null?`${e.src==='temp'?'<span style="color:var(--gold)">TEMP</span> ':''}CR <b>${e.cr}</b> · Slope <b>${e.sl}</b>`:'no rating on file';})()}</div></button>`).join('');
     document.querySelectorAll('[data-rstee]').forEach(b=>b.onclick=()=>{$('af-tee').value=b.dataset.rstee;fire($('af-tee'));if(!manual)autoHC();paint();});
     // hc calc line
-    const c=calcHC(t),hc=$('af-hcp').value;
-    $('rs-hc-calc').innerHTML=c!=null?`GA: <b>${idx()}</b> × ${t.sl}/113 ${t.cr-PAR_TOTAL>=0?'+':'−'} ${Math.abs(t.cr-PAR_TOTAL)} = <b>${c.toFixed(1)}</b> → ${Math.round(c)}${manual&&+hc!==Math.round(c)?' · <span style="color:var(--gold)">manual</span>':''}`:'no slope/rating for this tee — set it manually';
+    const c=calcHC(t),hc=$('af-hcp').value,e=eff(t);
+    $('rs-hc-calc').innerHTML=c!=null?`(<b>${idx()}</b> × ${e.sl}/113 ${e.cr-e.par>=0?'+':'−'} ${Math.abs(+(e.cr-e.par).toFixed(1))}) × 0.93 = <b>${c.toFixed(1)}</b> → ${Math.round(c)}${e.src==='temp'?' · <span style="color:var(--gold)">temp rating</span>':e.src==='std-fallback'?' · <span style="color:var(--amber)">standard rating — no temp rating entered</span>':''}${manual&&+hc!==Math.round(c)?' · <span style="color:var(--gold)">manual</span>':''}`:'no slope/rating for this tee — set it manually';
     $('rs-hc-reset').style.display=(c!=null&&manual&&+hc!==Math.round(c))?'inline':'none';
     // summary
-    $('rs-sum').innerHTML=[['Par',PAR_TOTAL],['Rating',t.cr??'—'],['Slope',t.sl??'—'],['Last 5',(()=>{const s=R.filter(r=>r.stableford!=null).slice(-5).map(r=>r.stableford);return s.length?(s.reduce((a,b)=>a+b,0)/s.length).toFixed(1):'—';})()]].map(([k,v])=>`<div class="mt"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+    $('rs-sum').innerHTML=[['Par',LI().par],['Rating',e.src==='temp'?e.cr:(LI().temp?'—':t.cr??'—')],['Slope',e.src==='temp'?e.sl:(LI().temp?'—':t.sl??'—')],['Last 5',(()=>{const s=R.filter(r=>r.stableford!=null).slice(-5).map(r=>r.stableford);return s.length?(s.reduce((a,b)=>a+b,0)/s.length).toFixed(1):'—';})()]].map(([k,v])=>`<div class="mt"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
   }
   function autoHC(){const c=calcHC(teeOf());if(c!=null){$('af-hcp').value=Math.round(c);fire($('af-hcp'));}}
   $('af-date').addEventListener('input',paint);$('af-date').addEventListener('change',paint);
@@ -1844,6 +1957,7 @@ async function askClaude(messages,opts){
     paint();
   }
   window.rsRefresh=onOpen;
+  window.rsLayoutChanged=()=>{if(!manual)autoHC();paint();};
 })();
 </script>
 </body>
