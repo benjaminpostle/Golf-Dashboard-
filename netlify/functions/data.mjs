@@ -2,6 +2,7 @@
 // GET  /api/data  -> the saved data
 // PUT  /api/data  -> replace it (the app merges before saving)
 // Every save also keeps a dated copy, so a bad sync can always be rolled back.
+// SYNC_KEY can read and write. READ_KEY (optional) can only read - for Claude's reviews.
 import { getStore } from "@netlify/blobs";
 
 const json = (body, status = 200) =>
@@ -13,7 +14,11 @@ const json = (body, status = 200) =>
 export default async (req) => {
   const secret = (globalThis.Netlify?.env.get("SYNC_KEY")) || process.env.SYNC_KEY;
   if (!secret) return json({ error: "SYNC_KEY is not set in Netlify" }, 500);
-  if (req.headers.get("x-sync-key") !== secret) return json({ error: "Wrong sync key" }, 401);
+  const readKey = (globalThis.Netlify?.env.get("READ_KEY")) || process.env.READ_KEY;
+  const given = req.headers.get("x-sync-key");
+  const canWrite = given === secret;
+  const canRead = canWrite || (!!readKey && given === readKey);
+  if (!canRead) return json({ error: "Wrong sync key" }, 401);
 
   const store = getStore({ name: "postle", consistency: "strong" });
 
@@ -23,6 +28,7 @@ export default async (req) => {
   }
 
   if (req.method === "PUT") {
+    if (!canWrite) return json({ error: "This key is read-only" }, 403);
     let body;
     try { body = await req.json(); } catch { return json({ error: "Bad JSON" }, 400); }
     if (!body || typeof body.keys !== "object") return json({ error: "Bad data" }, 400);
