@@ -648,6 +648,8 @@ button,a,input,select,label,[role="button"],.ar-stepper,.ar-stepper *{touch-acti
 @media (pointer:coarse){
   input,select,textarea,.inp,.field input,.field select,.lay-f input,.lay-trow input,.lay-trow select,.askrow .inp{font-size:16px;}
 }
+.chip.reps{gap:4px;padding-right:4px;}
+.repsel{appearance:none;-webkit-appearance:none;background:var(--fill-2);color:var(--ink);border:0;border-radius:6px;font:inherit;font-weight:650;padding:2px 8px;cursor:pointer;}
 
 </style>
 </head>
@@ -2692,6 +2694,9 @@ function sparkSvg(sc,max,target){
   return `<svg class="spark" viewBox="0 0 ${W} ${H}" aria-hidden="true"><line x1="0" x2="${W}" y1="${yO(target)}" y2="${yO(target)}" style="stroke:var(--ink3);stroke-dasharray:2 3"/>${sc.length>1?`<polyline points="${sc.map((v,i)=>`${xO(i)},${yO(v)}`).join(' ')}" style="fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round"/>`:''}<circle cx="${xO(sc.length-1)}" cy="${yO(sc[sc.length-1])}" r="3.5" style="fill:var(--accent)"/></svg>`;
 }
 const fmtD=iso=>new Date(iso+'T00:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'short'});
+function drillCfg(st,d){const r=st&&st.cfg&&st.cfg.reps&&st.cfg.reps[d.id];if(!r||r===d.max)return d;return Object.assign({},d,{max:r,target:Math.max(1,Math.round(d.target*r/d.max))});}
+function normScore(l,max){return l.max&&l.max!==max?Math.round(l.score/l.max*max*10)/10:l.score;}
+function repOptions(d){const set=new Set([d.max]);const lo=Math.max(3,Math.round(d.max/3)),hi=Math.min(60,d.max*3);for(let n=lo;n<=hi;n++)if(n<=15||n%5===0)set.add(n);return [...set].sort((a,b)=>a-b);}
 function renderPractice(){
   const st=prState(),ins=practiceInsights(),today=todayIso(),done=weekCount(st),tgt=st.cfg.sessions;
   $id('nav-prac').textContent=`${done}/${tgt}`;
@@ -2713,20 +2718,21 @@ function renderPractice(){
     <div class="hab14">${l14.map(d=>{const h=st.habit[isoDay(d)],n=h?HABITS.filter(x=>h[x.id]).length:0;return `<i class="${n===2?'h2':n===1?'h1':''}" title="${d.toLocaleDateString('en-AU',{day:'numeric',month:'short'})}: ${n} of 2"></i>`;}).join('')}</div>
     <p class="note" style="margin-top:6px">Last 14 days. Full green means both done.</p>`;
   $id('pr-home').querySelectorAll('.habit').forEach(b=>b.onclick=()=>{const s=prState(),t=s.habit[today]=s.habit[today]||{};t[b.dataset.h]=!t[b.dataset.h];prSave(s);renderPractice();});
-  $id('pr-sessions').innerHTML=ins.sessOrder.map(k=>{const S=SESS[k],drills=DRILLS.filter(d=>d.s===k),dToday=sessionsOn(st,today).includes(k);
+  $id('pr-sessions').innerHTML=Object.keys(SESS).map(k=>{const S=SESS[k],drills=DRILLS.filter(d=>d.s===k),dToday=sessionsOn(st,today).includes(k);
     return `<div class="sess" id="sess-${k}" style="scroll-margin-top:90px"><div class="sess-h"><div class="ic" style="background:color-mix(in srgb,${S.col} 16%,transparent);color:${S.col}">${k}</div><div style="min-width:0"><h3>${S.name}${k===nk?'<span class="chip acc">Next up</span>':''}</h3><p>${S.where}, ${S.mins} min</p></div><div class="sp"></div>${dToday?'<span class="chip good">Done today</span>':''}</div>
-    ${drills.map(d=>{const logs=st.log.filter(l=>l.id===d.id),sc=logs.map(l=>l.score),last=logs[logs.length-1],best=sc.length?Math.max(...sc):null,tl=logs.filter(l=>l.date===today);
+    ${drills.map(d0=>{const d=drillCfg(st,d0),logs=st.log.filter(l=>l.id===d.id),sc=logs.map(l=>normScore(l,d.max)),last=logs[logs.length-1],best=sc.length?Math.max(...sc):null,tl=logs.filter(l=>l.date===today);
       return `<div class="drill ${tl.length?'done':''}"><div style="min-width:0"><h4>${d.name}${ins.focus.includes(d.id)?'<span class="chip acc">Focus</span>':''}</h4><div class="how">${d.how}</div>${ins.why[d.id]?`<div class="why">${ins.why[d.id]}</div>`:''}
-        <div class="meta"><span class="chip">Target ${d.target} of ${d.max}</span>${best!=null?`<span class="chip ${best>=d.target?'good':''}">Best ${best}</span>`:''}${logs.length?`<span class="chip">${logs.length} logged</span>`:''}</div></div>
-        <div class="act"><div class="last">${last?`Last <b>${last.score}/${d.max}</b><br>${last.date===today?'today':fmtD(last.date)}`:'Not logged yet'}</div>${sparkSvg(sc.slice(-10),d.max,d.target)}
+        <div class="meta"><label class="chip reps">Reps <select class="repsel" data-reps="${d.id}" aria-label="${d.name} reps">${repOptions(d0).map(n=>`<option value="${n}" ${n===d.max?'selected':''}>${n}</option>`).join('')}</select></label><span class="chip">Target ${d.target} of ${d.max}</span>${best!=null?`<span class="chip ${best>=d.target?'good':''}">Best ${best}</span>`:''}${logs.length?`<span class="chip">${logs.length} logged</span>`:''}</div></div>
+        <div class="act"><div class="last">${last?`Last <b>${last.score}/${last.max||d.max}</b><br>${last.date===today?'today':fmtD(last.date)}`:'Not logged yet'}</div>${sparkSvg(sc.slice(-10),d.max,d.target)}
         <div class="logrow"><label for="log-${d.id}" style="position:absolute;left:-9999px">${d.name} score</label><input class="inp" id="log-${d.id}" type="number" inputmode="numeric" min="0" max="${d.max}" placeholder="/${d.max}" data-d="${d.id}"><button class="btn sm pri" data-log="${d.id}">Log</button></div>${tl.length?`<button class="btn sm ghost" data-undo="${d.id}">Undo today</button>`:''}</div></div>`;}).join('')}</div>`;}).join('');
-  const logIt=id=>{const d=DRILLS.find(x=>x.id===id),inp=$id('log-'+id),v=parseInt(inp.value,10);if(isNaN(v)||v<0||v>d.max){inp.focus();inp.style.borderColor='var(--loss)';toast(`Enter a score from 0 to ${d.max}`);return;}const s=prState();s.log.push({id,date:today,score:v,max:d.max,t:Date.now()});prSave(s);renderPractice();toast(`${d.name}: ${v} of ${d.max} logged`);};
+  const logIt=id=>{const d=drillCfg(prState(),DRILLS.find(x=>x.id===id)),inp=$id('log-'+id),v=parseInt(inp.value,10);if(isNaN(v)||v<0||v>d.max){inp.focus();inp.style.borderColor='var(--loss)';toast(`Enter a score from 0 to ${d.max}`);return;}const s=prState();s.log.push({id,date:today,score:v,max:d.max,t:Date.now()});prSave(s);renderPractice();toast(`${d.name}: ${v} of ${d.max} logged`);};
+  $id('pr-sessions').querySelectorAll('[data-reps]').forEach(sel=>sel.onchange=()=>{const s=prState(),d=DRILLS.find(x=>x.id===sel.dataset.reps),n=+sel.value;s.cfg.reps=Object.assign({},s.cfg.reps);if(n===d.max)delete s.cfg.reps[d.id];else s.cfg.reps[d.id]=n;prSave(s);renderPractice();toast(`${d.name}: ${n} reps`);});
   $id('pr-sessions').querySelectorAll('[data-log]').forEach(b=>b.onclick=()=>logIt(b.dataset.log));
   $id('pr-sessions').querySelectorAll('input[data-d]').forEach(i=>i.onkeydown=e=>{if(e.key==='Enter')logIt(i.dataset.d);});
   $id('pr-sessions').querySelectorAll('[data-undo]').forEach(b=>b.onclick=()=>{const s=prState();for(let i=s.log.length-1;i>=0;i--)if(s.log[i].id===b.dataset.undo&&s.log[i].date===today){s.log.splice(i,1);break;}prSave(s);renderPractice();});
-  const wl=DRILLS.filter(d=>st.log.some(l=>l.id===d.id));
+  const wl=DRILLS.filter(d=>st.log.some(l=>l.id===d.id)).map(d=>drillCfg(st,d));
   $id('pr-trends').innerHTML=wl.length?wl.map(d=>`<div class="panel s4"><div class="ch"><h3>${d.name}</h3><span class="sub">target ${d.target} of ${d.max}</span></div><div class="chart" id="trend-${d.id}"></div></div>`).join(''):'<div class="panel s12"><p class="note">Log a score after any drill and its trend chart appears here.</p></div>';
-  wl.forEach(d=>{const logs=st.log.filter(l=>l.id===d.id).slice(-20);lineChart($id('trend-'+d.id),{labels:logs.map(l=>fmtD(l.date)),series:[{name:'Score',values:logs.map(l=>l.score),color:'var(--accent)',width:2.4,dots:true,tfmt:v=>`${v} of ${d.max}`}],ref:[{v:d.target,label:'target',color:'var(--good)'}],min:0,max:d.max,h:160,ticks:2,fmt:v=>Math.round(v),aria:d.name+' scores'});});
+  wl.forEach(d=>{const logs=st.log.filter(l=>l.id===d.id).slice(-20);lineChart($id('trend-'+d.id),{labels:logs.map(l=>fmtD(l.date)),series:[{name:'Score',values:logs.map(l=>normScore(l,d.max)),color:'var(--accent)',width:2.4,dots:true,tfmt:v=>`${Math.round(v*10)/10} of ${d.max}`}],ref:[{v:d.target,label:'target',color:'var(--good)'}],min:0,max:d.max,h:160,ticks:2,fmt:v=>Math.round(v),aria:d.name+' scores'});});
 }
 
 /* ---------- coach: Claude inside the published page, Netlify function on your site ---------- */
