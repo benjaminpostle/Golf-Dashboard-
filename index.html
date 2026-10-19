@@ -1002,7 +1002,7 @@ select.inp{padding-right:28px;}
     </div>
    </div>
   </div>
-<script>window.PE_DEFAULT_THEME='dark';</script>
+<script>window.PE_DEFAULT_THEME='dark';window.PE_SYNC=true;</script>
 <script>
 const PAR=[5,4,3,4,4,4,3,4,5,4,5,4,3,4,4,4,3,5];
 const R=[
@@ -2110,35 +2110,50 @@ function chrome(){
 
 /* =========================== HOME =========================== */
 function holeSvg(){
-  // the handicap drawn to scale as a hole: tee 18.0, green = scratch
+  // the handicap drawn to scale on Pacific's 1st (par 5, 484 m): tee = 18.0, green = scratch
   const hist=HCP_HISTORY.map(e=>({v:e.hcp,m:e.before?'Apr':mon(e.after)}));
   if(Math.abs(hist[hist.length-1].v-HCP_CURRENT)>0.05)hist.push({v:HCP_CURRENT,m:'now'});
   const top=36,bot=372,maxI=Math.max(18,hist[0].v),y=i=>top+Math.min(i,maxI)/maxI*(bot-top);
-  // thin out marks that would collide; always keep tee and current
+  // centre line traced from the hole: drive left of the creek, lay-up back right, green up and right
+  const CL=[[51,384],[51,372],[26,239],[52,127],[68,36],[68,24]],S=[];
+  for(let k=1;k<CL.length-2;k++){const[p0,p1,p2,p3]=[CL[k-1],CL[k],CL[k+1],CL[k+2]];for(let t=0;t<1;t+=0.05){const t2=t*t,t3=t2*t;S.push([0.5*(2*p1[0]+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),0.5*(2*p1[1]+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3)]);}}
+  S.push([68,36]);
+  const cx=yy=>{let best=S[0];S.forEach(p=>{if(Math.abs(p[1]-yy)<Math.abs(best[1]-yy))best=p;});return best[0];};
+  const w=yy=>yy<70?12:yy<110?14:17;
+  const fw='M'+S.filter(p=>p[1]>58).map(p=>`${(p[0]-w(p[1])).toFixed(1)},${p[1].toFixed(1)}`).join(' L')+' L'+S.filter(p=>p[1]>58).reverse().map(p=>`${(p[0]+w(p[1])).toFixed(1)},${p[1].toFixed(1)}`).join(' L')+' Z';
   const pts=[];hist.forEach((h,k)=>{const last=k===hist.length-1;if(k===0||last||Math.abs(h.v-hist[hist.length-1].v)>=0.9&&(!pts.length||Math.abs(y(h.v)-y(pts[pts.length-1].v))>=17))pts.push(h);});
-  const XS=[62,55,70,58,67,61];
-  const P=pts.map((h,k)=>({...h,x:k===0?62:XS[k%XS.length],y:y(h.v),cur:k===pts.length-1}));
-  let path=`M${P[0].x},${P[0].y}`;for(let k=1;k<P.length;k++){const a=P[k-1],b=P[k];path+=` Q${(a.x+b.x)/2+(k%2?-7:7)},${(a.y+b.y)/2} ${b.x},${b.y}`;}
+  const P=pts.map((h,k)=>({...h,x:cx(y(h.v)),y:y(h.v),cur:k===pts.length-1}));
   const ball=P[P.length-1],sf=y(9.9);
-  const labs=P.map((p,k)=>`<line x1="${p.x+6}" y1="${p.y}" x2="100" y2="${p.y}" style="stroke:var(--ink3);stroke-opacity:.35" class="fade"/><text x="104" y="${p.y+4}" class="fade" style="font-size:12px;font-weight:650;fill:${p.cur?'var(--accent-text)':'var(--ink)'}">${p.v.toFixed(1)} <tspan style="font-weight:500;fill:${p.cur?'var(--accent-text)':'var(--ink3)'}">${p.cur?'now':p.m}</tspan></text>`).join('');
-  return `<svg class="hole" viewBox="0 0 170 400" role="img" aria-label="Handicap drawn as a hole: ${pts.map(p=>p.v.toFixed(1)+' '+(p.cur?'now':p.m)).join(', ')}. Single figures at 9.9, scratch at the green.">
+  const seg=(y0,y1)=>{const pp=S.filter(p=>p[1]<=y0+0.01&&p[1]>=y1-0.01);return pp.length?'M'+pp.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' L'):'';};
+  const travelled=`M${P[0].x},${P[0].y} `+seg(P[0].y,ball.y).replace(/^M/,'L')+` L${ball.x},${ball.y}`;
+  const ahead=`M${ball.x},${ball.y} `+seg(ball.y,40).replace(/^M/,'L');
+  let trees='';for(let yy=76;yy<=386;yy+=14){const c=cx(yy),ww=w(yy),j=((yy*37)%7)-3;const rl=3.6+((yy*13)%3)*0.7,rr=3.6+((yy*7)%3)*0.7;
+    const lx=c-ww-9+j*0.6,rx=c+ww+9-j*0.6;
+    trees+=`<circle cx="${lx.toFixed(1)}" cy="${yy}" r="${rl}" style="fill:color-mix(in srgb,var(--putt-rim) 80%,var(--bg))"/>`;
+    if(!(yy>250&&yy<300&&rx>60))trees+=`<circle cx="${rx.toFixed(1)}" cy="${yy+5}" r="${rr}" style="fill:color-mix(in srgb,var(--putt-rim) 80%,var(--bg))"/>`;}
+  const labs=P.map(p=>`<line x1="${p.x+6}" y1="${p.y}" x2="100" y2="${p.y}" style="stroke:var(--ink3);stroke-opacity:.35" class="fade"/><text x="104" y="${p.y+4}" class="fade" style="font-size:12px;font-weight:650;fill:${p.cur?'var(--accent-text)':'var(--ink)'}">${p.v.toFixed(1)} <tspan style="font-weight:500;fill:${p.cur?'var(--accent-text)':'var(--ink3)'}">${p.cur?'now':p.m}</tspan></text>`).join('');
+  return `<svg class="hole" viewBox="0 0 170 400" role="img" aria-label="Handicap drawn on Pacific's first hole: ${pts.map(p=>p.v.toFixed(1)+' '+(p.cur?'now':p.m)).join(', ')}. Single figures at 9.9, scratch at the green.">
   <defs><pattern id="mow" width="12" height="18" patternUnits="userSpaceOnUse"><rect width="12" height="9" style="fill:var(--fill)"/></pattern>
   <radialGradient id="glow"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.45"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></radialGradient></defs>
-  <path d="M38,392 C33,330 35,262 42,205 C48,152 40,104 40,66 L84,66 C86,104 98,152 94,205 C90,262 90,330 86,392 Z" style="fill:var(--turf2)"/>
-  <path d="M38,392 C33,330 35,262 42,205 C48,152 40,104 40,66 L84,66 C86,104 98,152 94,205 C90,262 90,330 86,392 Z" style="fill:url(#mow)"/>
-  <ellipse cx="29" cy="248" rx="7.5" ry="12.5" style="fill:var(--sand);opacity:.55"/>
-  <ellipse cx="62" cy="36" rx="37" ry="27" style="fill:var(--turf2)"/>
-  <ellipse cx="62" cy="36" rx="31" ry="21" style="fill:var(--putt);stroke:var(--putt-rim);stroke-width:1"/>
-  <ellipse cx="21" cy="63" rx="10.5" ry="6" transform="rotate(-25 21 63)" style="fill:var(--sand);opacity:.55"/>
-  <rect x="50" y="366" width="24" height="11" rx="3" style="fill:var(--putt)"/>
-  <line x1="33" y1="${sf}" x2="99" y2="${sf}" class="fade" style="stroke:var(--ink2);stroke-width:1;stroke-dasharray:3 3"/>
+  <path d="M-2,40 C0,140 2,260 0,400 L10,400 C12,260 10,140 8,40 Z" style="fill:var(--turf2);opacity:.55"/>
+  <path d="M146,20 C150,140 152,260 150,400 L176,400 C178,260 176,140 172,20 Z" style="fill:var(--turf2);opacity:.6"/>
+  <path d="${fw}" style="fill:var(--turf2)"/><path d="${fw}" style="fill:url(#mow)"/>
+  <path d="M-4,120 C2,160 6,200 14,226 C22,248 36,258 50,268 C62,278 66,300 67,330 C68,360 70,380 72,404" style="fill:none;stroke:var(--gain);stroke-opacity:.22;stroke-width:11;stroke-linecap:round"/>
+  <path d="M-4,120 C2,160 6,200 14,226 C22,248 36,258 50,268 C62,278 66,300 67,330 C68,360 70,380 72,404" style="fill:none;stroke:var(--gain);stroke-opacity:.55;stroke-width:6;stroke-linecap:round"/>
+  ${trees}
+  <ellipse cx="68" cy="38" rx="35" ry="25" style="fill:var(--turf2)"/>
+  <ellipse cx="68" cy="38" rx="29" ry="19" style="fill:var(--putt);stroke:var(--putt-rim);stroke-width:1"/>
+  <ellipse cx="37" cy="42" rx="6" ry="9" style="fill:var(--sand);opacity:.6"/>
+  <ellipse cx="40" cy="62" rx="7" ry="5" style="fill:var(--sand);opacity:.6"/>
+  <rect x="40" y="368" width="22" height="10" rx="3" style="fill:var(--putt)"/>
+  <line x1="${cx(sf)-20}" y1="${sf}" x2="99" y2="${sf}" class="fade" style="stroke:var(--ink2);stroke-width:1;stroke-dasharray:3 3"/>
   <text x="104" y="${sf+1}" class="fade" style="font-size:12px;font-weight:650;fill:var(--ink)">9.9</text><text x="104" y="${sf+14}" class="fade" style="font-size:11px;fill:var(--ink3)">single figures</text>
-  <path d="M${ball.x},${ball.y} C${ball.x+8},${ball.y-60} 74,170 66,110 C62,80 62,60 62,40" class="fade" style="fill:none;stroke:var(--ink2);stroke-opacity:.45;stroke-width:1.4;stroke-dasharray:2 5;stroke-linecap:round"/>
-  <path d="${path}" pathLength="1" class="draw" style="--len:1;fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"/>
+  <path d="${ahead}" class="fade" style="fill:none;stroke:var(--ink2);stroke-opacity:.45;stroke-width:1.4;stroke-dasharray:2 5;stroke-linecap:round"/>
+  <path d="${travelled}" pathLength="1" class="draw" style="--len:1;fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"/>
   ${P.slice(1,-1).map(p=>`<circle cx="${p.x}" cy="${p.y}" r="3" class="fade" style="fill:var(--ink)"/>`).join('')}
-  <line x1="62" y1="36" x2="62" y2="8" style="stroke:var(--ink);stroke-width:1.5"/>
-  <path d="M62,8 L76,12.5 L62,17 Z" style="fill:var(--accent)"/>
-  <circle cx="62" cy="36" r="2" style="fill:var(--bg)"/>
+  <line x1="68" y1="38" x2="68" y2="10" style="stroke:var(--ink);stroke-width:1.5"/>
+  <path d="M68,10 L82,14.5 L68,19 Z" style="fill:var(--accent)"/>
+  <circle cx="68" cy="38" r="2" style="fill:var(--bg)"/>
   <text x="104" y="40" style="font-size:12px;font-weight:650;fill:var(--ink)">Scratch</text>
   ${labs}
   <circle cx="${ball.x}" cy="${ball.y}" r="16" class="drop" style="fill:url(#glow)"/>
@@ -2166,7 +2181,7 @@ function homeHero(){
       <div><div class="fv">${W.calc!=null?W.calc.toFixed(1):'—'}</div><div class="fk">your calculation</div></div>
     </div>
     <div class="hist">${HCP_HISTORY.map(e=>`<span>${e.before?'Apr':e.after}<b>${e.hcp}</b></span>`).join('')}</div>
-    <div class="cap" style="margin-top:auto;padding-top:18px">Each dot is a cut. Tap for the breakdown.</div>
+    <div class="cap" style="margin-top:auto;padding-top:18px">Drawn on Pacific's 1st, par 5, 484 m. Each dot is a cut.</div>
   </div>${holeSvg()}`;
   countUp($id('hero-num'),start,HCP_CURRENT);
 }
@@ -2401,7 +2416,7 @@ function openRound(key){
     ${r._device?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px"><button class="btn" id="rd-copy">Copy as code</button><button class="btn danger" id="rd-del">Delete round</button></div><p class="note" style="margin-top:8px">Saved in this browser. Paste the code into the R list in index.html to keep it on every device.</p>`:''}`;
   $id('rd-drawer').classList.add('on');$id('rd-drawer').setAttribute('aria-hidden','false');document.body.classList.add('lock');p.scrollTop=0;
   if(r._device){
-    $id('rd-del').onclick=()=>uiConfirm(`Delete the ${r.label} round from this device?`,'Delete',true).then(ok=>{if(!ok)return;store.set(ROUNDS_KEY,store.get(ROUNDS_KEY,[]).filter(x=>x.key!==r.key));syncDeviceRounds();closeDrawer();refreshAll();toast('Round deleted');});
+    $id('rd-del').onclick=()=>uiConfirm(`Delete the ${r.label} round from this device?`,'Delete',true).then(ok=>{if(!ok)return;store.set(ROUNDS_KEY,store.get(ROUNDS_KEY,[]).filter(x=>x.key!==r.key));store.set('pe_deleted_v1',[...new Set(store.get('pe_deleted_v1',[]).concat(r.key))]);syncDeviceRounds();closeDrawer();refreshAll();toast('Round deleted');});
     $id('rd-copy').onclick=e=>copyText(roundCode(r),e.currentTarget);
   }
 }
@@ -2608,7 +2623,7 @@ function renderStats(){
    POSTLE v6 · Practice, Coach, settings, saving rounds, boot
    ===================================================================== */
 const PR_KEY='pe_practice_v1';
-function prState(){const d={log:[],habit:{},cfg:{sessions:3}};const s=store.get(PR_KEY,null);if(!s)return d;return{log:Array.isArray(s.log)?s.log:[],habit:s.habit||{},cfg:Object.assign({sessions:3},s.cfg||{})};}
+function prState(){const d={log:[],habit:{},cfg:{sessions:3}};const s=store.get(PR_KEY,null);if(!s)return d;return{log:Array.isArray(s.log)?s.log:[],habit:s.habit||{},cfg:Object.assign({sessions:3},s.cfg||{}),cleared:s.cleared||undefined};}
 function prSave(s){store.set(PR_KEY,s);}
 const SESS={
   A:{name:'Putting',mins:30,col:'var(--s1)',where:'Practice green'},
@@ -2764,7 +2779,7 @@ function settingsCard(){
   $id('set-theme').querySelectorAll('button').forEach(b=>b.onclick=()=>{try{localStorage.setItem('pe_theme',b.dataset.t);}catch(e){}if(b.dataset.t==='auto')document.documentElement.removeAttribute('data-theme');applyTheme();settingsCard();});
   $id('set-sess').querySelectorAll('button').forEach(b=>b.onclick=()=>{const s=prState();s.cfg.sessions=+b.dataset.n;prSave(s);settingsCard();chrome();});
   $id('set-data').onclick=()=>{setPage('rounds');setTimeout(()=>$id('my-data').scrollIntoView({behavior:'smooth'}),80);};
-  $id('set-prac-reset').onclick=()=>uiConfirm('Clear every drill score and habit tick?','Clear',true).then(ok=>{if(!ok)return;const s=prState();s.log=[];s.habit={};prSave(s);settingsCard();toast('Practice log cleared');});
+  $id('set-prac-reset').onclick=()=>uiConfirm('Clear every drill score and habit tick?','Clear',true).then(ok=>{if(!ok)return;const s=prState();s.log=[];s.habit={};s.cleared=Date.now();prSave(s);settingsCard();toast('Practice log cleared');});
 }
 function renderCoach(){const run=(n,f)=>{try{f();}catch(e){console.error(n,e);}};run('settings',settingsCard);run('lessons',lessonCards);}
 
@@ -2798,6 +2813,124 @@ let _rsz,_lastW=innerWidth;window.addEventListener('resize',()=>{clearTimeout(_r
 if(window.claude&&typeof window.claude.use==='function'){
   window.claude.use('sample').then(s=>{SAMPLE=s||null;}).catch(()=>{});
   window.claude.use('downloads').then(d=>{DL=d||null;}).catch(()=>{});
+}
+
+/* =====================================================================
+   POSTLE v6 · cloud sync (Netlify build only)
+   One copy of your data in Netlify Blobs, shared by every device.
+   Redeploying the page never touches it.
+   ===================================================================== */
+const SYNC_KEYS=['pe_rounds_v1','pe_practice_v1','pe_wedges_v1','pe_hcp','postle_layouts_v1','pe_deleted_v1'];
+const SYNC_META='pe_sync_meta', SYNC_SECRET='pe_sync_key', SYNC_LAST='pe_sync_last';
+const SYNC={on:!!window.PE_SYNC, busy:false, err:null, applying:false, t:null};
+
+/* stamp every local change to a synced key, then push shortly after */
+(function hookStorage(){
+  if(!SYNC.on)return;
+  const P=Storage.prototype, set0=P.setItem, del0=P.removeItem;
+  const stamp=k=>{if(SYNC.applying||!SYNC_KEYS.includes(k))return;try{const m=JSON.parse(localStorage.getItem(SYNC_META)||'{}');m[k]=Date.now();set0.call(localStorage,SYNC_META,JSON.stringify(m));}catch(e){}clearTimeout(SYNC.t);SYNC.t=setTimeout(()=>syncNow(),1500);};
+  P.setItem=function(k,v){set0.call(this,k,v);if(this===localStorage)stamp(k);};
+  P.removeItem=function(k){del0.call(this,k);if(this===localStorage)stamp(k);};
+})();
+
+const J=s=>{try{return s==null?null:JSON.parse(s);}catch(e){return null;}};
+function syncMerge(k,L,C){ /* L,C = {d:string|null,t:number} */
+  const newer=(L.t||0)>=(C.t||0)?L:C, older=newer===L?C:L;
+  const a=J(L.d), b=J(C.d);
+  if(k==='pe_deleted_v1'){return JSON.stringify([...new Set([...(a||[]),...(b||[])])]);}
+  if(k==='pe_rounds_v1'){
+    const m=new Map();
+    [...(J(older.d)||[]),...(J(newer.d)||[])].forEach(r=>{if(!r||!r.key)return;const x=m.get(r.key);if(!x||(r._savedAt||'')>=(x._savedAt||''))m.set(r.key,r);});
+    return JSON.stringify([...m.values()]);
+  }
+  if(k==='pe_practice_v1'){
+    const n=J(newer.d)||{}, o=J(older.d)||{};
+    const cleared=Math.max(n.cleared||0,o.cleared||0), seen=new Set(), log=[];
+    [...(o.log||[]),...(n.log||[])].forEach(l=>{if(!l)return;const sig=[l.id,l.date,l.score,l.t].join('|');if(seen.has(sig)||(l.t||0)<=cleared)return;seen.add(sig);log.push(l);});
+    log.sort((x,y)=>(x.t||0)-(y.t||0));
+    const habit=(n.cleared||0)>(older.t||0)?Object.assign({},n.habit):Object.assign({},o.habit,n.habit);
+    return JSON.stringify({log,habit,cfg:Object.assign({},o.cfg,n.cfg),cleared:cleared||undefined});
+  }
+  if(k==='pe_wedges_v1'){
+    const n=J(newer.d), o=J(older.d);
+    if(!n||!o)return newer.d!=null?newer.d:older.d;
+    return JSON.stringify(Object.assign({},o,n,{v:Object.assign({},o.v,n.v)}));
+  }
+  return newer.d; /* index, layouts: last change wins */
+}
+
+function syncLocalDoc(){
+  const m=J(localStorage.getItem(SYNC_META))||{}, keys={};
+  SYNC_KEYS.forEach(k=>{keys[k]={d:localStorage.getItem(k),t:m[k]||0};});
+  return keys;
+}
+
+async function syncNow(opts={}){
+  if(!SYNC.on)return false;
+  const secret=store.raw(SYNC_SECRET);
+  if(!secret){SYNC.err='Not set up on this device';syncBadge();return false;}
+  if(SYNC.busy){clearTimeout(SYNC.t);SYNC.t=setTimeout(()=>syncNow(opts),1200);return false;}
+  SYNC.busy=true;syncBadge();
+  try{
+    const H={'x-sync-key':secret,'content-type':'application/json'};
+    const g=await fetch('/api/data',{headers:H,cache:'no-store'});
+    if(g.status===401)throw new Error('Sync key does not match Netlify');
+    if(!g.ok)throw new Error('Cloud returned '+g.status);
+    const cloud=(await g.json())||{}, ck=cloud.keys||{}, lk=syncLocalDoc(), out={};
+    let changedLocal=false;
+    SYNC_KEYS.forEach(k=>{
+      const L=lk[k], C=ck[k]||{d:null,t:0};
+      let d=(L.d==null&&!L.t)?C.d:(C.d==null&&!C.t)?L.d:syncMerge(k,L,C);
+      if(k==='pe_rounds_v1'){const del=new Set(J(syncMerge('pe_deleted_v1',lk.pe_deleted_v1,ck.pe_deleted_v1||{d:null,t:0}))||[]);const arr=J(d);if(Array.isArray(arr))d=JSON.stringify(arr.filter(r=>!del.has(r.key)));}
+      const t=Math.max(L.t||0,C.t||0);
+      out[k]={d,t};
+      if(d!==L.d){changedLocal=true;SYNC.applying=true;try{d==null?localStorage.removeItem(k):localStorage.setItem(k,d);}catch(e){}SYNC.applying=false;}
+    });
+    SYNC.applying=true;try{localStorage.setItem(SYNC_META,JSON.stringify(Object.fromEntries(SYNC_KEYS.map(k=>[k,out[k].t]))));}catch(e){}SYNC.applying=false;
+    const p=await fetch('/api/data',{method:'PUT',headers:H,body:JSON.stringify({v:1,keys:out})});
+    if(!p.ok)throw new Error('Cloud save returned '+p.status);
+    SYNC.err=null;store.set(SYNC_LAST,Date.now());
+    if(changedLocal){
+      const h=parseFloat(store.raw('pe_hcp'));HCP_CURRENT=isNaN(h)?HCP_FILE:h;
+      syncDeviceRounds();refreshAll();
+      if(!opts.quiet)toast('Synced from the cloud');
+    }else if(opts.loud)toast('Up to date');
+    return true;
+  }catch(e){SYNC.err=e.message||'Offline';if(opts.loud)toast(SYNC.err);return false;}
+  finally{SYNC.busy=false;syncBadge();}
+}
+
+function syncState(){
+  if(!SYNC.on)return{k:'off',txt:'Only on the Netlify app'};
+  if(!store.raw(SYNC_SECRET))return{k:'setup',txt:'Not set up on this device'};
+  if(SYNC.busy)return{k:'busy',txt:'Syncing…'};
+  if(SYNC.err)return{k:'err',txt:SYNC.err};
+  const l=store.get(SYNC_LAST,0);
+  return{k:'ok',txt:l?'Synced '+new Date(l).toLocaleString('en-AU',{weekday:'short',hour:'numeric',minute:'2-digit'}):'Waiting for first sync'};
+}
+function syncBadge(){const el=$id('sync-state');if(el){const s=syncState();el.textContent=s.txt;el.dataset.k=s.k;}}
+
+function syncSettingsRow(){
+  if(!SYNC.on)return '';
+  const has=!!store.raw(SYNC_SECRET);
+  return `<div class="set-row"><div class="l">Cloud sync<small id="sync-state"></small></div>${has
+    ?`<div style="display:flex;gap:6px"><button class="btn sm pri" id="sync-go">Sync now</button><button class="btn sm" id="sync-forget">Forget key</button></div>`
+    :`<div style="display:flex;gap:6px"><label for="sync-key" style="position:absolute;left:-9999px">Sync key</label><input class="inp" id="sync-key" type="password" autocomplete="off" placeholder="Sync key" style="width:120px"><button class="btn sm pri" id="sync-set">Connect</button></div>`}</div>`;
+}
+function bindSyncSettings(){
+  syncBadge();
+  const go=$id('sync-go');if(go)go.onclick=()=>syncNow({loud:true});
+  const fg=$id('sync-forget');if(fg)fg.onclick=()=>uiConfirm('Stop syncing on this device? Your data stays in the cloud and on this device.','Stop syncing').then(ok=>{if(!ok)return;store.del(SYNC_SECRET);settingsCard();});
+  const st=$id('sync-set');if(st)st.onclick=async()=>{const v=$id('sync-key').value.trim();if(!v){toast('Enter the sync key from Netlify');return;}localStorage.setItem(SYNC_SECRET,v);const ok=await syncNow({loud:true});if(!ok&&SYNC.err&&/match/.test(SYNC.err))store.del(SYNC_SECRET);settingsCard();};
+}
+
+if(SYNC.on){
+  /* wrap the settings card so the sync row appears under Backup */
+  const _sc=settingsCard;
+  settingsCard=function(){_sc();const row=$id('set-data');if(row){row.closest('.set-row').insertAdjacentHTML('beforebegin',syncSettingsRow());bindSyncSettings();}};
+  if($id('settings')&&$id('settings').innerHTML)settingsCard();
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')syncNow();});
+  syncNow({quiet:true});
 }
 
 </script>
