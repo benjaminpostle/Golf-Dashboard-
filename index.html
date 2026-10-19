@@ -641,6 +641,14 @@ select.inp{padding-right:28px;}
 .hero .hist b{color:var(--ink);font-weight:650;margin-left:3px;font-variant-numeric:tabular-nums;}
 @media (max-width:560px){.hero .hist{display:none;}}
 
+/* ---------- phone tap behaviour: no double-tap zoom, no zoom on focus ---------- */
+html,body{touch-action:manipulation;}
+button,a,input,select,label,[role="button"],.ar-stepper,.ar-stepper *{touch-action:manipulation;}
+.ar-stepper button,.ar-stepper [data-d],.btn,.seg button{-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;}
+@media (pointer:coarse){
+  input,select,textarea,.inp,.field input,.field select,.lay-f input,.lay-trow input,.lay-trow select,.askrow .inp{font-size:16px;}
+}
+
 </style>
 </head>
 <body>
@@ -2628,12 +2636,16 @@ function prSave(s){store.set(PR_KEY,s);}
 const SESS={
   A:{name:'Putting',mins:30,col:'var(--s1)',where:'Practice green'},
   B:{name:'Short game',mins:40,col:'var(--violet)',where:'Chipping green and bunker'},
-  C:{name:'Range and Trackman',mins:45,col:'var(--accent-text)',where:'Range bay'}
+  C:{name:'Range and Trackman',mins:45,col:'var(--accent-text)',where:'Range bay'},
+  D:{name:'Home putting',mins:20,col:'var(--s2)',where:'Well Putt mat and putting mirror'}
 };
 const DRILLS=[
   {id:'lag',s:'A',name:'Lag ladder',max:15,target:11,cat:'putt',how:'Five balls each from 6, 9 and 12 m. Score one for every ball that finishes inside a putter length. Pace only, don\'t read the line.'},
   {id:'circle',s:'A',name:'Circle drill',max:16,target:14,cat:'putt',how:'Eight balls in a circle at 1 m, then eight at 1.5 m. Full routine on every putt. Score the makes.'},
   {id:'gate',s:'A',name:'Start-line gate',max:10,target:9,cat:'putt',how:'Two tees just wider than a ball, 30 cm in front of it, on a straight 2 m putt. Score putts that go through the gate and in.'},
+  {id:'mirror',s:'D',name:'Mirror start line',max:10,target:8,cat:'putt',how:'Mirror under the ball, 1.5 m from the hole on the mat. Before each putt check eyes over the line and shoulders square in the mirror. Score putts that start through the mirror gate and drop.'},
+  {id:'streak',s:'D',name:'1 m streak',max:25,target:15,cat:'putt',how:'One putt-length from the hole on the mat. Full routine every putt. Score your longest run of makes in a row, out of 25.'},
+  {id:'matpace',s:'D',name:'Full-mat pace',max:10,target:7,cat:'putt',how:'Ten putts from the far end of the 9 ft mat. Score one when it drops or stops within a putter grip past the hole. Never short.'},
   {id:'roughchip',s:'B',name:'Rough chip-on',max:20,target:14,cat:'arg',how:'Twenty balls from greenside rough, 10 to 25 m, new lie every ball. Score one when it finishes on the green.'},
   {id:'ud5',s:'B',name:'Up and down 5',max:5,target:3,cat:'arg',how:'Five spots around one green: fringe, rough, tight lie, downhill, short-sided. Chip and putt out. Score the up-and-downs.'},
   {id:'bunker',s:'B',name:'Splash 10',max:10,target:7,cat:'arg',how:'Draw a line in the sand 5 cm behind the ball. Open face, hit the line, full finish. Score one when it is out and on the green.'},
