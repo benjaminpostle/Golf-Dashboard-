@@ -1070,6 +1070,19 @@ const TEECLUB={
  'r5_04':[['4 Iron','miss'],['5 Wood','miss'],['8 Iron','GIR'],['Driver','fairway'],['5 Wood','miss'],['5 Wood','fairway'],['6 Iron','miss'],['Driver','miss'],['Driver','fairway'],['5 Wood','fairway'],['Driver','miss'],['3 Wood','fairway'],['Wedge','GIR'],['Driver','miss'],['4 Iron','fairway'],['4 Iron','fairway'],['5 Iron','miss'],['Driver','miss']]
 };
 const RANGE=[
+ {date:'26 Oct',ball:'ProV1x',device:'Trackman',units:'m/s',
+  // shot cols: cs,aa,bs,spin,carry,side(L−/R+),smash,height,path,f2p,dynLoft,faceAngle,total,launch · cs = bs/smash (derived), side = carry side, no total exported
+  smashMin:{'7 Iron':1.23,'9 Iron':1.20},
+  shots:{
+ '7 Iron':[[40.3, -1.6, 52.8, 4467, 159.5, 13.7, 1.31, 29.3, 2.8, 1.2, 22.6, 4.0, null, null], [39.8, -0.4, 51.8, 4888, 153.0, 22.9, 1.3, 27.6, -1.0, 5.3, 22.7, 4.3, null, null], [41.1, null, 38.2, 8609, 87.9, -37.6, 0.93, 8.9, null, null, null, null, null, null], [39.3, 1.0, 46.0, 3265, 136.8, 3.5, 1.17, 20.0, -1.2, 1.6, 22.3, 0.4, null, null], [39.5, null, 35.9, 4792, 55.8, -20.3, 0.91, 2.0, null, null, null, null, null, null], [40.6, 0.8, 50.7, 3664, 155.3, 21.5, 1.25, 25.0, 0.4, 4.2, 21.7, 4.6, null, null], [40.5, -1.0, 48.2, 3627, 145.3, 1.7, 1.19, 22.9, 0.6, 0.1, 22.4, 0.7, null, null], [41.0, -1.0, 46.3, 9297, 84.1, -34.8, 1.13, 4.5, 2.0, null, null, null, null, null], [40.5, -1.6, 53.5, 4071, 164.7, 12.1, 1.32, 31.3, 0.2, 2.3, 23.2, 2.5, null, null], [40.5, -5.9, 37.3, 8735, 77.7, -43.9, 0.92, 7.7, -0.9, null, null, null, null, null], [40.1, -1.0, 52.5, 5935, 150.4, -1.9, 1.31, 30.5, 0.2, -0.5, 24.2, -0.3, null, null], [40.1, -0.8, 50.5, 3356, 156.1, 12.6, 1.26, 23.8, -0.4, 2.9, 21.2, 2.5, null, null], [40.6, -0.6, 49.9, 3214, 153.6, 12.6, 1.23, 22.2, -0.8, 3.2, 20.7, 2.4, null, null]],
+ '9 Iron':[[38.3, -1.0, 48.7, 7334, 131.7, 12.6, 1.27, 30.1, 0.8, 2.9, 28.9, 3.7, null, null], [39.4, -2.8, 49.7, 7912, 132.8, 16.9, 1.26, 31.4, 1.4, 3.8, 29.2, 5.2, null, null], [37.7, -1.2, 46.7, 6861, 126.3, 2.6, 1.24, 29.4, -1.8, 1.9, 30.4, 0.1, null, null], [38.8, -1.4, 47.7, 5653, 133.5, 8.9, 1.23, 31.3, 0.4, 2.1, 29.8, 2.5, null, null], [37.9, -4.2, 47.8, 7813, 127.7, 4.6, 1.26, 28.1, 1.6, 0.3, 28.8, 1.9, null, null], [36.3, -3.6, 45.0, 7995, 118.1, -0.1, 1.24, 26.4, 2.6, -1.8, 31.1, 0.8, null, null], [38.2, -2.0, 45.9, 6114, 126.7, 14.0, 1.2, 26.0, -1.2, 5.0, 28.2, 3.8, null, null], [37.5, -1.6, 45.8, 6839, 123.9, 13.0, 1.22, 26.2, -2.8, 5.9, 29.0, 3.1, null, null], [38.5, -1.4, 48.1, 7516, 128.9, 9.2, 1.25, 30.2, 0.2, 2.5, 29.9, 2.7, null, null], [38.9, -2.8, 44.7, 7768, 118.0, -20.4, 1.15, 23.5, 0.0, -6.9, 28.9, -6.9, null, null], [38.1, -1.0, 46.9, 7271, 125.8, 6.7, 1.23, 28.7, -1.6, 3.0, 30.0, 1.4, null, null], [37.7, -1.2, 46.0, 5621, 128.1, 0.0, 1.22, 29.4, -1.0, 0.6, 30.3, -0.4, null, null]]
+},
+  notes:{
+   '7 Iron':"4 of 13 were heel strikes: smash 0.91\u20131.13, ball 55\u201388 m, 35\u201344 m left, low (2\u20139 m high) with 8,600\u20139,300 spin. Same left-mishit pattern as 22 Sep and 2 Oct. Solid ones (7): 156 carry, up from 149 on 22 Sep, face +2.9\u00b0 and 12\u201323 m right. Attack still shallow at \u22121.1\u00b0 (target \u22123\u00b0 to \u22124\u00b0).",
+   '9 Iron':"Best iron block yet. 11 of 12 solid-ish (smash 1.20\u20131.27), carry 118\u2013134 with a tight \u00b15 m spread, 7 of 12 within 10 m of the line. Face +1.5\u00b0 average, down from +3\u20135\u00b0 on Tuesday's irons. Attack \u22122.0\u00b0 average, with the best strikes at \u22122.8\u00b0 to \u22124.2\u00b0."
+  },
+  summary:"Face is coming back toward square on the short irons (9i +1.5\u00b0). 9-iron distance control is green-ready. The 7-iron's problem is heel contact: 4 of 13 went low and 35\u201344 m left. Attack angle on the 7-iron is still too shallow."
+ },
  {date:'20 Oct',ball:'ProV1x',device:'Trackman',units:'m/s',
   // shot cols: cs,aa,bs,spin,carry,side(L−/R+),smash,height,path,f2p,dynLoft,faceAngle,total,launch · bs = cs×smash, f2p = face − path (derived); normalised to 25°C, sea level
   smashMin:{'Driver':1.40,'3 Wood':1.35,'2 Iron':1.25,'4 Iron':1.30,'5 Iron':1.30,'6 Iron':1.30},
@@ -2972,8 +2985,22 @@ if(SYNC.on){
   const _sc=settingsCard;
   settingsCard=function(){_sc();const row=$id('set-data');if(row){row.closest('.set-row').insertAdjacentHTML('beforebegin',syncSettingsRow());bindSyncSettings();}};
   if($id('settings')&&$id('settings').innerHTML)settingsCard();
-  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')syncNow();});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')syncNow();else if(SYNC.t){clearTimeout(SYNC.t);syncNow({quiet:true});}});
+  window.addEventListener('pagehide',()=>{if(SYNC.t){clearTimeout(SYNC.t);syncNow({quiet:true});}});
   syncNow({quiet:true});
+  /* loud warning when this copy of the app is not syncing, so nothing gets logged into a dead end */
+  (function syncWarn(){
+    const host=location.hostname, perma=/^[0-9a-f]{20,}--/.test(host), main=host.replace(/^[0-9a-f]{20,}--/,'');
+    const bar=document.createElement('div');bar.id='sync-warn';
+    bar.style.cssText='position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:90;background:var(--loss);color:#fff;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:600;display:none;gap:10px;align-items:center;box-shadow:0 6px 24px rgba(0,0,0,.35)';
+    document.body.appendChild(bar);
+    const paint=()=>{
+      if(perma){bar.innerHTML=`This is an old deploy link, so anything you log here won't sync. <a href="https://${main}/" style="color:#fff;text-decoration:underline;margin-left:auto;white-space:nowrap">Open the app</a>`;bar.style.display='flex';return;}
+      if(!store.raw(SYNC_SECRET)){bar.innerHTML=`Not syncing on this device. Logs stay only here. <button type="button" style="margin-left:auto;background:#fff;color:#000;border:0;border-radius:8px;padding:6px 10px;font:inherit;font-weight:700;white-space:nowrap">Connect</button>`;bar.style.display='flex';bar.querySelector('button').onclick=()=>{setPage('coach');setTimeout(()=>{const k=$id('sync-key');if(k){k.scrollIntoView({behavior:'smooth',block:'center'});k.focus();}},120);};return;}
+      bar.style.display='none';
+    };
+    paint();const _b=syncBadge;syncBadge=function(){_b();paint();};
+  })();
 }
 
 </script>
