@@ -1175,8 +1175,8 @@ const SOCIAL=[
  {label:'16 Jul',tee:'blue',holes:15,gross9:'—',putts:null,gir:null,girOf:null,mizuno:true,comp:true,pts:28,note:'COMP (left after 15). 28 pts / 15 holes = 33.6-pt 18-hole pace. Two net birdies (H11, H15). Bag: 2i + 3w in (not 5w/hybrid). Elite driving: 83% fairways off par4/5 (10/12), 3w 4/4, 2i 2/2. Damage from H7 hazard + H3 short. Ball-striking there, scoring lagged it.'},
  {label:'7 Sep',tee:'white',holes:9,nine:'front',gross9:42,putts:19,gir:null,girOf:null,mizuno:true,pts:18,note:'Social front 9. 18 pts / 9 holes = 36-pt 18-hole pace — strong. 19 putts (a touch high), no pickups. White tees.'}
 ];
-const HCP_HISTORY=[{before:true,hcp:18},{after:'25 Jun',hcp:17},{after:'29 Aug',hcp:14.9},{after:'26 Sep',hcp:13.9},{after:'01 Oct',hcp:13.8}];
-const HCP_FILE=14.1;
+const HCP_HISTORY=[{before:true,hcp:18},{after:'25 Jun',hcp:17},{after:'29 Aug',hcp:14.9},{after:'26 Sep',hcp:13.9},{after:'01 Oct',hcp:13.8},{after:'10 Oct',hcp:14.1},{after:'31 Oct',hcp:13.6}];
+const HCP_FILE=13.6; // 31 Oct: estimated (12.0 in, 15.9 out); confirm against GA
 let HCP_CURRENT=(()=>{try{const v=parseFloat(localStorage.getItem('pe_hcp'));return isNaN(v)?HCP_FILE:v;}catch(e){return HCP_FILE;}})();
 const PAR_TOTAL=72, CR=73, SLOPE=129;
 const TEE_COL={blue:'#3987e5',white:'#aab4c2',yellow:'#e0a43a',red:'#e8605a'};
@@ -1199,7 +1199,8 @@ function buildLayout(out,temps){ // out: Set of standard hole numbers removed; t
 }
 const BUILTIN_LAYOUTS=[
   {id:'std',name:'Standard (par 72)',holes:STD_LAYOUT},
-  {id:'temp-oct26',name:'Temp · H1 out, 5 split 5A/5B',holes:buildLayout(new Set([1,5]),[{h:'5A',p:4,after:4},{h:'5B',p:3,after:4}])}
+  {id:'temp-oct26',name:'Temp · H1 out, 5 split 5A/5B',holes:buildLayout(new Set([1,5]),[{h:'5A',p:4,after:4},{h:'5B',p:3,after:4}])},
+  {id:'temp-oct31',name:'Temp · 6 & 13 out, 5A/5B & 15A/15B in (par 70)',rating:{cr:70,sl:122},holes:buildLayout(new Set([5,6,13,15]),[{h:'5A',p:4,after:4},{h:'5B',p:3,after:4},{h:'15A',p:3,after:14},{h:'15B',p:3,after:14}])}
 ];
 
 R.forEach(r=>{
@@ -1490,7 +1491,8 @@ async function askClaude(messages,opts){
   const LKEY='postle_layouts_v1', LLAST='postle_layout_last';
   const loadCustom=()=>{try{return JSON.parse(localStorage.getItem(LKEY)||'{}');}catch(e){return {};}};
   const saveCustom=o=>{try{localStorage.setItem(LKEY,JSON.stringify(o));}catch(e){}};
-  const BUILTIN_DEF={'temp-oct26':{name:'Temp · H1 out, 5 split 5A/5B',out:[1,5],temps:[{h:'5A',p:4,after:4},{h:'5B',p:3,after:4}],rating:{cr:71,sl:124,tees:{blue:{cr:71,sl:124},white:{cr:69,sl:123},red:{cr:67,sl:117}}}}};
+  const BUILTIN_DEF={'temp-oct26':{name:'Temp · H1 out, 5 split 5A/5B',out:[1,5],temps:[{h:'5A',p:4,after:4},{h:'5B',p:3,after:4}],rating:{cr:71,sl:124,tees:{blue:{cr:71,sl:124},white:{cr:69,sl:123},red:{cr:67,sl:117}}}},
+    'temp-oct31':{name:'Temp · 6 & 13 out, 5A/5B & 15A/15B in (par 70)',out:[5,6,13,15],temps:[{h:'5A',p:4,after:4},{h:'5B',p:3,after:4},{h:'15A',p:3,after:14},{h:'15B',p:3,after:14}],rating:{cr:70,sl:122,tees:{blue:{cr:70,sl:122}}}}};
   function allLayouts(){ // std + built-ins (with any saved edits) + custom
     const c=loadCustom(),list=[{id:'std',name:'Standard',out:[],temps:[],rating:null,builtin:true}];
     Object.entries(BUILTIN_DEF).forEach(([id,d])=>list.push(Object.assign({id,builtin:true},d,c[id]||{})));
