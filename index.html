@@ -651,6 +651,16 @@ button,a,input,select,label,[role="button"],.ar-stepper,.ar-stepper *{touch-acti
 .chip.reps{gap:4px;padding-right:4px;}
 .repsel{appearance:none;-webkit-appearance:none;background:var(--fill-2);color:var(--ink);border:0;border-radius:6px;font:inherit;font-weight:650;padding:2px 8px;cursor:pointer;}
 
+/* birdie tracker */
+.bhol{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin:4px 0 14px}
+.bh{border:1px solid var(--line);border-radius:9px;padding:6px 0;text-align:center;font-size:12px;color:var(--ink3)}
+.bh b{display:block;font-size:15px;color:var(--ink);min-height:18px}
+.bh.on{background:color-mix(in srgb,var(--accent) 16%,transparent);border-color:var(--accent-line);color:var(--ink2)}
+.blist{display:grid;gap:8px}
+.bi{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.bi .bd{color:var(--ink3);min-width:52px}.bi .bn{font-weight:650}.bi .bs{color:var(--ink2)}.bi .chip{margin-left:auto}
+.bi .bnote{flex-basis:100%;color:var(--ink3);font-size:13px}
+
 </style>
 </head>
 <body>
@@ -719,6 +729,7 @@ button,a,input,select,label,[role="button"],.ar-stepper,.ar-stepper *{touch-acti
           <div class="panel s6" id="ch-dbl"></div>
           <div class="panel s6" id="ch-fwgir"></div>
           <div class="panel s6" id="ch-holes"></div>
+          <div class="panel s12" id="birdies"></div>
         </div>
         <div class="sec"><h2>Your data</h2></div>
         <div class="panel" id="my-data"></div>
@@ -1052,7 +1063,7 @@ const R=[
  {key:'r28_27sep',label:'27 Sep',tee:'blue',stableford:26,putts:33,gir:16.7,fw:57.1,ud:20,pen:2,threeputt:4,strokes:[7,6,5,5,5,6,4,6,7,4,6,5,4,6,4,5,4,7],mizuno:true,note:'Sunday Medley comp, rank 74. Reversal from 26 Sep — 8 doubles+ and 8-stroke blow-up tax (vs 2 doubles the round before). 2 pickups (H1,H14) net-double. GIR still low (16.7%) and this time fairways (57%) + up&down (20%) + putting (4 three-putts) all leaked together instead of covering for it.'},
  {key:'r29_01oct',label:'01 Oct',tee:'blue',stableford:33,putts:32,gir:33.3,fw:76.9,ud:18.2,pen:1,threeputt:2,chips:19,strokes:[5,4,4,6,5,6,5,6,7,4,5,4,3,5,7,4,4,7],ph:[1,2,1,2,1,null,2,3,2,2,2,2,2,2,3,2,1,2],ch:[0,0,2,2,1,1,2,1,2,1,0,0,0,1,2,1,1,2],clubs:["2 Iron","2 Iron","8 Iron","2 Iron","2 Iron","2 Iron","7 Iron","2 Iron","Driver",null,"2 Iron","2 Iron","Wedge","3 Wood","2 Iron","Driver","7 Iron",null],fwDir:["hit","hit",null,"hit","right","hit",null,"hit","hit","hit","hit",null,null,"right","left","hit",null,"hit"],appr:["hit","hit","ne","sw","hit","e","ne","s","s","hit","hit","hit","hit","e","s","hit","e","w"],sand:4,sandSaves:1,wasted:1,chipIns:0,mizuno:true,fp:["2-4","4-8",null,"4-8","lt1",null,"1-2","4-8","2-4","4-8","4-8",null,null,"2-4",null,null,null,"1-2"],sgLie:[null,null,"rough","rough",null,"rough","rough","sand","fringe",null,null,null,null,"sand","rough",null,"fringe","rough"],sgDist:[null,null,null,null,"10-30",null,null,null,null,"30-60",null,null,null,null,"30-60","lt10",null,null],apDist:["lt100","130-160","130-160","100-130","lt100","100-130","130-160","160+","lt100","lt100","100-130","130-160","100-130","130-160","lt100","lt100","130-160","160+"],penSrc:[null,null,null,null,null,"green",null,null,null,null,null,null,null,null,null,null,null,null],note:"Pickups H6 (net-double). Bladed wedge green side on 6 on my second shot into the water for pickup"},
  {key:'r30_10oct',label:'10 Oct',tee:'blue',stableford:34,putts:36,gir:22.2,fw:75,ud:21.4,pen:0,threeputt:4,chips:16,strokes:[6,5,5,3,4,4,4,5,6,6,6,5,3,6,4,5,3,7],ph:[2,3,2,1,2,1,2,1,2,2,3,2,1,4,2,2,1,3],ch:[2,1,1,0,1,1,1,1,1,2,0,1,1,0,0,1,1,1],clubs:[null,"8 Iron","2 Iron","2 Iron","7 Iron","2 Iron","5 Iron","2 Iron","Driver","2 Iron","3 Wood","2 Iron","Wedge","3 Wood",null,"Driver","6 Iron",null],fwDir:[null,null,"hit","hit",null,"hit",null,"hit","hit","hit","hit","hit",null,"right","hit","left",null,"left"],appr:["e","e","n","hit","e","hit","w","sw","e","e","hit","n","n","hit","hit","w","e","s"],sand:4,sandSaves:0,wasted:0,chipIns:0,mizuno:true,fp:["2-4","4-8","2-4","1-2","4-8","lt1","lt1","lt1","1-2","2-4","4-8","4-8","1-2","4-8","4-8",null,"1-2","2-4"],sgLie:["rough",null,"sand",null,null,"fringe","fringe","sand","rough","rough",null,"rough",null,null,null,"rough","fringe","sand"],sgDist:["10-30","10-30","lt10",null,"lt10","lt10","lt10",null,"10-30","lt10",null,"lt10","lt10",null,null,"30-60","lt10","lt10"],apDist:["160+","130-160","130-160","lt100","130-160","130-160","160+","160+","160+","lt100","100-130","lt100","100-130","100-130","130-160","lt100","130-160","130-160"],layout:[{"h":"2","p":4},{"h":"3","p":3},{"h":"4","p":4},{"h":"5A","p":4},{"h":"5B","p":3},{"h":"6","p":4},{"h":"7","p":3},{"h":"8","p":4},{"h":"9","p":5},{"h":"10","p":4},{"h":"11","p":5},{"h":"12","p":4},{"h":"13","p":3},{"h":"14","p":4},{"h":"15","p":4},{"h":"16","p":4},{"h":"17","p":3},{"h":"18","p":5}],rating:{"cr":71,"sl":124},note:"First round on temp layout (H1 out, 5A/5B in, par 70). Birdie 5A. 4-putt H14. H8: 2i, 5i, bunker, chip, 1 putt."},
- {key:'r31_31oct',label:'31 Oct',tee:'blue',stableford:37,putts:34,gir:50.0,fw:90.9,ud:12.5,pen:1,threeputt:3,chips:8,strokes:[6,6,4,5,4,3,4,5,4,6,5,4,5,3,3,4,4,7],ph:[3,null,1,3,2,2,2,2,1,3,2,2,2,2,2,1,2,2],ch:[1,null,2,0,0,0,1,1,0,1,0,0,0,0,0,1,0,1],clubs:["2 Iron",null,"7 Iron","3 Wood","2 Iron","8 Iron","7 Iron","2 Iron","3 Wood","2 Iron","2 Iron","2 Iron","3 Wood","Wedge","Wedge","2 Iron","6 Iron","3 Wood"],fwDir:["hit",null,null,"hit","hit",null,null,"hit","hit","hit","hit","hit","hit",null,null,"hit",null,"water"],appr:["hit",null,"e","hit","hit","hit","s","s","hit","w","hit","hit","s","hit","hit","s","w","se"],sand:2,sd:[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],sandSaves:0,wasted:0,chipIns:0,mizuno:true,fp:[null,null,"1-2","8+","4-8","2-4","1-2","4-8","2-4","4-8","2-4","8+","4-8","2-4","8+","1-2","2-4","4-8"],sgLie:["rough",null,"fringe",null,null,null,"fringe","fringe",null,"fringe",null,null,null,null,null,"fringe","sand","rough"],sgDist:["30-60",null,null,null,null,null,null,null,null,"lt10",null,null,null,null,null,"lt10","lt10","lt10"],apDist:["lt100",null,"130-160","130-160","lt100","130-160","130-160","160+","lt100","100-130","lt100","130-160","100-130","lt100","100-130","100-130","160+","100-130"],penSrc:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"tee"],layout:[{h:"1",p:5},{h:"2",p:4},{h:"3",p:3},{h:"4",p:4},{h:"5A",p:4},{h:"5B",p:3},{h:"7",p:3},{h:"8",p:4},{h:"9",p:5},{h:"10",p:4},{h:"11",p:5},{h:"12",p:4},{h:"14",p:4},{h:"15A",p:3},{h:"15B",p:3},{h:"16",p:4},{h:"17",p:3},{h:"18",p:5}],rating:{cr:70,sl:122},pu:["2"],ags:83,gaDiff:12.0,dh:14,note:"Saturday Medley Single Stableford, 37 pts, rank 9. Temp layout: 6 and 13 out, 5A/5B and 15A/15B in; hole 14 played as 13. Pickup H2 (GA net double 7). H18: 3 wood into water, re-teed with 2 iron. H14: second shot hit a tree, gap wedge from 100 onto the green."},
+ {key:'r31_31oct',label:'31 Oct',tee:'blue',stableford:37,putts:34,gir:50.0,fw:90.9,ud:12.5,pen:1,threeputt:3,chips:8,strokes:[6,6,4,5,4,3,4,5,4,6,5,4,5,3,3,4,4,7],ph:[3,null,1,3,2,2,2,2,1,3,2,2,2,2,2,1,2,2],ch:[1,null,2,0,0,0,1,1,0,1,0,0,0,0,0,1,0,1],clubs:["2 Iron",null,"7 Iron","3 Wood","2 Iron","8 Iron","7 Iron","2 Iron","3 Wood","2 Iron","2 Iron","2 Iron","3 Wood","Wedge","Wedge","2 Iron","6 Iron","3 Wood"],fwDir:["hit",null,null,"hit","hit",null,null,"hit","hit","hit","hit","hit","hit",null,null,"hit",null,"water"],appr:["hit",null,"e","hit","hit","hit","s","s","hit","w","hit","hit","s","hit","hit","s","w","se"],sand:2,sd:[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],sandSaves:0,wasted:0,chipIns:0,mizuno:true,fp:[null,null,"1-2","8+","4-8","2-4","1-2","4-8","2-4","4-8","2-4","8+","4-8","2-4","8+","1-2","2-4","4-8"],sgLie:["rough",null,"fringe",null,null,null,"fringe","fringe",null,"fringe",null,null,null,null,null,"fringe","sand","rough"],sgDist:["30-60",null,null,null,null,null,null,null,null,"lt10",null,null,null,null,null,"lt10","lt10","lt10"],apDist:["lt100",null,"130-160","130-160","lt100","130-160","130-160","160+","lt100","100-130","lt100","130-160","100-130","lt100","100-130","100-130","160+","100-130"],penSrc:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"tee"],layout:[{h:"1",p:5},{h:"2",p:4},{h:"3",p:3},{h:"4",p:4},{h:"5A",p:4},{h:"5B",p:3},{h:"7",p:3},{h:"8",p:4},{h:"9",p:5},{h:"10",p:4},{h:"11",p:5},{h:"12",p:4},{h:"14",p:4},{h:"15A",p:3},{h:"15B",p:3},{h:"16",p:4},{h:"17",p:3},{h:"18",p:5}],rating:{cr:70,sl:122},pu:["2"],ags:83,gaDiff:12.0,dh:14,note:"Greens cored and sanded, so putting and chipping stats are unreliable. Saturday Medley Single Stableford, 37 pts, rank 9. Temp layout: 6 and 13 out, 5A/5B and 15A/15B in; hole 14 played as 13. Pickup H2 (GA net double 7). H18: 3 wood into water, re-teed with 2 iron. H14: second shot hit a tree, gap wedge from 100 onto the green."},
 ];
 /* rounds saved on this device (Add round → Save round) */
 const ROUNDS_KEY='pe_rounds_v1';
@@ -2430,10 +2441,31 @@ function chHoles(){
   const never=cells.filter(c=>!c.bird).map(c=>'H'+c.h).join(', ');
   el.innerHTML=`<div class="ch"><h3>Hole by hole</h3><span class="sub">average over par, dots are birdies</span></div><div class="heat">${cells.slice(0,9).map(cell).join('')}</div><div class="heat" style="margin-top:4px">${cells.slice(9).map(cell).join('')}</div><p class="note" style="margin-top:10px">Hardest for you: <b>${worst}</b>. No birdie yet on ${never||'none'}.</p>`;
 }
+
+/* ---------- birdie tracker ---------- */
+// birdies from rounds that aren't logged hole by hole (scrambles, socials): add them here
+const BIRDIE_EXTRA=[
+ {date:'01 Nov',hole:'8',par:4,score:3,src:'scramble',note:'Solo birdie (own ball) in a 3-ball Ambrose, temp layout'}
+];
+const SRC_NAME={round:'Round',social:'Social',scramble:'Scramble'};
+function birdieList(){
+  const out=[];
+  R.forEach(r=>{if(!Array.isArray(r.strokes))return;r.strokes.forEach((s,i)=>{const p=parOf(r,i);if(s!=null&&s<p)out.push({date:r.label,hole:String(holeOf(r,i)),par:p,score:s,src:'round'});});});
+  SOCIAL.forEach(s=>{(String(s.note||'').match(/\bBirdie H\d+[AB]?/g)||[]).forEach(m=>{const h=m.split('H')[1],n=+h;out.push({date:s.label,hole:h,par:String(n)===h?PAR[n-1]:null,score:String(n)===h?PAR[n-1]-1:null,src:'social'});});});
+  BIRDIE_EXTRA.forEach(b=>out.push(Object.assign({},b)));
+  return out.sort((a,b)=>(rDate({label:a.date})||0)-(rDate({label:b.date})||0));
+}
+function birdieCard(){
+  const el=$id('birdies');if(!el)return;
+  const got=new Set(birdieList().map(b=>b.hole)),std=[...Array(18)].map((_,i)=>String(i+1)),n=std.filter(h=>got.has(h)).length,temp=[...got].filter(h=>!std.includes(h));
+  const cell=h=>`<div class="bh ${got.has(h)?'on':''}" aria-label="Hole ${h}: ${got.has(h)?'birdied':'not yet'}"><span>${h}</span><b>${got.has(h)?'<svg width="14" height="14"><use href="#i-check"/></svg>':''}</b></div>`;
+  el.innerHTML=`<div class="ch"><h3>Birdie tracker</h3><span class="sub">${n} of 18 holes birdied</span></div>
+    <div class="bhol">${std.map(cell).join('')}</div>${temp.length?`<div class="bhol" style="grid-template-columns:repeat(9,1fr);margin-top:-6px"><span class="note" style="grid-column:span 2;align-self:center">Temp holes</span>${temp.map(cell).join('')}</div>`:''}`;
+}
 function renderRounds(){
   const run=(n,fn)=>{try{fn();}catch(e){console.error(n,e);}};
   document.querySelectorAll('#tee-seg button').forEach(b=>b.classList.toggle('on',b.dataset.tee===activeTee));
-  run('kpis',roundsKpis);run('list',roundsList);run('score',chScore);run('mix',chMix);run('dbl',chDoubles);run('fwgir',chFwGir);run('holes',chHoles);run('data',myData);
+  run('kpis',roundsKpis);run('list',roundsList);run('score',chScore);run('mix',chMix);run('dbl',chDoubles);run('fwgir',chFwGir);run('holes',chHoles);run('birdies',birdieCard);run('data',myData);
   $id('trend-sub').textContent=activeTee==='all'?'all tees':activeTee+' tees';
 }
 document.querySelectorAll('#tee-seg button').forEach(b=>b.onclick=()=>{activeTee=b.dataset.tee;renderRounds();});
