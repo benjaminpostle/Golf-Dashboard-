@@ -661,6 +661,64 @@ button,a,input,select,label,[role="button"],.ar-stepper,.ar-stepper *{touch-acti
 .bi .bd{color:var(--ink3);min-width:52px}.bi .bn{font-weight:650}.bi .bs{color:var(--ink2)}.bi .chip{margin-left:auto}
 .bi .bnote{flex-basis:100%;color:var(--ink3);font-size:13px}
 
+/* hole entry: play order, quick / detail */
+.ar-topline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-2px 0 12px;flex-wrap:wrap}
+.ar-mode button{padding:6px 12px;font-size:13px}
+#ar-step-holes.quick .det{display:none!important}
+.ar-scores{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.ar-scores button{border:1.5px solid var(--line2);background:transparent;color:var(--ink);border-radius:14px;padding:10px 0 8px;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:62px}
+.ar-scores button b{font-size:24px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.ar-scores button small{font-size:10.5px;color:var(--ink3);font-weight:600}
+.ar-scores button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.ar-scores button.on small{color:var(--accent-ink);opacity:.75}
+.ar-scoreline{display:flex;align-items:center;gap:10px;margin-top:12px}
+.circ.sm{width:36px;height:36px;font-size:17px}
+.ar-sv{min-width:44px;text-align:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.ar-sv small{display:block;font-size:10px;font-weight:600;color:var(--accent-text);margin-top:3px;white-space:nowrap}
+.ar-sum{margin-left:auto;display:flex;gap:12px;font-size:12.5px;color:var(--ink3)}
+.ar-sum b{color:var(--ink);font-size:14px}
+.ar-putts{display:grid;grid-template-columns:1.3fr repeat(4,1fr);gap:6px}
+.ar-putts button{border:1.5px solid var(--line2);background:transparent;color:var(--ink);border-radius:14px;min-height:54px;font-size:22px;font-weight:700}
+.ar-putts button[data-putts="chip"]{font-size:11.5px;font-weight:650;line-height:1.2;color:var(--ink2)}
+.ar-putts button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.ar-chip.plan{border-style:dashed;border-color:var(--accent-line);color:var(--ink)}
+.ar-chip.plan::after{content:' · plan';color:var(--accent-text);font-size:11px}
+.ar-more{text-align:left}
+.ar-more summary{cursor:pointer;font-size:13.5px;color:var(--ink2);font-weight:600;text-align:center;list-style:none}
+.ar-more summary::-webkit-details-marker{display:none}
+.ar-more summary::before{content:'+ '}
+.ar-more[open] summary::before{content:'− '}
+
+/* ---------- app-like scrolling: no rubber-banding, no background scroll behind sheets ---------- */
+html,body{overscroll-behavior:none;}
+.ar-modal,.drawer .sheet,.dlg .box{overscroll-behavior:contain;}
+body.lock{position:fixed;left:0;right:0;width:100%;overflow:hidden;}
+.ar-head{position:sticky;top:-16px;z-index:6;background:var(--sheet);margin:-16px -16px 12px;padding:16px 16px 10px;}
+@media (max-width:560px){
+  .ar-modal{top:max(10px,env(safe-area-inset-top,0px));bottom:0;height:auto;max-height:none;}
+}
+button,a,[data-jump]{-webkit-tap-highlight-color:transparent;}
+.ar-modal button,.tabbar button,.nav button{-webkit-user-select:none;user-select:none;}
+
+/* hole art: faint full-screen background behind the hole entry */
+#ar-step-holes{position:relative}
+.ar-holebg{position:absolute;left:-16px;right:-16px;top:-8px;bottom:70px;z-index:0;pointer-events:none;opacity:.9;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 88%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 88%,transparent 100%)}
+.ar-holebg .hart{width:100%;height:100%;display:block}
+#ar-step-holes>*:not(.ar-holebg){position:relative;z-index:1}
+#ar-step-holes.hasart .ar-card{background:color-mix(in srgb,var(--ink) 7%,color-mix(in srgb,var(--sheet) 45%,transparent));border:1px solid color-mix(in srgb,var(--ink) 22%,transparent);-webkit-backdrop-filter:blur(3px) saturate(1.1);backdrop-filter:blur(3px) saturate(1.1);box-shadow:0 1px 0 color-mix(in srgb,var(--ink) 6%,transparent) inset}
+#ar-step-holes.hasart .ar-scores button,#ar-step-holes.hasart .ar-putts button,#ar-step-holes.hasart .circ:not(.sel),#ar-step-holes.hasart .ar-chip:not(.sel){background:color-mix(in srgb,var(--sheet) 55%,transparent);border-color:color-mix(in srgb,var(--ink) 28%,transparent)}
+#ar-step-holes.hasart .ar-scores button.on,#ar-step-holes.hasart .ar-putts button.on{background:var(--accent);border-color:var(--accent)}
+#ar-step-holes.hasart .ar-sec{border-bottom-color:color-mix(in srgb,var(--ink) 14%,transparent)}
+#ar-step-holes .ar-foot{z-index:2}
+.hart .h-rough{fill:none;stroke:color-mix(in srgb,var(--good) 16%,transparent);stroke-linecap:round;stroke-linejoin:round}
+.hart .h-fw{fill:none;stroke:color-mix(in srgb,var(--good) 42%,transparent);stroke-linecap:round;stroke-linejoin:round}
+.hart .h-green{fill:color-mix(in srgb,var(--good) 70%,transparent)}
+.hart .h-tee{fill:color-mix(in srgb,var(--ink) 45%,transparent)}
+.hart .h-tree circle{fill:color-mix(in srgb,var(--good) 22%,var(--ink) 4%)}
+.hart .h-water path{fill:color-mix(in srgb,var(--gain) 45%,transparent)}
+.hart .h-sand ellipse{fill:#d9c48b;opacity:.75}
+
 </style>
 </head>
 <body>
@@ -869,6 +927,7 @@ button,a,input,select,label,[role="button"],.ar-stepper,.ar-stepper *{touch-acti
 
     <!-- hole screen -->
     <div id="ar-step-holes" style="display:none">
+      <div class="ar-holebg" id="ar-holebg" aria-hidden="true"></div>
       <div class="ar-strip" id="ar-strip"></div>
       <div class="ar-holenav">
         <button class="ar-icon" id="ar-prev-hole">←</button>
@@ -876,78 +935,69 @@ button,a,input,select,label,[role="button"],.ar-stepper,.ar-stepper *{touch-acti
         <button class="ar-icon" id="ar-next-top">→</button>
       </div>
       <div class="ar-holemeta" id="ar-holemeta"></div>
-      <div style="text-align:center;margin:-4px 0 12px"><button class="rs-detchip" data-details>—</button></div>
+      <div class="ar-topline"><button class="rs-detchip" data-details>—</button>
+        <div class="seg ar-mode" id="ar-mode" aria-label="Entry mode"><button data-m="quick">Quick</button><button data-m="detail">Detail</button></div></div>
 
-
-      <div class="ar-card">
-        <div class="ar-stepper">
-          <button class="circ big dim" id="ar-s-minus">−</button>
-          <div class="ar-num" id="ar-s-val">–</div>
-          <button class="circ big" id="ar-s-plus">+</button>
-        </div>
-        <div class="ar-minitiles">
-          <div class="mt"><div class="k">To par</div><div class="v" id="ar-t-over">–</div></div>
-          <div class="mt"><div class="k">Points ≈</div><div class="v" id="ar-t-pts">–</div></div>
-          <div class="mt dark"><div class="k">Total ≈</div><div class="v" id="ar-t-total">0</div></div>
-        </div>
-        <div class="ar-pills">
-          <button class="pill2" id="ar-par-pill">Par <span id="ar-par"></span></button>
-          <button class="pill2" id="ar-pickup-pill">Pick up</button>
+      <!-- score -->
+      <div class="ar-card ar-scorecard">
+        <div class="ar-scores" id="ar-scores"></div>
+        <div class="ar-scoreline">
+          <button class="circ sm dim" id="ar-s-minus" aria-label="One less">−</button>
+          <div class="ar-sv"><span id="ar-s-val">–</span><small id="ar-s-auto"></small></div>
+          <button class="circ sm" id="ar-s-plus" aria-label="One more">+</button>
+          <div class="ar-sum"><span><b id="ar-t-over">–</b> to par</span><span><b id="ar-t-pts">–</b> pts</span><span><b id="ar-t-total">0</b> total</span></div>
         </div>
       </div>
 
       <div class="ar-card">
+        <!-- tee -->
         <div class="ar-sec">
-          <div class="ar-lbl">Putts</div>
-          <div class="ar-stepper">
-            <button class="circ dim" id="ar-p-minus">−</button>
-            <div class="ar-num small" id="ar-p-val">–</div>
-            <button class="circ" id="ar-p-plus">+</button>
+          <div class="ar-lbl" id="ar-tee-lbl">Tee shot</div>
+          <div class="ar-chips det" id="ar-clubs"></div>
+          <div id="ar-fw-sec" style="margin-top:12px">
+            <div class="ar-row3">
+              <button class="circ" data-fw="left" aria-label="Missed left">←</button>
+              <button class="circ" data-fw="hit" aria-label="Fairway">✓</button>
+              <button class="circ" data-fw="right" aria-label="Missed right">→</button>
+            </div>
+            <div class="ar-sub" id="ar-fw-total"></div>
           </div>
-          <div class="ar-pills" style="margin-top:12px">
-            <button class="pill2" id="ar-chip-pill">Chip in</button>
-            <span class="ar-tag">GIR: <b id="ar-gir-auto">–</b></span>
-          </div>
-          <div class="ar-extra" id="ar-fp-sec"><div class="ar-mini">First putt length</div><div class="ar-chips ar-opt" data-field="fp"><button class="ar-chip" data-opt="fp:lt1">&lt;1m</button><button class="ar-chip" data-opt="fp:1-2">1–2m</button><button class="ar-chip" data-opt="fp:2-4">2–4m</button><button class="ar-chip" data-opt="fp:4-8">4–8m</button><button class="ar-chip" data-opt="fp:8+">8m+</button></div></div>
         </div>
 
-        <div class="ar-sec"><div class="ar-lbl">Around the green</div>
+        <!-- approach (or par-3 tee result) -->
+        <div class="ar-sec det">
+          <div class="ar-lbl" id="ar-appr-lbl">Approach</div>
+          <div class="ar-chips ar-opt" data-field="apDist" id="ar-apdist"><button class="ar-chip" data-opt="apDist:lt100">&lt;100</button><button class="ar-chip" data-opt="apDist:100-130">100–130</button><button class="ar-chip" data-opt="apDist:130-160">130–160</button><button class="ar-chip" data-opt="apDist:160+">160+</button></div><div style="height:12px"></div>
+          <div class="ar-grid9" id="ar-appr"></div>
+        </div>
+
+        <!-- around the green: only when the green was missed -->
+        <div class="ar-sec det" id="ar-arg-sec">
+          <div class="ar-lbl">Around the green</div>
           <div class="ar-pair">
             <div><div class="ar-mini">Chips &amp; pitches</div><div class="ar-stepper"><button class="circ dim" data-dec="chips">−</button><div class="ar-num small" data-val="chips">0</div><button class="circ" data-inc="chips">+</button></div></div>
             <div><div class="ar-mini">Bunker shots</div><div class="ar-stepper"><button class="circ dim" data-dec="sand">−</button><div class="ar-num small" data-val="sand">0</div><button class="circ" data-inc="sand">+</button></div></div>
           </div>
-          <div class="ar-extra" id="ar-sg-sec"><div class="ar-mini">First short-game shot from</div><div class="ar-chips ar-opt" data-field="sgLie"><button class="ar-chip" data-opt="sgLie:fringe">Fringe</button><button class="ar-chip" data-opt="sgLie:rough">Rough</button><button class="ar-chip" data-opt="sgLie:sand">Sand</button></div><div style="height:7px"></div><div class="ar-chips ar-opt" data-field="sgDist"><button class="ar-chip" data-opt="sgDist:lt10">&lt;10m</button><button class="ar-chip" data-opt="sgDist:10-30">10–30m</button><button class="ar-chip" data-opt="sgDist:30-60">30–60m</button></div></div>
-          <div class="ar-pills" style="margin-top:12px">
-            <button class="pill2" id="ar-ud-pill">Up &amp; Down</button>
-            <button class="pill2" id="ar-ss-pill">Sand Save</button>
-          </div></div>
-
-        <div class="ar-sec">
-          <div class="ar-lbl">Club off the tee</div>
-          <div class="ar-chips" id="ar-clubs"></div>
+          <div class="ar-extra" id="ar-sg-sec"><div class="ar-mini">First one from</div><div class="ar-chips ar-opt" data-field="sgLie"><button class="ar-chip" data-opt="sgLie:fringe">Fringe</button><button class="ar-chip" data-opt="sgLie:rough">Rough</button><button class="ar-chip" data-opt="sgLie:sand">Sand</button></div><div style="height:7px"></div><div class="ar-chips ar-opt" data-field="sgDist"><button class="ar-chip" data-opt="sgDist:lt10">&lt;10m</button><button class="ar-chip" data-opt="sgDist:10-30">10–30m</button><button class="ar-chip" data-opt="sgDist:30-60">30–60m</button></div></div>
+          <div class="ar-sub" id="ar-ud-auto"></div>
         </div>
 
-        <div class="ar-sec" id="ar-fw-sec">
-          <div class="ar-lbl">Fairway hit</div>
-          <div class="ar-row3">
-            <button class="circ" data-fw="left">←</button>
-            <button class="circ" data-fw="hit">✓</button>
-            <button class="circ" data-fw="right">→</button>
+        <!-- putts -->
+        <div class="ar-sec">
+          <div class="ar-lbl">Putts <span class="ar-tag" style="margin-left:6px">Green in reg: <b id="ar-gir-auto">–</b></span></div>
+          <div class="ar-putts" id="ar-putts"><button data-putts="chip">Holed<br>off green</button><button data-putts="1">1</button><button data-putts="2">2</button><button data-putts="3">3</button><button data-putts="4">4+</button></div>
+          <div class="ar-extra det" id="ar-fp-sec"><div class="ar-mini">First putt length</div><div class="ar-chips ar-opt" data-field="fp"><button class="ar-chip" data-opt="fp:lt1">&lt;1m</button><button class="ar-chip" data-opt="fp:1-2">1–2m</button><button class="ar-chip" data-opt="fp:2-4">2–4m</button><button class="ar-chip" data-opt="fp:4-8">4–8m</button><button class="ar-chip" data-opt="fp:8+">8m+</button></div></div>
+        </div>
+
+        <!-- penalties and wasted shots, tucked away -->
+        <details class="ar-sec ar-more" id="ar-more">
+          <summary>Penalty or wasted shot <span id="ar-more-n"></span></summary>
+          <div class="ar-pair" style="margin-top:12px">
+            <div><div class="ar-mini">Penalty shots</div><div class="ar-stepper"><button class="circ dim" data-dec="pen">−</button><div class="ar-num small" data-val="pen">0</div><button class="circ" data-inc="pen">+</button></div></div>
+            <div><div class="ar-mini">Wasted shots</div><div class="ar-stepper"><button class="circ dim" data-dec="wasted">−</button><div class="ar-num small" data-val="wasted">0</div><button class="circ" data-inc="wasted">+</button></div></div>
           </div>
-          <div class="ar-sub" id="ar-fw-total"></div>
-        </div>
-
-        <div class="ar-sec">
-          <div class="ar-lbl">Approach shot</div>
-          <div class="ar-mini" style="margin-top:-4px">Distance in (m)</div><div class="ar-chips ar-opt" data-field="apDist"><button class="ar-chip" data-opt="apDist:lt100">&lt;100</button><button class="ar-chip" data-opt="apDist:100-130">100–130</button><button class="ar-chip" data-opt="apDist:130-160">130–160</button><button class="ar-chip" data-opt="apDist:160+">160+</button></div><div style="height:12px"></div>
-          <div class="ar-grid9" id="ar-appr"></div>
-        </div>
-
-        <div class="ar-sec"><div class="ar-lbl">Wasted shots</div>
-          <div class="ar-stepper"><button class="circ dim" data-dec="wasted">−</button><div class="ar-num small" data-val="wasted">0</div><button class="circ" data-inc="wasted">+</button></div></div>
-        <div class="ar-sec"><div class="ar-lbl">Penalty shots</div>
-          <div class="ar-stepper"><button class="circ dim" data-dec="pen">−</button><div class="ar-num small" data-val="pen">0</div><button class="circ" data-inc="pen">+</button></div>
-          <div class="ar-extra" id="ar-ps-sec"><div class="ar-mini">Where did it come from?</div><div class="ar-chips ar-opt" data-field="penSrc"><button class="ar-chip" data-opt="penSrc:tee">Tee shot</button><button class="ar-chip" data-opt="penSrc:appr">Approach</button><button class="ar-chip" data-opt="penSrc:green">Around green</button></div></div></div>
+          <div class="ar-extra" id="ar-ps-sec"><div class="ar-mini">Where did it come from?</div><div class="ar-chips ar-opt" data-field="penSrc"><button class="ar-chip" data-opt="penSrc:tee">Tee shot</button><button class="ar-chip" data-opt="penSrc:appr">Approach</button><button class="ar-chip" data-opt="penSrc:green">Around green</button></div></div>
+        </details>
       </div>
 
       <div class="ar-foot">
@@ -1025,6 +1075,88 @@ button,a,input,select,label,[role="button"],.ar-stepper,.ar-stepper *{touch-acti
   </div>
 <script>window.PE_DEFAULT_THEME='dark';window.PE_SYNC=true;</script>
 <script>
+/* =====================================================================
+   POSTLE v6 · hole art
+   Hand-drawn hole diagrams, traced from Benny's hole screenshots.
+   Coordinates are portrait: tee at the bottom (y≈385), green at the top (y≈25), x 0–200.
+   They are drawn rotated so the hole runs left (tee) to right (green) in the header band.
+   ===================================================================== */
+const HOLE_ART={
+  '12':{len:275,
+    cl:'M100,360 C96,300 70,260 68,210 C66,160 84,110 100,34',w:30,
+    trees:[[124,300,7],[130,276,8],[122,252,7],[128,228,8],[120,204,7],[126,180,8],[118,156,7],[122,130,6],[52,312,6],[44,280,7],[46,246,6],[40,214,7],[44,180,6],[50,146,6],[60,104,6],[66,80,5]],
+    water:['M138,322 C150,300 170,292 186,300 C196,308 194,328 180,338 C164,346 146,342 138,322 Z'],
+    bunkers:[[89,34,6,4,-20],[110,36,6,4,20]],green:[100,24,13,10],
+    aim:[67,199],dist:[153,148]},
+  '14':{len:330,
+    cl:'M100,360 C96,300 70,240 68,190 C66,150 84,96 100,34',w:32,
+    trees:[[120,250,8],[128,226,9],[122,200,8],[130,176,9],[120,150,8],[126,124,7],[116,100,7],[122,76,6],[50,310,6],[44,276,7],[42,140,6],[50,112,6]],
+    water:[],
+    bunkers:[[80,162,6,4,30],[87,22,6,5,0],[92,32,5,4,-20],[112,34,5,4,25]],green:[100,22,13,10],
+    aim:[67,174],dist:[188,143]},
+  '16':{len:273,
+    cl:'M100,360 C100,280 100,160 100,34',w:30,
+    trees:[[70,240,7],[76,214,8],[68,188,7],[74,162,8],[70,136,7],[78,110,6],[132,214,7],[138,190,6],[134,166,6],[80,72,5]],
+    water:['M86,296 C94,276 120,270 140,262 C152,256 160,236 168,214 L176,218 C170,246 160,272 146,286 C130,300 104,306 92,306 C86,304 84,300 86,296 Z',
+           'M112,104 C118,92 122,64 120,44 C118,34 112,34 110,44 C108,66 108,90 112,104 Z'],
+    bunkers:[[88,22,6,4,0]],green:[100,22,12,9],
+    aim:[100,143],dist:[201,98]},
+  '2':{"len":339,"cl":"M100.0,370.0 C102.3,364.2 105.4,351.2 113.6,335.1 C121.8,319.0 140.2,292.5 148.9,273.6 C157.6,254.7 161.6,243.0 165.9,221.5 C170.2,200.0 180.0,168.2 174.9,144.8 C169.8,121.4 147.9,100.4 135.4,81.3 C122.9,62.2 105.9,38.5 100.0,30.0","w":30,"trees":[[87.4,375.6,7.1],[92.5,350.5,7.1],[99.1,325.7,7.1],[101.1,299.9,7.1],[113.7,269.8,7.1],[121.9,245.3,7.1],[128.6,220.5,7.1],[136.8,196.0,7.1],[144.4,174.6,7.1],[190.2,206.8,7.1],[189.9,167.5,7.1],[194.4,129.2,7.1],[174.3,99.0,7.1],[123.4,108.3,7.1],[115.3,83.8,7.1],[107.2,59.2,7.1],[167.0,345.9,7.1],[185.3,303.9,7.1]],"water":["M209.8,371.9 L174.9,319.2 L151.0,271.2 L84.3,241.1 L81.7,246.9 L146.8,276.0 L169.3,322.4 L204.4,375.5 Z"],"bunkers":[[109.7,46.7,5.1,3.8,0],[101.9,12.4,5.1,3.8,0],[75.2,23.4,4.5,3.4,0],[146.0,134.1,8,6,0]],"green":[100.0,30.0,13.5,10.8],"aim":[100,200],"dist":[0,0]},
+  '5A':{"len":234,"cl":"M100.0,370.0 C97.5,359.4 87.3,330.0 85.3,306.7 C83.3,283.4 85.6,256.3 88.0,230.2 C90.4,204.1 96.2,173.4 99.7,150.3 C103.2,127.3 109.0,112.0 109.1,91.9 C109.1,71.9 101.5,40.3 100.0,30.0","w":30,"trees":[[99.1,129.9,7.1],[118.8,174.2,7.1],[129.5,221.8,7.1],[137.1,270.5,7.1],[144.8,319.1,7.1],[146.1,359.9,7.1],[-24.4,93.0,7.1],[10.3,94.0,7.1],[45.0,94.9,7.1],[75.0,111.3,7.1],[4.4,199.2,7.1],[30.2,241.2,7.1]],"water":[],"bunkers":[[78.4,8.8,5.8,4.4,0],[62.0,52.6,5.2,3.9,0],[109.9,38.4,5.2,3.9,0]],"green":[100.0,30.0,14,11],"aim":[100,200],"dist":[0,0]},
+  '5B':{"len":153,"cl":"M100.0,370.0 C100.4,352.7 102.8,304.8 102.6,266.1 C102.4,227.5 99.3,177.4 98.9,138.1 C98.5,98.8 99.8,48.0 100.0,30.0","w":30,"trees":[[115.8,132.0,8],[163.8,119.2,8],[194.5,98.4,8],[252.0,216.2,8],[279.4,278.0,8],[295.3,334.4,8],[164.0,28.1,8],[65.5,-31.6,8],[12.0,83.8,8],[-14.8,141.5,8]],"water":["M126.7,214.2 L179.9,280.9 L181.8,344.8 L154.6,388.3 L105.4,380.9 L65.2,346.8 L16.9,299.9 L-34.5,286.6 L-40.3,241.8 L-0.8,232.1 L70.3,230.0 L101.0,209.2 Z","M-47.0,256.2 L-72.0,325.2 L-109.8,316.1 L-95.6,258.2 Z"],"bunkers":[[63.4,51.6,8,6,0],[54.8,79.1,8,6,0]],"green":[100.0,30.0,14,11],"aim":[100,200],"dist":[0,0]},
+  '15A':{"len":150,"cl":"M100.0,370.0 C102.1,343.8 112.6,269.5 112.6,212.8 C112.6,156.1 102.1,60.5 100.0,30.0","w":30,"trees":[[-62.6,94.5,8],[-123.3,121.5,8],[-123.6,172.3,8],[-87.7,43.6,8],[219.2,29.7,8],[119.8,-11.9,8],[85.0,-86.4,8],[229.3,317.0,8],[168.7,318.6,8],[127.5,341.8,8],[27.8,11.0,8]],"water":[],"bunkers":[],"green":[100.0,30.0,14,11],"aim":[100,200],"dist":[0,0]},
+  '15B':{"len":150,"cl":"M100.0,370.0 C102.2,342.9 113.5,264.4 113.5,207.7 C113.5,151.0 102.2,59.6 100.0,30.0","w":30,"trees":[[194.5,91.1,8],[182.1,146.3,8],[169.8,201.5,8],[157.4,256.7,8],[145.6,302.6,8],[133.8,348.6,8],[-26.6,130.2,8],[-53.6,198.6,8],[-79.6,248.4,8],[-178.6,354.7,8],[-159.3,258.0,8]],"water":[],"bunkers":[[77.4,17.6,8,6,0],[123.0,68.5,8,6,0]],"green":[100.0,30.0,14,11],"aim":[100,200],"dist":[0,0]},
+  '1':{"len":484,"cl":"M100.0,370.0 C96.5,351.6 84.1,285.6 79.3,259.6 C74.5,233.6 70.6,231.8 71.1,214.0 C71.5,196.2 78.8,170.0 82.0,153.1 C85.2,136.2 87.0,133.1 90.0,112.6 C93.0,92.1 98.3,43.8 100.0,30.0","w":30,"trees":[[44.5,67.7,8],[47.0,125.6,8],[49.5,183.5,8],[52.0,241.5,8],[54.4,299.4,8],[131.4,64.0,8],[133.9,121.9,8],[136.4,179.8,8],[138.9,237.8,8],[141.3,295.7,8]],"water":[],"bunkers":[[92.8,42.4,4,3,0],[110.4,46.5,4,3,0]],"green":[100.0,30.0,10.6,8.5],"aim":[100,200],"dist":[0,0]},
+  '3':{"len":145,"cl":"M100.0,370.0 C100.0,313.3 100.0,86.7 100.0,30.0","w":30,"trees":[[175.4,157.5,8],[189.1,226.0,8],[168.5,308.3,8],[24.6,212.3,8],[10.9,294.6,8],[38.3,130.1,8]],"water":[],"bunkers":[[128.8,54.7,6.2,4.6,0],[137.7,34.1,5.5,4.1,0]],"green":[100.0,30.0,14,11],"aim":[100,200],"dist":[0,0]},
+  '4':{"len":347,"cl":"M100.0,370.0 C92.5,348.1 66.8,274.0 55.1,238.5 C43.5,203.0 29.0,182.7 30.1,157.0 C31.2,131.3 49.9,105.7 61.5,84.5 C73.2,63.3 93.6,39.1 100.0,30.0","w":30,"trees":[[125.7,135.8,8],[151.3,187.2,8],[138.5,238.5,8],[119.2,289.8,8],[151.3,90.9,8],[-2.6,71.7,8],[-9.1,148.7,8],[-2.6,238.5,8],[10.2,315.5,8]],"water":["M157.7,187.2 L189.8,180.8 L212.3,212.8 L202.6,251.3 L170.6,257.7 L154.5,225.7 Z"],"bunkers":[[80.8,39.6,5.1,3.8,0],[120.5,36.4,5.1,3.8,0]],"green":[100.0,30.0,12.8,10.3],"aim":[100,200],"dist":[0,0]},
+  '5':{"len":369,"cl":"M100.0,370.0 C92.5,354.5 67.7,306.5 55.1,277.0 C42.5,247.5 24.3,220.7 24.3,192.9 C24.3,165.1 42.5,137.3 55.1,110.2 C67.7,83.0 92.5,43.4 100.0,30.0","w":30,"trees":[[119.2,212.8,8],[144.9,264.2,8],[125.7,315.5,8],[151.3,167.9,8],[-2.6,238.5,8],[-15.5,167.9,8],[-2.6,90.9,8],[29.4,39.6,8]],"water":["M48.7,113.4 L80.8,100.6 L109.6,110.2 L112.8,145.5 L87.2,167.9 L55.1,155.1 Z"],"bunkers":[[119.2,39.6,4.5,3.4,0]],"green":[100.0,30.0,12.8,10.3],"aim":[100,200],"dist":[0,0]},
+  '6':{"len":326,"cl":"M100.0,370.0 C102.7,348.0 112.1,275.1 116.1,238.2 C120.1,201.2 126.5,183.0 123.8,148.3 C121.1,113.6 104.0,49.7 100.0,30.0","w":30,"trees":[[48.6,71.1,8],[48.6,135.4,8],[48.6,199.7,8],[48.6,264.0,8],[48.6,328.2,8],[170.7,84.0,8],[170.7,161.1,8],[170.7,238.2,8],[170.7,315.4,8]],"water":[],"bunkers":[[120.6,40.3,5.1,3.9,0]],"green":[100.0,30.0,12.9,10.3],"aim":[100,200],"dist":[0,0]},
+  '7':{"len":173,"cl":"M100.0,370.0 C100.0,313.3 100.0,86.7 100.0,30.0","w":30,"trees":[[170.6,213.5,8],[177.0,290.5,8],[35.8,200.6,8],[29.4,277.6,8],[48.7,136.5,8],[183.4,168.6,8]],"water":["M116.0,91.6 L151.3,85.2 L164.2,117.2 L151.3,149.3 L122.5,142.9 L112.8,117.2 Z"],"bunkers":[[77.5,65.9,5.8,4.3,0],[126.9,51.8,5.1,3.8,0]],"green":[100.0,30.0,14,11],"aim":[100,200],"dist":[0,0]},
+  '8':{"len":364,"cl":"M100.0,370.0 C101.9,348.7 108.4,277.9 111.5,242.4 C114.6,206.9 120.6,192.3 118.7,156.9 C116.8,121.5 103.1,51.2 100.0,30.0","w":30,"trees":[[41.9,73.4,8],[43.5,139.0,8],[45.0,204.6,8],[46.5,270.2,8],[48.0,335.8,8],[166.9,83.6,8],[168.4,149.2,8],[169.9,214.8,8],[171.4,280.4,8],[173.0,346.0,8]],"water":[],"bunkers":[[84.5,40.9,4.6,3.4,0]],"green":[100.0,30.0,13.1,10.5],"aim":[100,200],"dist":[0,0]},
+  '9':{"len":428,"cl":"M100.0,370.0 C99.8,353.0 99.0,298.2 98.7,267.9 C98.4,237.6 96.8,220.7 98.0,188.0 C99.2,155.3 105.6,97.9 105.9,71.6 C106.2,45.3 101.0,36.9 100.0,30.0","w":30,"trees":[[54.5,85.9,8],[54.5,150.9,8],[54.5,215.9,8],[54.5,280.9,8],[54.5,345.9,8],[152.0,72.9,8],[152.0,137.9,8],[152.0,202.9,8],[152.0,267.9,8],[152.0,332.9,8]],"water":["M9.0,173.7 L35.0,170.4 L44.7,193.2 L28.5,206.2 L10.3,199.7 Z"],"bunkers":[[84.4,40.4,4.6,3.4,0],[116.9,24.8,4,3,0]],"green":[100.0,30.0,11.7,9.4],"aim":[100,200],"dist":[0,0]},
+  '10':{"len":351,"cl":"M100.0,370.0 C92.8,352.8 69.2,299.2 56.5,267.0 C43.8,234.8 23.0,205.2 23.5,176.9 C24.0,148.6 46.8,121.7 59.5,97.2 C72.2,72.7 93.2,41.2 100.0,30.0","w":30,"trees":[[89.5,99.3,7.3],[107.5,131.8,7.3],[102.2,165.3,7.3],[97.0,198.8,7.3],[111.6,231.5,7.3],[136.7,114.0,7.3],[-13.4,103.5,7.3],[-17.3,170.2,7.3],[-4.6,236.2,7.3]],"water":[],"bunkers":[[23.2,143.6,7.3,5.5,0],[109.7,38.6,5.3,4.0,0]],"green":[100.0,30.0,13.3,10.6],"aim":[100,200],"dist":[0,0]},
+  '11':{"len":418,"cl":"M100.0,370.0 C105.1,352.1 120.8,294.8 130.7,262.5 C140.6,230.2 159.3,201.6 159.3,176.5 C159.3,151.4 138.0,130.5 130.7,112.0 C123.4,93.5 120.5,79.0 115.4,65.3 C110.3,51.6 102.6,35.9 100.0,30.0","w":30,"trees":[[81.6,93.6,6.8],[87.7,155.0,6.8],[103.1,231.8,6.8],[130.7,308.6,6.8],[192.1,185.7,6.8],[198.3,247.1,6.8],[179.9,308.6,6.8],[149.1,130.4,6.8]],"water":["M124.6,13.7 L143.0,22.9 L173.7,75.1 L179.9,118.1 L167.6,124.3 L146.1,93.6 L130.7,50.6 Z","M71.9,63.9 L93.3,140.5 L108.7,217.2 L127.1,294.1 L134.3,292.3 L115.9,215.6 L100.5,138.7 L78.9,61.9 Z"],"bunkers":[[112.3,32.1,4.3,3.2,0]],"green":[100.0,30.0,12.3,9.8],"aim":[100,200],"dist":[0,0]},
+  '13':{"len":118,"cl":"M100.0,370.0 C100.0,313.3 100.0,86.7 100.0,30.0","w":30,"trees":[[10.6,230.2,8],[-3.0,292.9,8],[141.0,211.1,8],[156.8,274.3,8],[175.5,148.6,8],[32.4,171.7,8]],"water":["M4.0,104.1 L46.2,94.3 L54.1,121.7 L12.1,129.4 Z","M66.9,113.5 L134.1,110.3 L142.1,135.6 L74.8,143.0 Z"],"bunkers":[[67.9,44.2,8,6,0],[128.2,80.8,8,6,0]],"green":[100.0,30.0,14,11],"aim":[100,200],"dist":[0,0]},
+  '17':{"len":157,"cl":"M100.0,370.0 C100.0,313.3 100.0,86.7 100.0,30.0","w":30,"trees":[[61.0,100.1,6.7],[58.3,145.7,6.7],[67.8,191.1,6.7],[62.0,236.7,6.7],[137.0,114.7,6.7],[141.0,251.3,6.7],[144.5,312.0,6.7],[53.3,297.5,6.7]],"water":["M160.9,59.9 L191.2,53.6 L203.8,114.3 L198.2,175.0 L174.0,193.4 L155.5,145.0 Z","M16.4,286.2 L67.9,291.9 L119.9,303.6 L175.1,297.2 L174.3,290.0 L120.3,296.4 L69.1,284.7 L17.2,279.0 Z"],"bunkers":[[86.7,83.2,6.7,5.0,0]],"green":[100.0,30.0,14,11],"aim":[100,200],"dist":[0,0]},
+  '18':{"len":460,"cl":"M100.0,370.0 C101.0,352.8 105.0,298.8 106.3,266.8 C107.5,234.9 106.5,211.8 107.5,178.3 C108.5,144.8 113.5,90.7 112.2,66.0 C111.0,41.3 102.0,36.0 100.0,30.0","w":30,"trees":[[68.7,94.7,6.9],[65.6,141.7,6.9],[75.0,188.6,6.9],[68.7,235.5,6.9],[71.8,282.4,6.9],[143.8,126.0,6.9],[150.0,172.9,6.9],[131.3,219.9,6.9],[156.3,266.8,6.9],[143.8,313.7,6.9]],"water":["M-12.6,163.6 L6.2,157.3 L10.9,176.1 L-3.2,185.5 L-14.2,177.6 Z","M-25.0,97.8 L43.5,94.7 L101.4,103.6 L141.0,158.8 L172.1,236.4 L197.1,345.7 L203.1,344.3 L178.1,234.6 L146.6,155.8 L104.8,98.4 L43.9,88.5 L-25.2,91.6 Z"],"bunkers":[[87.5,32.2,4.4,3.3,0]],"green":[100.0,30.0,11.3,9.0],"aim":[100,200],"dist":[0,0]},
+  '15':{"len":338,"cl":"M100.0,370.0 C91.8,353.2 65.6,300.4 50.6,269.2 C35.6,238.0 11.0,211.5 9.8,182.6 C8.6,153.7 28.5,121.0 43.5,95.6 C58.5,70.2 90.6,40.9 100.0,30.0","w":30,"trees":[[88.3,221.7,6.9],[97.5,174.3,6.9],[106.8,126.9,6.9],[112.9,79.5,6.9],[82.2,269.1,6.9],[0.2,285.2,6.9],[-12.8,222.1,6.9],[-19.4,143.3,6.9],[2.4,80.0,6.9],[33.8,51.5,6.9]],"water":[],"bunkers":[[85.8,21.2,4.4,3.3,0],[96.9,43.3,4,3,0]],"green":[100.0,30.0,12.6,10.1],"aim":[100,200],"dist":[0,0]}
+};
+function holeArtSvg(label,opt){
+  const A=HOLE_ART[String(label)];if(!A)return '';
+  const o=opt||{},T='translate(400,0) rotate(90)'; // portrait → landscape, tee left
+  const [ax,ay]=A.aim,[gx,gy]=A.green,ell=([x,y,rx,ry,r])=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"${r?` transform="rotate(${r} ${x} ${y})"`:''}/>`;
+  // label positions in landscape space (x' = 400 - y, y' = x)
+  const L=(x,y)=>[400-y,x];const [l1x,l1y]=L(ax,(ay+385)/2),[l2x,l2y]=L((ax+gx)/2,(ay+gy)/2),[pax,pay]=L(ax,ay);
+  return `<svg class="hart" viewBox="8 30 392 140" preserveAspectRatio="none" aria-hidden="true">
+    <g transform="${T}">
+      <g class="h-tree">${A.trees.map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}"/>`).join('')}</g>
+      <path class="h-rough" d="${A.cl}" stroke-width="${A.w+22}"/>
+      <path class="h-fw" d="${A.cl}" stroke-width="${A.w}"/>
+      <g class="h-water">${A.water.map(d=>`<path d="${d}"/>`).join('')}</g>
+      <rect class="h-tee" x="94" y="372" width="12" height="10" rx="2"/>
+      <ellipse class="h-green" cx="${gx}" cy="${gy}" rx="${A.green[2]}" ry="${A.green[3]}"/>
+      <g class="h-sand">${A.bunkers.map(ell).join('')}</g>
+      ${o.line===false?'':`<path class="h-line" d="M100,378 L${ax},${ay} L${gx},${gy}"/><circle class="h-aim" cx="${ax}" cy="${ay}" r="5"/>`}
+    </g>
+    ${o.line===false?'':`<text class="h-d" x="${l1x}" y="${l1y-8}">${A.dist[0]}</text><text class="h-d" x="${l2x}" y="${l2y-8}">${A.dist[1]}</text>`}
+  </svg>`;
+}
+
+/* portrait version, for the faint background behind the hole screen (tee at the bottom, green at the top) */
+function holeArtBg(label){
+  const A=HOLE_ART[String(label)];if(!A)return '';
+  const [gx,gy]=A.green,ell=([x,y,rx,ry,r])=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"${r?` transform="rotate(${r} ${x} ${y})"`:''}/>`;
+  return `<svg class="hart" viewBox="20 6 160 382" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <g class="h-tree">${A.trees.map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}"/>`).join('')}</g>
+    <path class="h-rough" d="${A.cl}" stroke-width="${A.w+22}"/>
+    <path class="h-fw" d="${A.cl}" stroke-width="${A.w}"/>
+    <g class="h-water">${A.water.map(d=>`<path d="${d}"/>`).join('')}</g>
+    <rect class="h-tee" x="94" y="364" width="12" height="10" rx="2"/>
+    <ellipse class="h-green" cx="${gx}" cy="${gy}" rx="${A.green[2]}" ry="${A.green[3]}"/>
+    <g class="h-sand">${A.bunkers.map(ell).join('')}</g>
+  </svg>`;
+}
+
 const PAR=[5,4,3,4,4,4,3,4,5,4,5,4,3,4,4,4,3,5];
 const R=[
  {key:'h06_22jan',label:'22 Jan',tee:'white',stableford:37,putts:null,gir:null,fw:null,ud:null,pen:null,threeputt:null,strokes:[6,4,3,3,4,3,4,5,5,4,5,7,5,6,5,4,4,6],mizuno:false,note:'Historical backfill (scorecard only). White tees.'},
@@ -1494,7 +1626,10 @@ async function askClaude(messages,opts){
   const ov=document.getElementById('ar-overlay'); if(!ov)return;
   const $=id=>document.getElementById(id);
   const KEY='postle_add_round_draft_v4', OLDKEY='postle_add_round_draft_v3';
-  const CLUBS=['Driver','3 Wood','5 Wood','Hybrid','2 Iron','3 Iron','4 Iron','5 Iron','6 Iron','7 Iron','8 Iron','9 Iron','Wedge'];
+  const CLUBS=['Driver','3 Wood','2 Iron','4 Iron','5 Iron','6 Iron','7 Iron','8 Iron','9 Iron','PW','Wedge'];
+  // your tee plan by hole label (shown as a hint on the club chips)
+  const TEE_PLAN={'1':'2 Iron','3':'7 Iron','4':'Driver','5':'3 Wood','6':'2 Iron','7':'4 Iron','8':'3 Wood','9':'2 Iron','10':'4 Iron','11':'Driver','12':'4 Iron','13':'48°','14':'2 Iron','15':'3 Wood','16':'4 Iron','17':'6 Iron','18':'Driver'};
+  let EMODE=(()=>{try{return localStorage.getItem('pe_entry_mode')||'quick';}catch(e){return 'quick';}})();
   const APPR=[['nw','↖'],['n','↑'],['ne','↗'],['w','←'],['hit','✓'],['e','→'],['sw','↙'],['s','↓'],['se','↘']];
   const APPR_NAME={nw:'long-left',n:'long',ne:'long-right',w:'left',hit:'on',e:'right',sw:'short-left',s:'short',se:'short-right'};
   const blank=()=>({s:null,p:null,chip:false,chips:0,fw:null,club:null,appr:null,ud:false,ss:false,sand:0,wasted:0,pen:0,pickup:false,fp:null,sgLie:null,sgDist:null,apDist:null,penSrc:null});
@@ -1563,7 +1698,15 @@ async function askClaude(messages,opts){
   let H=Array.from({length:18},blank), cur=0, mode='holes', started=false, ptsEdited=false, step='basics';
   const buzz=()=>{try{navigator.vibrate&&navigator.vibrate(8);}catch(e){}};
 
-  $('ar-clubs').innerHTML=CLUBS.map(c=>`<button class="ar-chip" data-club="${c}">${c}</button>`).join('');
+  // tee clubs that make sense for the hole: par 3s irons and wedges, par 4s and 5s woods down to 7-iron
+  const TEE_CLUBS={3:['4 Iron','5 Iron','6 Iron','7 Iron','8 Iron','9 Iron','PW','48°','52°','56°'],4:['Driver','3 Wood','2 Iron','4 Iron','5 Iron','6 Iron','7 Iron']};
+  let clubsFor=null;
+  function paintClubs(par,h){
+    const list=(TEE_CLUBS[par>=4?4:3]).slice();if(h.club&&!list.includes(h.club))list.push(h.club);
+    const key=list.join('|');if(clubsFor===key)return;clubsFor=key;
+    $('ar-clubs').innerHTML=list.map(c=>`<button class="ar-chip" data-club="${c}">${c}</button>`).join('');
+    $('ar-clubs').querySelectorAll('[data-club]').forEach(b=>b.onclick=()=>upd(x=>{x.club=x.club===b.dataset.club?null:b.dataset.club;}));
+  }
   $('ar-appr').innerHTML=APPR.map(([k,g])=>`<button class="circ" data-appr="${k}">${g}</button>`).join('');
   const paintStrip=()=>{$('ar-strip').innerHTML=Array.from({length:18},(_,i)=>`<b data-jump="${i}" title="Hole ${LH(i)}"></b>`).join('');document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>{cur=+b.dataset.jump;buzz();render();save();});};
 
@@ -1624,10 +1767,18 @@ async function askClaude(messages,opts){
     const h=H[cur], par=LP(cur);
     if(!$('ar-strip').children.length||$('ar-strip').children[0].title!==`Hole ${LH(0)}`)paintStrip();
     $('ar-hole-n').textContent=LH(cur);
+    { const bg=$('ar-holebg'),art=typeof holeArtBg==='function'?holeArtBg(String(LH(cur))):'';bg.innerHTML=art;$('ar-step-holes').classList.toggle('hasart',!!art); }
     const done=H.filter((_,i)=>played(i)).length;
     $('ar-ring').style.setProperty('--pct',(done/18*100)+'%');
     $('ar-holemeta').textContent=`PAR ${par} · ${LAYID==='std'?`HOLE ${cur+1} OF 18`:`CARD ${cur+1} OF 18 · TEMP LAYOUT`} · ${done} PLAYED`;
-    $('ar-par').textContent=par;
+    $('ar-step-holes').classList.toggle('quick',EMODE==='quick');
+    document.querySelectorAll('#ar-mode button').forEach(b=>b.classList.toggle('on',b.dataset.m===EMODE));
+    // detail mode: score follows the shots until you set it yourself
+    if(EMODE==='detail'&&!h.pickup&&(h.sAuto===true||(h.sAuto==null&&h.s==null))&&(h.p!=null||h.chip)){h.s=Math.max(1,(par-2)+h.chips+h.sand+(h.chip?0:h.p)+h.pen+h.wasted);h.sAuto=true;}
+    const opts=[par-1,par,par+1,par+2,par+3],nm={'-2':'Eagle','-1':'Birdie','0':'Par','1':'Bogey','2':'Double','3':'Triple'};
+    $('ar-scores').innerHTML=opts.map(v=>`<button data-score="${v}" class="${!h.pickup&&h.s===v?'on':''}"><b>${v}</b><small>${nm[v-par]||''}</small></button>`).join('')+`<button data-score="P" class="${h.pickup?'on':''}"><b>P</b><small>Pick up</small></button>`;
+    $('ar-scores').querySelectorAll('[data-score]').forEach(b=>b.onclick=()=>upd(x=>{if(b.dataset.score==='P'){x.pickup=!x.pickup;if(x.pickup){x.s=null;}}else{x.pickup=false;x.s=+b.dataset.score;x.sAuto=false;}}));
+    $('ar-s-auto').textContent=EMODE==='detail'&&h.sAuto&&h.s!=null?'from your shots':'';
     const sv=$('ar-s-val');const txt=h.pickup?'P':(h.s??'–');
     if(String(txt)!==String(lastS)){sv.classList.remove('pop');void sv.offsetWidth;sv.classList.add('pop');lastS=txt;}
     sv.textContent=txt;sv.style.color=played(cur)?resCol(cur):'var(--ink)';
@@ -1636,21 +1787,26 @@ async function askClaude(messages,opts){
     const p=ptsAt(cur);$('ar-t-pts').textContent=p==null?'–':Math.round(p);
     let tot=0;for(let i=0;i<18;i++){const x=ptsAt(i);if(x!=null)tot+=x;}
     $('ar-t-total').textContent=Math.round(tot);
-    $('ar-par-pill').classList.toggle('on',!h.pickup&&h.s===par);
-    $('ar-pickup-pill').classList.toggle('on',h.pickup);
-    $('ar-p-val').textContent=h.p??'–';
-    $('ar-chip-pill').classList.toggle('on',h.chip);
+    document.querySelectorAll('[data-putts]').forEach(b=>{const v=b.dataset.putts;b.classList.toggle('on',v==='chip'?h.chip:(!h.chip&&h.p!=null&&(v==='4'?h.p>=4:h.p===+v)));});
     const g=girAt(cur);$('ar-gir-auto').textContent=g==null?'–':(g?'✓ hit':'✗ missed');
-    document.querySelectorAll('[data-club]').forEach(b=>b.classList.toggle('sel',b.dataset.club===h.club));
+    const plan=TEE_PLAN[String(LH(cur))];paintClubs(par,h);
+    document.querySelectorAll('[data-club]').forEach(b=>{b.classList.toggle('sel',b.dataset.club===h.club);b.classList.toggle('plan',b.dataset.club===plan&&h.club!==plan);});
     $('ar-fw-sec').style.display=par>=4?'block':'none';
+    $('ar-tee-lbl').textContent=par>=4?(EMODE==='quick'?'Fairway':'Tee shot'):'Tee shot';
+    $('ar-tee-lbl').parentElement.style.display=(par>=4||EMODE==='detail')?'':'none';
+    $('ar-appr-lbl').textContent=par===3?'Where it finished':'Approach';
+    $('ar-apdist').style.display=par===3?'none':'';
     document.querySelectorAll('[data-fw]').forEach(b=>b.classList.toggle('sel',b.dataset.fw===h.fw));
     let fh=0,fe=0;for(let i=0;i<18;i++){if(LP(i)>=4&&H[i].fw){fe++;if(H[i].fw==='hit')fh++;}}
     $('ar-fw-total').textContent=fe?`${fh}/${fe} fairways so far`:'';
     document.querySelectorAll('[data-appr]').forEach(b=>b.classList.toggle('sel',b.dataset.appr===h.appr));
-    if(g===true)h.ud=false;
-    $('ar-ud-pill').disabled=(g!==false);$('ar-ud-pill').classList.toggle('on',h.ud);
-    if(h.sand===0)h.ss=false;
-    $('ar-ss-pill').disabled=(h.sand===0);$('ar-ss-pill').classList.toggle('on',h.ss);
+    // up and down / sand save work themselves out from the score
+    h.ud=(g===false&&!h.pickup&&h.s!=null&&h.s<=par);
+    h.ss=(h.sand>0&&!h.pickup&&h.s!=null&&h.s<=par);
+    const showArg=g===false||(h.appr&&h.appr!=='hit')||h.chips>0||h.sand>0;
+    $('ar-arg-sec').style.display=showArg?'':'none';
+    $('ar-ud-auto').textContent=g===false&&h.s!=null&&!h.pickup?(h.ud?'Up and down ✓':'Not up and down'):'';
+    const mn=h.pen+h.wasted;$('ar-more-n').textContent=mn?`(${mn})`:'';if(mn)$('ar-more').open=true;
     ['chips','sand','wasted','pen'].forEach(k=>{document.querySelector(`[data-val="${k}"]`).textContent=h[k];});
     // detail inputs — only when relevant; stale values cleared
     if(!(h.p>=1)||h.chip)h.fp=null;
@@ -1667,19 +1823,13 @@ async function askClaude(messages,opts){
   function upd(fn){fn(H[cur]);buzz();render();save();}
 
   /* ---- controls ---- */
-  $('ar-s-plus').onclick=()=>upd(h=>{h.pickup=false;h.s=h.s==null?LP(cur):Math.min(15,h.s+1);});
-  $('ar-s-minus').onclick=()=>upd(h=>{h.pickup=false;h.s=h.s==null?LP(cur)-1:Math.max(1,h.s-1);});
-  $('ar-par-pill').onclick=()=>upd(h=>{h.pickup=false;h.s=LP(cur);});
-  $('ar-pickup-pill').onclick=()=>upd(h=>{h.pickup=!h.pickup;if(h.pickup){h.s=null;h.ud=false;}});
-  $('ar-p-plus').onclick=()=>upd(h=>{h.p=h.p==null?1:Math.min(6,h.p+1);h.chip=false;});
-  $('ar-p-minus').onclick=()=>upd(h=>{h.p=h.p==null?0:Math.max(0,h.p-1);if(h.p>0)h.chip=false;});
-  $('ar-chip-pill').onclick=()=>upd(h=>{h.chip=!h.chip;if(h.chip)h.p=0;});
+  $('ar-s-plus').onclick=()=>upd(h=>{h.pickup=false;h.sAuto=false;h.s=h.s==null?LP(cur):Math.min(15,h.s+1);});
+  $('ar-s-minus').onclick=()=>upd(h=>{h.pickup=false;h.sAuto=false;h.s=h.s==null?LP(cur)-1:Math.max(1,h.s-1);});
+  document.querySelectorAll('[data-putts]').forEach(b=>b.onclick=()=>upd(h=>{const v=b.dataset.putts;if(v==='chip'){h.chip=!h.chip;h.p=h.chip?0:null;}else{const n=+v;if(!h.chip&&h.p===n){h.p=null;}else{h.chip=false;h.p=n;}}}));
+  document.querySelectorAll('#ar-mode button').forEach(b=>b.onclick=()=>{EMODE=b.dataset.m;try{localStorage.setItem('pe_entry_mode',EMODE);}catch(e){}buzz();render();});
   document.querySelectorAll('[data-opt]').forEach(b=>b.onclick=()=>upd(h=>{const [f,v]=b.dataset.opt.split(':');h[f]=h[f]===v?null:v;}));
-  document.querySelectorAll('[data-club]').forEach(b=>b.onclick=()=>upd(h=>{h.club=h.club===b.dataset.club?null:b.dataset.club;}));
   document.querySelectorAll('[data-fw]').forEach(b=>b.onclick=()=>upd(h=>{h.fw=h.fw===b.dataset.fw?null:b.dataset.fw;}));
   document.querySelectorAll('[data-appr]').forEach(b=>b.onclick=()=>upd(h=>{h.appr=h.appr===b.dataset.appr?null:b.dataset.appr;}));
-  $('ar-ud-pill').onclick=()=>upd(h=>{h.ud=!h.ud;});
-  $('ar-ss-pill').onclick=()=>upd(h=>{h.ss=!h.ss;});
   document.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>upd(h=>{const k=b.dataset.inc;h[k]=Math.min(9,h[k]+1);}));
   document.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>upd(h=>{const k=b.dataset.dec;h[k]=Math.max(0,h[k]-1);}));
 
@@ -2022,6 +2172,9 @@ const store={
   raw(k){try{return localStorage.getItem(k);}catch(e){return null;}},
   del(k){try{localStorage.removeItem(k);}catch(e){}}
 };
+
+/* keep the page exactly where it was while a sheet is open (iOS ignores overflow:hidden on body) */
+(function(){let y=0,last=0,locked=false;window.addEventListener('scroll',()=>{if(!locked)last=window.scrollY;},{passive:true});new MutationObserver(()=>{const on=document.body.classList.contains('lock');if(on&&!locked){y=last;document.body.style.top=(-y)+'px';locked=true;}else if(!on&&locked){document.body.style.top='';locked=false;window.scrollTo(0,y);}}).observe(document.body,{attributes:true,attributeFilter:['class']});})();
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const MINUS='−';
 const fmtS=(v,d=1)=>v==null||isNaN(v)?'—':(v>0.0499?'+':v<-0.0499?MINUS:'')+Math.abs(v).toFixed(d);
