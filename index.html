@@ -719,6 +719,18 @@ button,a,[data-jump]{-webkit-tap-highlight-color:transparent;}
 .hart .h-water path{fill:color-mix(in srgb,var(--gain) 45%,transparent)}
 .hart .h-sand ellipse{fill:#d9c48b;opacity:.75}
 
+.nines{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.nk{background:var(--fill);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.nk span{font-size:12.5px;color:var(--ink3)}.nk b{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}.nk small{font-size:11.5px;color:var(--ink3)}
+@media (max-width:640px){.nines{grid-template-columns:1fr 1fr}}
+#rs-start button{padding:9px 0}
+.ar-need{display:block;width:100%;margin-top:10px;padding:8px 10px;border-radius:10px;background:var(--fill);border:1px solid var(--line);color:var(--ink2);font:inherit;font-size:13px;text-align:left}
+.ar-need b{color:var(--ink)}
+.soc{padding:12px 0;border-top:1px solid var(--line)}.soc:first-child{border-top:0;padding-top:2px}
+.soc-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.soc-h b{font-size:16px}.soc-d{color:var(--ink3);font-size:13px}.soc-h .chip{margin-left:auto}
+.soc-n{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;font-size:13.5px;color:var(--ink2)}.soc-n b{color:var(--ink)}
+.soc-c{display:grid;grid-template-columns:repeat(18,1fr);gap:2px;margin-top:8px}.soc-c i{font-style:normal;text-align:center;font-size:12px;padding:3px 0;border-radius:4px;background:var(--fill);font-variant-numeric:tabular-nums}
+.soc .note{margin-top:8px}
 </style>
 </head>
 <body>
@@ -780,6 +792,8 @@ button,a,[data-jump]{-webkit-tap-highlight-color:transparent;}
         <div class="kpis" id="rd-kpis"></div>
         <div class="sec"><h2>All rounds</h2><div class="reskey"><span><i class="res-e"></i>Eagle</span><span><i class="res-b"></i>Birdie</span><span><i class="res-p"></i>Par</span><span><i class="res-bg"></i>Bogey</span><span><i class="res-d"></i>Double+</span></div></div>
         <div class="rlist" id="rd-list"></div>
+        <div class="sec"><h2>Social and away rounds</h2><span class="sub">Kept out of your stats and handicap</span></div>
+        <div class="panel" id="socials"></div>
         <div class="sec"><h2>Trends</h2><span class="sub" id="trend-sub"></span></div>
         <div class="grid">
           <div class="panel s12" id="ch-score"></div>
@@ -787,6 +801,7 @@ button,a,[data-jump]{-webkit-tap-highlight-color:transparent;}
           <div class="panel s6" id="ch-dbl"></div>
           <div class="panel s6" id="ch-fwgir"></div>
           <div class="panel s6" id="ch-holes"></div>
+          <div class="panel s12" id="nines"></div>
           <div class="panel s12" id="birdies"></div>
         </div>
         <div class="sec"><h2>Your data</h2></div>
@@ -909,6 +924,11 @@ button,a,[data-jump]{-webkit-tap-highlight-color:transparent;}
       </div>
 
       <div class="rs-sec">
+        <div class="rs-lbl">Starting hole</div>
+        <div class="seg" id="rs-start" style="width:100%;display:grid;grid-template-columns:1fr 1fr"><button type="button" data-start="0">1st tee</button><button type="button" data-start="9">10th tee</button></div>
+      </div>
+
+      <div class="rs-sec">
         <div class="rs-lbl">Daily handicap <button class="rs-reset" id="rs-hc-reset" style="display:none">↺ recalc</button></div>
         <div class="ar-stepper">
           <button class="circ dim" id="rs-hc-dec" aria-label="Decrease handicap">−</button>
@@ -946,6 +966,8 @@ button,a,[data-jump]{-webkit-tap-highlight-color:transparent;}
           <div class="ar-sv"><span id="ar-s-val">–</span><small id="ar-s-auto"></small></div>
           <button class="circ sm" id="ar-s-plus" aria-label="One more">+</button>
           <div class="ar-sum"><span><b id="ar-t-over">–</b> to par</span><span><b id="ar-t-pts">–</b> pts</span><span><b id="ar-t-total">0</b> total</span></div>
+        </div>
+        <button type="button" class="ar-need" id="ar-need"></button><div style="display:none">
         </div>
       </div>
 
@@ -1196,6 +1218,9 @@ const R=[
  {key:'r29_01oct',label:'01 Oct',tee:'blue',stableford:33,putts:32,gir:33.3,fw:76.9,ud:18.2,pen:1,threeputt:2,chips:19,strokes:[5,4,4,6,5,6,5,6,7,4,5,4,3,5,7,4,4,7],ph:[1,2,1,2,1,null,2,3,2,2,2,2,2,2,3,2,1,2],ch:[0,0,2,2,1,1,2,1,2,1,0,0,0,1,2,1,1,2],clubs:["2 Iron","2 Iron","8 Iron","2 Iron","2 Iron","2 Iron","7 Iron","2 Iron","Driver",null,"2 Iron","2 Iron","Wedge","3 Wood","2 Iron","Driver","7 Iron",null],fwDir:["hit","hit",null,"hit","right","hit",null,"hit","hit","hit","hit",null,null,"right","left","hit",null,"hit"],appr:["hit","hit","ne","sw","hit","e","ne","s","s","hit","hit","hit","hit","e","s","hit","e","w"],sand:4,sandSaves:1,wasted:1,chipIns:0,mizuno:true,fp:["2-4","4-8",null,"4-8","lt1",null,"1-2","4-8","2-4","4-8","4-8",null,null,"2-4",null,null,null,"1-2"],sgLie:[null,null,"rough","rough",null,"rough","rough","sand","fringe",null,null,null,null,"sand","rough",null,"fringe","rough"],sgDist:[null,null,null,null,"10-30",null,null,null,null,"30-60",null,null,null,null,"30-60","lt10",null,null],apDist:["lt100","130-160","130-160","100-130","lt100","100-130","130-160","160+","lt100","lt100","100-130","130-160","100-130","130-160","lt100","lt100","130-160","160+"],penSrc:[null,null,null,null,null,"green",null,null,null,null,null,null,null,null,null,null,null,null],note:"Pickups H6 (net-double). Bladed wedge green side on 6 on my second shot into the water for pickup"},
  {key:'r30_10oct',label:'10 Oct',tee:'blue',stableford:34,putts:36,gir:22.2,fw:75,ud:21.4,pen:0,threeputt:4,chips:16,strokes:[6,5,5,3,4,4,4,5,6,6,6,5,3,6,4,5,3,7],ph:[2,3,2,1,2,1,2,1,2,2,3,2,1,4,2,2,1,3],ch:[2,1,1,0,1,1,1,1,1,2,0,1,1,0,0,1,1,1],clubs:[null,"8 Iron","2 Iron","2 Iron","7 Iron","2 Iron","5 Iron","2 Iron","Driver","2 Iron","3 Wood","2 Iron","Wedge","3 Wood",null,"Driver","6 Iron",null],fwDir:[null,null,"hit","hit",null,"hit",null,"hit","hit","hit","hit","hit",null,"right","hit","left",null,"left"],appr:["e","e","n","hit","e","hit","w","sw","e","e","hit","n","n","hit","hit","w","e","s"],sand:4,sandSaves:0,wasted:0,chipIns:0,mizuno:true,fp:["2-4","4-8","2-4","1-2","4-8","lt1","lt1","lt1","1-2","2-4","4-8","4-8","1-2","4-8","4-8",null,"1-2","2-4"],sgLie:["rough",null,"sand",null,null,"fringe","fringe","sand","rough","rough",null,"rough",null,null,null,"rough","fringe","sand"],sgDist:["10-30","10-30","lt10",null,"lt10","lt10","lt10",null,"10-30","lt10",null,"lt10","lt10",null,null,"30-60","lt10","lt10"],apDist:["160+","130-160","130-160","lt100","130-160","130-160","160+","160+","160+","lt100","100-130","lt100","100-130","100-130","130-160","lt100","130-160","130-160"],layout:[{"h":"2","p":4},{"h":"3","p":3},{"h":"4","p":4},{"h":"5A","p":4},{"h":"5B","p":3},{"h":"6","p":4},{"h":"7","p":3},{"h":"8","p":4},{"h":"9","p":5},{"h":"10","p":4},{"h":"11","p":5},{"h":"12","p":4},{"h":"13","p":3},{"h":"14","p":4},{"h":"15","p":4},{"h":"16","p":4},{"h":"17","p":3},{"h":"18","p":5}],rating:{"cr":71,"sl":124},note:"First round on temp layout (H1 out, 5A/5B in, par 70). Birdie 5A. 4-putt H14. H8: 2i, 5i, bunker, chip, 1 putt."},
  {key:'r31_31oct',label:'31 Oct',tee:'blue',stableford:37,putts:34,gir:50.0,fw:90.9,ud:12.5,pen:1,threeputt:3,chips:8,strokes:[6,6,4,5,4,3,4,5,4,6,5,4,5,3,3,4,4,7],ph:[3,null,1,3,2,2,2,2,1,3,2,2,2,2,2,1,2,2],ch:[1,null,2,0,0,0,1,1,0,1,0,0,0,0,0,1,0,1],clubs:["2 Iron",null,"7 Iron","3 Wood","2 Iron","8 Iron","7 Iron","2 Iron","3 Wood","2 Iron","2 Iron","2 Iron","3 Wood","Wedge","Wedge","2 Iron","6 Iron","3 Wood"],fwDir:["hit",null,null,"hit","hit",null,null,"hit","hit","hit","hit","hit","hit",null,null,"hit",null,"water"],appr:["hit",null,"e","hit","hit","hit","s","s","hit","w","hit","hit","s","hit","hit","s","w","se"],sand:2,sd:[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],sandSaves:0,wasted:0,chipIns:0,mizuno:true,fp:[null,null,"1-2","8+","4-8","2-4","1-2","4-8","2-4","4-8","2-4","8+","4-8","2-4","8+","1-2","2-4","4-8"],sgLie:["rough",null,"fringe",null,null,null,"fringe","fringe",null,"fringe",null,null,null,null,null,"fringe","sand","rough"],sgDist:["30-60",null,null,null,null,null,null,null,null,"lt10",null,null,null,null,null,"lt10","lt10","lt10"],apDist:["lt100",null,"130-160","130-160","lt100","130-160","130-160","160+","lt100","100-130","lt100","130-160","100-130","lt100","100-130","100-130","160+","100-130"],penSrc:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"tee"],layout:[{h:"1",p:5},{h:"2",p:4},{h:"3",p:3},{h:"4",p:4},{h:"5A",p:4},{h:"5B",p:3},{h:"7",p:3},{h:"8",p:4},{h:"9",p:5},{h:"10",p:4},{h:"11",p:5},{h:"12",p:4},{h:"14",p:4},{h:"15A",p:3},{h:"15B",p:3},{h:"16",p:4},{h:"17",p:3},{h:"18",p:5}],rating:{cr:70,sl:122},pu:["2"],ags:83,gaDiff:12.0,dh:14,note:"Greens cored and sanded, so putting and chipping stats are unreliable. Saturday Medley Single Stableford, 37 pts, rank 9. Temp layout: 6 and 13 out, 5A/5B and 15A/15B in; hole 14 played as 13. Pickup H2 (GA net double 7). H18: 3 wood into water, re-teed with 2 iron. H14: second shot hit a tree, gap wedge from 100 onto the green."},
+ {key:"r32_02nov",label:"02 Nov",tee:"blue",stableford:31,putts:33,gir:11.1,fw:41.7,ud:12.5,pen:3,threeputt:0,chips:14,strokes:[6,4,4,5,6,3,4,5,5,5,5,5,5,5,5,6,4,7],ph:[1,1,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2],ch:[1,1,1,1,0,1,0,0,0,0,0,1,1,2,2,1,1,1],clubs:["2 Iron","2 Iron","7 Iron","2 Iron","2 Iron","7 Iron","7 Iron","Driver","3 Wood","2 Iron",null,"3 Wood",null,"52°","PW","Driver","6 Iron","Driver"],fwDir:["hit","hit",null,"left","left",null,null,"left","hit","hit","hit","left","left",null,null,"left",null,"left"],appr:["w","n","w","s","hit","se","se","hit","hit","e","w","s","sw","w","w","e","e","se"],sand:3,sd:[0,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0,0,0],sandSaves:1,wasted:1,chipIns:0,mizuno:true,fp:["1-2","2-4","2-4",null,null,null,"2-4","2-4","4-8","2-4","1-2","2-4","2-4",null,"4-8",null,"2-4","4-8"],sgLie:["fringe","fringe","sand","fringe",null,"fringe","sand",null,null,"sand","sand","fringe","rough",null,"rough",null,"fringe","rough"],sgDist:["lt10","lt10",null,"10-30",null,"lt10","10-30",null,null,null,"lt10","lt10","10-30",null,"30-60",null,"10-30","10-30"],apDist:["lt100","130-160",null,"lt100","lt100",null,null,"lt100","lt100","100-130","160+","100-130","130-160",null,null,"100-130",null,"130-160"],penSrc:[null,null,null,null,"tee",null,null,null,null,null,null,null,null,null,null,null,null,null],layout:[{h:"1",p:5},{h:"2",p:4},{h:"3",p:3},{h:"4",p:4},{h:"5A",p:4},{h:"5B",p:3},{h:"7",p:3},{h:"8",p:4},{h:"9",p:5},{h:"10",p:4},{h:"11",p:5},{h:"12",p:4},{h:"14",p:4},{h:"15A",p:3},{h:"15B",p:3},{h:"16",p:4},{h:"17",p:3},{h:"18",p:5}],rating:{cr:70,sl:122},note:"I hit back to back shanks Off the tee on 15A/15B. Greens still cored and very variable speed.",date:"2026-11-02"},
+ {key:'r33_05nov',label:'05 Nov',tee:'blue',stableford:34,putts:33,gir:27.8,fw:50,ud:15.4,pen:3,threeputt:1,chips:14,strokes:[5,6,4,5,5,4,4,4,5,5,6,4,5,3,3,7,4,7],ph:[1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1,3,2],ch:[1,2,1,1,1,1,0,0,0,1,2,0,1,0,0,1,0,2],clubs:["2 Iron","2 Iron","7 Iron","3 Wood","4 Iron","7 Iron",null,"2 Iron","3 Wood","2 Iron","2 Iron","2 Iron","3 Wood","56°","PW","2 Iron","5 Iron","2 Iron"],fwDir:[null,"hit",null,"left","hit",null,null,"left","hit","hit","left","hit","bunker",null,null,null,null,"left"],appr:["w","se","ne","w","e","s","e","hit","hit","w","ne","hit","hit","hit","hit","se","hit","sw"],sand:2,sd:[0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],sandSaves:0,wasted:0,chipIns:0,mizuno:true,fp:["2-4","1-2","2-4","4-8","2-4",null,"4-8","2-4","1-2","1-2",null,"4-8","2-4","4-8","2-4",null,"8+","2-4"],sgLie:["rough","rough","fringe","rough","fringe","fringe","sand",null,null,"fringe","fringe",null,"rough",null,null,null,null,"rough"],sgDist:["30-60",null,"lt10","10-30","lt10","10-30","10-30",null,null,"lt10","10-30",null,"30-60",null,null,null,null,"lt10"],apDist:["100-130","130-160",null,"160+","lt100",null,null,"160+","lt100","130-160","130-160","lt100","lt100",null,null,"lt100",null,"130-160"],penSrc:[null,null,null,null,null,null,null,null,"appr",null,null,null,null,null,null,null,null,null],layout:[{"h":"1","p":5},{"h":"2","p":4},{"h":"3","p":3},{"h":"4","p":4},{"h":"5A","p":4},{"h":"5B","p":3},{"h":"7","p":3},{"h":"8","p":4},{"h":"9","p":5},{"h":"10","p":4},{"h":"11","p":5},{"h":"12","p":4},{"h":"14","p":4},{"h":"15A","p":3},{"h":"15B","p":3},{"h":"16","p":4},{"h":"17","p":3},{"h":"18","p":5}],rating:{"cr":70,"sl":122},date:"2026-11-05",note:"H8: 3 wood cut from 235 m to 2 m (2-putt par). H14: 3 wood into the fairway bunker. H2: flop over the bunker clipped a tree and plugged in the bunker."},
+ {key:'r34_12nov',label:'12 Nov',tee:'blue',stableford:36,putts:35,gir:44.4,fw:58.3,ud:11.1,pen:0,threeputt:4,chips:11,strokes:[5,5,5,5,4,3,4,6,6,5,6,5,4,3,4,5,4,4],ph:[2,3,3,3,2,1,2,null,2,2,3,2,2,2,2,1,2,1],ch:[0,0,1,0,0,1,1,0,2,1,0,1,0,0,1,2,1,0],clubs:["2 Iron","2 Iron","7 Iron","3 Wood","2 Iron","7 Iron","7 Iron","Driver","Driver","2 Iron","2 Iron","Driver","3 Wood","56°","PW","4 Iron","7 Iron","Driver"],fwDir:["hit","right",null,"hit","hit",null,null,"right","right","right","hit","left","hit",null,null,"hit",null,"hit"],appr:["hit","hit","ne","hit","hit","ne","e",null,"s","e","hit","sw","hit","hit","se","s","se","hit"],sand:0,sd:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],sandSaves:0,wasted:0,chipIns:0,mizuno:true,fp:["2-4","8+","8+","4-8","2-4","1-2","2-4",null,"2-4","2-4","4-8","2-4","2-4","2-4","2-4","lt1","1-2","lt1"],sgLie:[null,null,"fringe",null,null,"rough","fringe",null,null,"fringe",null,"rough",null,null,"fringe",null,"fringe",null],sgDist:[null,null,"lt10",null,null,"10-30","lt10",null,null,"10-30",null,"lt10",null,null,"lt10","30-60","lt10",null],apDist:["100-130","130-160",null,"100-130","100-130",null,null,"100-130","160+","100-130","lt100","lt100","130-160",null,null,"lt100",null,"lt100"],layout:[{"h":"1","p":5},{"h":"2","p":4},{"h":"3","p":3},{"h":"4","p":4},{"h":"5A","p":4},{"h":"5B","p":3},{"h":"7","p":3},{"h":"8","p":4},{"h":"9","p":5},{"h":"10","p":4},{"h":"11","p":5},{"h":"12","p":4},{"h":"14","p":4},{"h":"15A","p":3},{"h":"15B","p":3},{"h":"16","p":4},{"h":"17","p":3},{"h":"18","p":5}],rating:{"cr":70,"sl":122},pu:["8"],note:"Pickups H8 (net-double). 5 putts missed the hole by a ball's width (short, long or wide). Pick up on 8 was for a lost ball, had 100 into green hit a branch and couldn’t find ball. Greens were very variable speed. Lots of rain yesterday.",date:"2026-11-12"},
 ];
 /* rounds saved on this device (Add round → Save round) */
 const ROUNDS_KEY='pe_rounds_v1';
@@ -1316,10 +1341,11 @@ const RANGE=[
 const SOCIAL=[
  {label:'2 Jul',tee:'white',holes:9,nine:'back',gross9:45,putts:16,gir:3,girOf:9,mizuno:true,note:'Back 9. Birdie H16. Two blow-ups (H15 blowout, H18 pickup→triple). 3 GIR = best iron signal yet.'},
  {label:'16 Jul',tee:'blue',holes:15,gross9:'—',putts:null,gir:null,girOf:null,mizuno:true,comp:true,pts:28,note:'COMP (left after 15). 28 pts / 15 holes = 33.6-pt 18-hole pace. Two net birdies (H11, H15). Bag: 2i + 3w in (not 5w/hybrid). Elite driving: 83% fairways off par4/5 (10/12), 3w 4/4, 2i 2/2. Damage from H7 hazard + H3 short. Ball-striking there, scoring lagged it.'},
+ {label:'17 Nov',course:'Brookwater',tee:'gold',holes:18,gross:88,out:42,inn:46,par:73,slope:141,pts:36,strokes:[4,5,6,6,3,5,3,6,4,4,5,5,8,5,5,3,5,6],note:'Played with a plus-2 (he shot +12). Seven pars on the front. H13: driver 280 off the elevated tee, punched a 4 iron from a downslope into the trees and lost it. 36 pts per MiScore (≈12.6 differential); not registered with GA.'},
  {label:'7 Sep',tee:'white',holes:9,nine:'front',gross9:42,putts:19,gir:null,girOf:null,mizuno:true,pts:18,note:'Social front 9. 18 pts / 9 holes = 36-pt 18-hole pace — strong. 19 putts (a touch high), no pickups. White tees.'}
 ];
-const HCP_HISTORY=[{before:true,hcp:18},{after:'25 Jun',hcp:17},{after:'29 Aug',hcp:14.9},{after:'26 Sep',hcp:13.9},{after:'01 Oct',hcp:13.8},{after:'10 Oct',hcp:14.1},{after:'31 Oct',hcp:13.6}];
-const HCP_FILE=13.6; // 31 Oct: estimated (12.0 in, 15.9 out); confirm against GA
+const HCP_HISTORY=[{before:true,hcp:18},{after:'25 Jun',hcp:17},{after:'29 Aug',hcp:14.9},{after:'26 Sep',hcp:13.9},{after:'01 Oct',hcp:13.8},{after:'10 Oct',hcp:14.1},{after:'31 Oct',hcp:13.6},{after:'12 Nov',hcp:13.4}];
+const HCP_FILE=13.4; // GA, after 12 Nov
 let HCP_CURRENT=(()=>{try{const v=parseFloat(localStorage.getItem('pe_hcp'));return isNaN(v)?HCP_FILE:v;}catch(e){return HCP_FILE;}})();
 const PAR_TOTAL=72, CR=73, SLOPE=129;
 const TEE_COL={blue:'#3987e5',white:'#aab4c2',yellow:'#e0a43a',red:'#e8605a'};
@@ -1695,7 +1721,11 @@ async function askClaude(messages,opts){
   $('lay-edit-btn').onclick=()=>{if($('lay-editor').style.display==='block'){$('lay-editor').style.display='none';ED=null;}else openEditor();};
   $('lay-new-btn').onclick=()=>openEditor('std');
 
-  let H=Array.from({length:18},blank), cur=0, mode='holes', started=false, ptsEdited=false, step='basics';
+  let NEEDI=0;
+  let H=Array.from({length:18},blank), cur=0, mode='holes', started=false, ptsEdited=false, step='basics', START=0;
+  const ORD=()=>START?[9,10,11,12,13,14,15,16,17,0,1,2,3,4,5,6,7,8]:[...Array(18).keys()],pos=()=>ORD().indexOf(cur);
+  const paintStart=()=>document.querySelectorAll('#rs-start [data-start]').forEach(b=>b.classList.toggle('on',+b.dataset.start===START));
+  document.querySelectorAll('#rs-start [data-start]').forEach(b=>b.onclick=()=>{START=+b.dataset.start;if(!started)cur=ORD()[0];paintStart();buzz();save();});
   const buzz=()=>{try{navigator.vibrate&&navigator.vibrate(8);}catch(e){}};
 
   // tee clubs that make sense for the hole: par 3s irons and wedges, par 4s and 5s woods down to 7-iron
@@ -1733,7 +1763,7 @@ async function askClaude(messages,opts){
       $('ar-skip-holes').style.display=live?'none':'block';
       $('rs-discard').style.display=live?'block':'none';
       document.querySelector('#ar-step-basics .rs-kicker').textContent=live?'Round in progress · edit details':'Pacific Golf Club · new card';
-      paintLayout();if(window.rsRefresh)window.rsRefresh();
+      paintLayout();paintStart();if(window.rsRefresh)window.rsRefresh();
     } else detailsChip();
   }
   function detailsChip(){
@@ -1749,11 +1779,11 @@ async function askClaude(messages,opts){
   $('ar-close').onclick=closeModal;
   ov.addEventListener('click',e=>{if(e.target===ov)closeModal();});
 
-  $('ar-start-holes').onclick=()=>{if(started){if(mode==='totals')showStep('totals');else{render();showStep('holes');}save();return;}mode='holes';started=true;cur=0;render();showStep('holes');save();};
+  $('ar-start-holes').onclick=()=>{if(started){if(mode==='totals')showStep('totals');else{render();showStep('holes');}save();return;}mode='holes';started=true;cur=ORD()[0];render();showStep('holes');save();};
   document.querySelectorAll('[data-details]').forEach(b=>b.onclick=()=>showStep('basics'));
   $('rs-discard').onclick=()=>$('af-clear').click();
   $('ar-skip-holes').onclick=()=>{mode='totals';started=true;showStep('totals');save();};
-  $('ar-back-to-holes').onclick=()=>{mode='holes';cur=0;render();showStep('holes');save();};
+  $('ar-back-to-holes').onclick=()=>{mode='holes';cur=ORD()[0];render();showStep('holes');save();};
   $('ar-totals-next').onclick=()=>review();
   $('ar-edit-holes').onclick=()=>{if(mode==='totals')showStep('totals');else openCard();};
   const openCard=()=>{renderCard();showStep('card');};
@@ -1787,6 +1817,21 @@ async function askClaude(messages,opts){
     const p=ptsAt(cur);$('ar-t-pts').textContent=p==null?'–':Math.round(p);
     let tot=0;for(let i=0;i<18;i++){const x=ptsAt(i);if(x!=null)tot+=x;}
     $('ar-t-total').textContent=Math.round(tot);
+    { // last few holes: points needed for 36, against what you usually make on those holes
+      const el=$('ar-need'),dh=Math.round(hc()),left=[...Array(18).keys()].filter(i=>!played(i)),done=18-left.length;
+      const shots=i=>{const h=String(LH(i)),n=+h,si=(String(n)===h&&LP(i)===PAR[n-1])?SI_STD[n-1]:9;return shotsOn(dh,si);};
+      const ptsOf=(over,i)=>Math.max(0,2+shots(i)-over);
+      if(!left.length||left.length>6||!done){el.style.display='none';}
+      else{
+        const have=[...Array(18).keys()].filter(played).reduce((a,i)=>a+(H[i].pickup?0:ptsOf(H[i].s-LP(i),i)),0),need=36-have;
+        const hist=i=>{const lab=String(LH(i)),p=LP(i),xs=[];R.forEach(r=>{if(!Array.isArray(r.strokes))return;for(let k=0;k<18;k++){if(String(holeOf(r,k))===lab&&parOf(r,k)===p&&r.strokes[k]!=null){xs.push(ptsOf(r.strokes[k]-p,i));break;}}});return xs.length?{v:xs.reduce((a,b)=>a+b,0)/xs.length,n:xs.length}:{v:2,n:0};};
+        const H2=left.map(i=>({i,...hist(i)})),usual=H2.reduce((a,x)=>a+x.v,0),toughest=H2.slice().sort((a,b)=>a.v-b.v)[0];
+        const L=left.length,lbl=`the last ${L} hole${L===1?'':'s'}`;
+        el.innerHTML=need<=0?`You're on <b>${have} points</b> already, so anything from here is a bonus.`
+          :`<b>${need} points</b> from ${lbl} gets you 36. You usually make <b>${usual.toFixed(1)}</b> on these holes${need<=usual?', so steady golf does it.':need<=usual+2?', so you need one or two better than normal.':', so it needs something special.'}${toughest&&toughest.v<1.6&&L>1?` Hole ${LH(toughest.i)} is the one that usually costs you.`:''}`;
+        el.style.display='';
+      }
+    }
     document.querySelectorAll('[data-putts]').forEach(b=>{const v=b.dataset.putts;b.classList.toggle('on',v==='chip'?h.chip:(!h.chip&&h.p!=null&&(v==='4'?h.p>=4:h.p===+v)));});
     const g=girAt(cur);$('ar-gir-auto').textContent=g==null?'–':(g?'✓ hit':'✗ missed');
     const plan=TEE_PLAN[String(LH(cur))];paintClubs(par,h);
@@ -1816,8 +1861,8 @@ async function askClaude(messages,opts){
     $('ar-sg-sec').style.display=(h.chips>0||h.sand>0)?'block':'none';
     $('ar-ps-sec').style.display=h.pen>0?'block':'none';
     document.querySelectorAll('[data-opt]').forEach(b=>{const [f,v]=b.dataset.opt.split(':');b.classList.toggle('sel',h[f]===v);});
-    $('ar-prev-hole').disabled=(cur===0);
-    $('ar-next-hole').textContent=cur===17?'Finish ▸ Card':'Next hole ▸';
+    $('ar-prev-hole').disabled=(pos()===0);
+    $('ar-next-hole').textContent=pos()===17?'Finish ▸ Card':(START&&pos()===8?'Turn to the 1st ▸':'Next hole ▸');
     document.querySelectorAll('[data-jump]').forEach(b=>{const i=+b.dataset.jump;b.style.background=resCol(i);b.classList.toggle('cur',i===cur);});
   }
   function upd(fn){fn(H[cur]);buzz();render();save();}
@@ -1833,10 +1878,10 @@ async function askClaude(messages,opts){
   document.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>upd(h=>{const k=b.dataset.inc;h[k]=Math.min(9,h[k]+1);}));
   document.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>upd(h=>{const k=b.dataset.dec;h[k]=Math.max(0,h[k]-1);}));
 
-  function next(){if(cur<17){cur++;render();$('ar-modal').scrollTop=0;}else openCard();save();}
-  function prev(){if(cur>0){cur--;render();$('ar-modal').scrollTop=0;save();}}
+  function next(){const p=pos();if(p<17){cur=ORD()[p+1];render();$('ar-modal').scrollTop=0;}else openCard();save();}
+  function prev(){const p=pos();if(p>0){cur=ORD()[p-1];render();$('ar-modal').scrollTop=0;save();}}
   $('ar-next-hole').onclick=next;$('ar-next-top').onclick=next;
-  $('ar-prev-hole').onclick=prev;$('ar-back-btn').onclick=()=>{if(cur===0)showStep('basics');else prev();};
+  $('ar-prev-hole').onclick=prev;$('ar-back-btn').onclick=()=>{if(pos()===0)showStep('basics');else prev();};
 
   // swipe between holes
   let tx=null,ty=null;
@@ -1949,7 +1994,7 @@ async function askClaude(messages,opts){
   const setVal=(id,v)=>{const e=$(id);if(e&&v!=null)e.value=v;};
   const TOT=['af-pts','af-putts','af-gir','af-fw','af-ud','af-pen','af-3p'];
   function save(){
-    const d={date:val('af-date'),tee:val('af-tee'),hcp:val('af-hcp'),layId:LAYID,mode,started,cur,H,ptsEdited,finalPts:val('ar-final-pts'),
+    const d={date:val('af-date'),tee:val('af-tee'),hcp:val('af-hcp'),layId:LAYID,mode,started,cur,H,start:START,ptsEdited,finalPts:val('ar-final-pts'),
       totals:Object.fromEntries(TOT.map(id=>[id,val(id)])),note:val('af-note')};
     try{localStorage.setItem(KEY,JSON.stringify(d));$('draft-badge').style.display='inline-flex';}catch(e){}
   }
@@ -1958,7 +2003,7 @@ async function askClaude(messages,opts){
       setVal('af-date',d.date);setVal('af-tee',d.tee);setVal('af-hcp',d.hcp);
       if(d.layId){const L=allLayouts().find(x=>x.id===d.layId);if(L){LAYID=L.id;LAY=L.holes;LRATE=L.rating||null;LNAME=L.name;}}
       if(Array.isArray(d.H)&&d.H.length===18)H=d.H.map(h=>Object.assign(blank(),h));
-      mode=d.mode||'holes';started=!!d.started;cur=d.cur||0;ptsEdited=!!d.ptsEdited;setVal('ar-final-pts',d.finalPts);
+      mode=d.mode||'holes';started=!!d.started;START=d.start||0;cur=d.cur!=null?d.cur:ORD()[0];ptsEdited=!!d.ptsEdited;setVal('ar-final-pts',d.finalPts);
       if(d.totals)TOT.forEach(id=>setVal(id,d.totals[id]));setVal('af-note',d.note);
       $('draft-badge').style.display='inline-flex';
     }catch(e){}
@@ -1966,7 +2011,7 @@ async function askClaude(messages,opts){
   ['af-date','af-tee','af-hcp','af-note'].concat(TOT).forEach(id=>{const e=$(id);if(e)e.addEventListener('input',()=>{if(id==='af-hcp'&&mode==='holes'&&started)render();save();});});
 
   const resetAll=()=>{
-    H=Array.from({length:18},blank);cur=0;mode='holes';started=false;ptsEdited=false;
+    H=Array.from({length:18},blank);START=0;cur=0;mode='holes';started=false;ptsEdited=false;
     ['af-date','af-note','ar-final-pts'].concat(TOT).forEach(id=>setVal(id,''));setVal('af-hcp','');setVal('af-tee','blue');
     try{localStorage.removeItem(KEY);localStorage.removeItem(OLDKEY);}catch(e){}
     $('draft-badge').style.display='none';$('af-output').style.display='none';
@@ -1994,11 +2039,12 @@ async function askClaude(messages,opts){
         `clubs:${J(c.clubs)}`,`fwDir:${J(c.fwDir)}`,`appr:${J(c.appr)}`,`sand:${c.sand}`,`sd:${J(H.map(h=>h.sand||0))}`,`sandSaves:${c.ss}`,`wasted:${c.wasted}`,`chipIns:${c.chipIns}`,`mizuno:true`];
       [['fp',c.fp],['sgLie',c.sgLie],['sgDist',c.sgDist],['apDist',c.apDist],['penSrc',c.penSrc]].forEach(([k,a])=>{if(a.some(v=>v!=null))parts.push(`${k}:${J(a)}`);});
       if(LAYID!=='std'){parts.push(`layout:${J(LAY)}`);const rt=LRATE?((LRATE.tees&&LRATE.tees[tee])||(tee==='blue'&&LRATE.cr?{cr:LRATE.cr,sl:LRATE.sl}:null)):null;if(rt)parts.push(`rating:${J({cr:rt.cr,sl:rt.sl})}`);}
+      if(START)parts.push(`start:10`);
       if(c.pickups.length)parts.push(`pu:${J(c.pickups)}`);
       const autoNote=c.pickups.length?`Pickups H${c.pickups.join(',H')} (net-double). `:'';
       if(autoNote||note)parts.push(`note:${J((autoNote+note).trim())}`);
     }else{
-      parts=[`key:'${key}'`,`label:'${label}'`,`tee:'${tee}'`,...(LAYID!=='std'?[`layout:${J(LAY)}`]:[]),`stableford:${J(n('af-pts'))}`,`putts:${J(n('af-putts'))}`,`gir:${J(n('af-gir'))}`,`fw:${J(n('af-fw'))}`,
+      parts=[`key:'${key}'`,`label:'${label}'`,`tee:'${tee}'`,...(LAYID!=='std'?[`layout:${J(LAY)}`]:[]),...(START?[`start:10`]:[]),`stableford:${J(n('af-pts'))}`,`putts:${J(n('af-putts'))}`,`gir:${J(n('af-gir'))}`,`fw:${J(n('af-fw'))}`,
         `ud:${J(n('af-ud'))}`,`pen:${J(n('af-pen'))}`,`threeputt:${J(n('af-3p'))}`,`strokes:null`,`mizuno:true`];
       if(note)parts.push(`note:${J(note)}`);
     }
@@ -2122,7 +2168,8 @@ function sgHoles(r){
       if(e!=null){h.arg=+(e-endGreen-nArg).toFixed(3);h.argStart=e;h.argBand=band;h.argEst=!dist;}
     }else if(nArg===0)h.arg=0;
     // approach (the shot from apDist that finished on/around the green)
-    if(ap&&SG_BASE.app[ap]!=null&&!pen&&!pickup&&!(r.wasted&&0)){
+    const penTee=r.penSrc&&r.penSrc[i]==='tee';
+    if(ap&&SG_BASE.app[ap]!=null&&(!pen||penTee)&&!pickup){
       const start=SG_BASE.app[ap]+((par>=4&&fw&&fw!=='hit')?SG_BASE.roughPen:0);
       let end=null;
       if(nArg===0&&endGreen!=null)end=endGreen;
@@ -2131,7 +2178,11 @@ function sgHoles(r){
     }
     // tee & everything else = remainder on fully decomposed holes
     if(h.putt!=null||putts===0){
-      if(h.arg!=null&&h.app!=null)h.ott=+(h.total-(h.putt||0)-h.arg-h.app).toFixed(3);
+      if(h.arg!=null&&h.app!=null){
+        const rest=+(h.total-(h.putt||0)-h.arg-h.app).toFixed(3);
+        // on a par 3 the tee shot is the approach, so what's left belongs to the approach
+        if(par===3){h.app=+(h.app+rest).toFixed(3);h.ott=0;}else h.ott=rest;
+      }
     }
     h.decomposed=h.ott!=null;
     out.push(h);
@@ -2150,10 +2201,14 @@ function sgMeasured(rounds){
   const cats={
     putt:{v:puttH.length?mean(puttH.map(h=>h.putt))*18:null,n:puttH.length},
     arg:{v:argH.length?mean(argH.map(h=>h.arg))*argPerRound:null,n:argH.length},
-    app:{v:appH.length?mean(appH.map(h=>h.app))*18:null,n:appH.length},
+    app:{v:appH.length?mean(appH.map(h=>h.app))*(holes.filter(h=>h.par>=4).length/n):null,n:appH.length},
     total:{v:rs.length?holes.reduce((a,h)=>a+h.total,0)/n:null,n:holes.length}
   };
-  cats.ott={v:cats.total.v!=null?cats.total.v-(cats.putt.v||0)-(cats.arg.v||0)-(cats.app.v||0):null,n:holes.length,residual:true};
+  // tee: measured on par 4s and 5s that could be fully split, scaled to how many you play a round
+  const ottH=holes.filter(h=>h.par>=4&&h.ott!=null),p45=holes.filter(h=>h.par>=4).length/n;
+  cats.ott={v:ottH.length?mean(ottH.map(h=>h.ott))*p45:null,n:ottH.length};
+  // holes missing the detail to split (pickups, no first-putt length) — kept out of the tee number
+  cats.unsplit={v:cats.total.v!=null?cats.total.v-(cats.putt.v||0)-(cats.arg.v||0)-(cats.app.v||0)-(cats.ott.v||0):null,n:holes.filter(h=>!h.decomposed).length};
   const bands=Object.keys(SG_BASE.putt).map(b=>{const hs=puttH.filter(h=>h.fp===b);return{b,n:hs.length,putts:hs.length?mean(hs.map(h=>h.putts)):null,one:hs.filter(h=>h.putts===1).length,three:hs.filter(h=>h.putts>=3).length,exp:SG_BASE.putt[b],sg:hs.reduce((a,h)=>a+h.putt,0)};});
   const lies=Object.keys(SG_BASE.arg).map(l=>{const hs=argH.filter(h=>h.lie===l);return{l,n:hs.length,sg:hs.reduce((a,h)=>a+h.arg,0),saved:hs.filter(h=>h.score<=h.par).length,multi:hs.filter(h=>h.chips>=2).length};});
   const apps=Object.keys(SG_BASE.app).map(b=>{const hs=appH.filter(h=>h.ap===b);return{b,n:hs.length,sg:hs.reduce((a,h)=>a+h.app,0),green:hs.filter(h=>h.argStart==null).length};});
@@ -2615,10 +2670,45 @@ function birdieCard(){
   el.innerHTML=`<div class="ch"><h3>Birdie tracker</h3><span class="sub">${n} of 18 holes birdied</span></div>
     <div class="bhol">${std.map(cell).join('')}</div>${temp.length?`<div class="bhol" style="grid-template-columns:repeat(9,1fr);margin-top:-6px"><span class="note" style="grid-column:span 2;align-self:center">Temp holes</span>${temp.map(cell).join('')}</div>`:''}`;
 }
+
+/* ---------- front vs back, and first nine played vs second ---------- */
+function ninesCard(){
+  const el=$id('nines');if(!el)return;
+  const rs=R.filter(r=>Array.isArray(r.strokes)&&r.strokes.length===18&&r.strokes.every(v=>v!=null));
+  if(!rs.length){el.innerHTML='';return;}
+  const tp=(r,a,b)=>{let t=0;for(let i=a;i<b;i++)t+=r.strokes[i]-parOf(r,i);return t;};
+  const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null,f=v=>v==null?'–':(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1);
+  const rows=rs.map(r=>{const o=tp(r,0,9),i=tp(r,9,18),ten=+r.start===10;return{o,i,first:ten?i:o,second:ten?o:i,ten};});
+  const t10=rows.filter(x=>x.ten),t1=rows.filter(x=>!x.ten);
+  const cell=(lab,v,n)=>`<div class="nk"><span>${lab}</span><b>${f(v)}</b><small>${n} rounds</small></div>`;
+  const fs=avg(rows.map(x=>x.first)),ss=avg(rows.map(x=>x.second)),d=ss-fs;
+  el.innerHTML=`<div class="ch"><h3>Front nine and back nine</h3><span class="sub">average to par, ${rs.length} rounds</span></div>
+    <div class="nines">
+      ${cell('Front nine (1–9)',avg(rows.map(x=>x.o)),rows.length)}
+      ${cell('Back nine (10–18)',avg(rows.map(x=>x.i)),rows.length)}
+      ${cell('First nine you play',fs,rows.length)}
+      ${cell('Second nine you play',ss,rows.length)}
+    </div>
+    <p class="note" style="margin-top:10px">${Math.abs(d)<0.3?'You score about the same on both halves of a round.':d>0?`You drop ${Math.abs(d).toFixed(1)} shots on the second nine you play. That points to fatigue or concentration late in the round.`:`You're ${Math.abs(d).toFixed(1)} shots better on the second nine you play, so the first few holes are where shots go. A proper warm-up should help.`}
+    ${t10.length?` Starting on the 10th (${t10.length} round${t10.length===1?'':'s'}): ${f(avg(t10.map(x=>x.first)))} on your first nine, against ${f(avg(t1.map(x=>x.first)))} when you start on the 1st.`:' Rounds you start on the 10th will be compared separately here once you log one.'}</p>`;
+}
+
+/* ---------- social and away rounds: on record, out of the stats ---------- */
+function socialsCard(){
+  const el=$id('socials');if(!el)return;
+  const L=SOCIAL.slice().sort((a,b)=>(rDate(b)||0)-(rDate(a)||0));
+  const score=s=>s.gross?`${s.gross}${s.par?` (${s.gross-s.par>0?'+':''}${s.gross-s.par})`:''}`:s.gross9&&s.gross9!=='—'?`${s.gross9} for 9`:s.holes?`${s.holes} holes`:'';
+  el.innerHTML=L.map(s=>`<div class="soc">
+      <div class="soc-h"><b>${esc(s.course||'Pacific')}</b><span class="soc-d">${esc(s.label)}</span>${s.tee?`<span class="chip">${esc(s.tee[0].toUpperCase()+s.tee.slice(1))}${s.slope?`, slope ${s.slope}`:''}</span>`:''}</div>
+      <div class="soc-n"><span><b>${score(s)}</b></span>${s.out!=null?`<span>${s.out} out, ${s.inn} in</span>`:''}${s.pts!=null?`<span><b>${s.pts}</b> pts</span>`:''}${s.putts!=null?`<span>${s.putts} putts</span>`:''}</div>
+      ${Array.isArray(s.strokes)?`<div class="soc-c">${s.strokes.map((v,i)=>`<i>${v}</i>`).join('')}</div>`:''}
+      ${s.note?`<p class="note">${esc(s.note)}</p>`:''}
+    </div>`).join('')||'<p class="note">No social rounds yet.</p>';
+}
 function renderRounds(){
   const run=(n,fn)=>{try{fn();}catch(e){console.error(n,e);}};
   document.querySelectorAll('#tee-seg button').forEach(b=>b.classList.toggle('on',b.dataset.tee===activeTee));
-  run('kpis',roundsKpis);run('list',roundsList);run('score',chScore);run('mix',chMix);run('dbl',chDoubles);run('fwgir',chFwGir);run('holes',chHoles);run('birdies',birdieCard);run('data',myData);
+  run('kpis',roundsKpis);run('list',roundsList);run('score',chScore);run('mix',chMix);run('dbl',chDoubles);run('fwgir',chFwGir);run('holes',chHoles);run('birdies',birdieCard);run('socials',socialsCard);run('nines',ninesCard);run('data',myData);
   $id('trend-sub').textContent=activeTee==='all'?'all tees':activeTee+' tees';
 }
 document.querySelectorAll('#tee-seg button').forEach(b=>b.onclick=()=>{activeTee=b.dataset.tee;renderRounds();});
@@ -2712,10 +2802,10 @@ function viewSG(){
   const tot=m.cats.total.v;
   $id('stats-sub').textContent=`Measured hole by hole from ${m.rounds.length} detailed rounds (${m.rounds.map(r=>r.label).join(', ')}), against a scratch golfer on the same course.`;
   $id('sgm-cats').innerHTML=`<div class="ch"><h3>Per round against scratch</h3><span class="sub">total <b style="color:${sgCol(tot)}">${fmtS(tot)}</b></span></div>${sgBars(CAT_ORDER.map(([k,l,s])=>({k:l,s,v:m.cats[k].v})))}
-    <p class="note" style="margin-top:12px">Built from ${m.cats.putt.n} putting holes, ${m.cats.arg.n} chip situations and ${m.cats.app.n} approaches. Off the tee is what remains once the other three are counted, so penalties and recoveries land there. Treat each number as ±1.</p>`;
+    <p class="note" style="margin-top:12px">Built from ${m.cats.putt.n} putting holes, ${m.cats.arg.n} chip situations and ${m.cats.app.n} approaches. Off the tee is measured on par 4s and 5s, and includes penalties and recovery shots.${Math.abs(m.cats.unsplit.v||0)>=0.3?` Another <b>${fmtS(m.cats.unsplit.v)}</b> a round comes from holes without enough detail to split, such as pickups or no first-putt length.`:''} Treat each number as ±1.</p>`;
   const per=m.rounds.map(r=>({r,m:sgMeasured([r])})).reverse(),c=v=>`<td style="color:${sgCol(v)};font-weight:600">${fmtS(v)}</td>`;
   const hs=m.holes.slice().sort((a,b)=>a.total-b.total).slice(0,5),nm={putt:'putting',arg:'around the green',app:'approach',ott:'tee and other'};
-  $id('sgm-rounds').innerHTML=`<div class="ch"><h3>Round by round</h3><span class="sub">tap for every hole</span></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Round</th><th>Total</th><th>Tee</th><th>App</th><th>ARG</th><th>Putt</th></tr></thead><tbody>${per.map(x=>`<tr class="click" data-open="${esc(x.r.key)}"><td class="lbl">${esc(x.r.label)}</td>${c(x.m.cats.total.v)}${c(x.m.cats.ott.v)}${c(x.m.cats.app.v)}${c(x.m.cats.arg.v)}${c(x.m.cats.putt.v)}</tr>`).join('')}</tbody></table></div>
+  $id('sgm-rounds').innerHTML=`<div class="ch"><h3>Round by round</h3><span class="sub">tap for every hole</span></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Round</th><th>Total</th><th>Tee</th><th>App</th><th>ARG</th><th>Putt</th><th>Not split</th></tr></thead><tbody>${per.map(x=>`<tr class="click" data-open="${esc(x.r.key)}"><td class="lbl">${esc(x.r.label)}</td>${c(x.m.cats.total.v)}${c(x.m.cats.ott.v)}${c(x.m.cats.app.v)}${c(x.m.cats.arg.v)}${c(x.m.cats.putt.v)}${c(x.m.cats.unsplit.v)}</tr>`).join('')}</tbody></table></div>
     <div style="margin-top:18px;font-size:13px;font-weight:650">Costliest holes</div>
     <div>${hs.map(h=>{const parts=['putt','arg','app','ott'].map(k=>[k,h[k]]).filter(x=>x[1]!=null).sort((a,b)=>a[1]-b[1]);const w=parts[0];const det=[h.putts!=null?`${h.putts} putt${h.putts===1?'':'s'}${h.fp?` from ${FP_LABEL[h.fp]}`:''}`:'',h.chips?`${h.chips} chip${h.chips>1?'s':''}`:''].filter(Boolean).join(', ');
       return `<div class="kvrow click" data-open="${esc(h.r.key)}"><span>${esc(h.r.label)}, hole ${esc(h.hole)} (par ${h.par}) <b>${h.score}</b><small>${det}${w&&w[1]<-0.3?`${det?'. ':''}Mostly ${nm[w[0]]}`:''}</small></span><b style="color:var(--loss)">${fmtS(h.total)}</b></div>`;}).join('')}</div>`;
